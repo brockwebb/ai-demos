@@ -1,0 +1,91 @@
+{
+  "imperial_report_designation": "",
+  "form_version": "",
+  "submission_timestamp": "",
+  "department_code": "",
+  "prepared_by": {
+    "name": "",
+    "rank": "",
+    "employee_id": "",
+    "preferred_method_of_execution": ""
+  },
+  "reporting_period": {
+    "start_date": "",
+    "end_date": "",
+    "time_zone": ""
+  },
+  "executive_summary": {
+    "slide_title": "",
+    "executive_summary_content": "",
+    "key_metrics": "",
+    "affirmation_of_fear_and_loyalty_percentage": "100%",
+    "critical_risks_identified": ""
+  },
+  "commander_overview": {
+    "comprehensive_review_summary": "",
+    "next_steps": "",
+    "risk_of_forced_reassignment": ""
+  },
+  "initiative_overview": {
+    "initiative_title": "",
+    "initiative_code": "",
+    "alignment_with_emperor_directive": "",
+    "mood_indicator": ""
+  },
+  "status_section": [
+    {
+      "subsystem": "",
+      "responsible_officer": "",
+      "officer_rank": "",
+      "progress_summary": "",
+      "approved_percent_complete": "",
+      "critical_dependencies": "",
+      "mandatory_bureaucratic_obstacle": "",
+      "risks_and_issues": "",
+      "recommended_actions": "",
+      "recently_deceased_personnel": "",
+      "anticipated_executions": "",
+      "compliance_with_regulation": "",
+      "notes_for_future_blame_assignment": ""
+    }
+  ],
+  "action_items": [
+    {
+      "priority_level": "",
+      "task_description": "",
+      "assigned_to": "",
+      "due_date": "",
+      "escalation_level": "",
+      "possible_outcome": ""
+    }
+  ],
+  "imperial_compliance_status": {
+    "regulation_compliance": "",
+    "template_protocols_maintained": "",
+    "project_parameter_deviations": "",
+    "vader_notification_status": ""
+  },
+  "final_mandatory_summary": {
+    "summary_of_readiness": "",
+    "percentage_chance_of_imminent_doom": "",
+    "affirmation_of_fear_and_loyalty": "",
+    "signature": "",
+    "signature_timestamp": ""
+  },
+  "imperial_personnel_profiles": {
+    "hr_regulation_reference": "663CP0-HR",
+    "personnel_entries": [
+      {
+        "name": "",
+        "rank": "",
+        "years_of_service": "",
+        "previous_assignments": "",
+        "current_loyalty_rating": "",
+        "preferred_method_of_execution": "",
+        "next_of_kin_notification_status": "",
+        "performance_notes": ""
+      }
+    ]
+  },
+  "attachments": []
+}

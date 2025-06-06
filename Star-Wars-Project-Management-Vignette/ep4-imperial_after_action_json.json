@@ -1,0 +1,88 @@
+{
+  "imperial_after_action_designation": "",
+  "meeting_analysis_version": "",
+  "analysis_timestamp": "",
+  "analyzing_officer": {
+    "name": "",
+    "rank": "",
+    "loyalty_verification_code": "",
+    "survival_probability_rating": ""
+  },
+  "meeting_reference": {
+    "original_meeting_designation": "",
+    "meeting_duration_minutes": "",
+    "attendee_survival_rate": "",
+    "vader_satisfaction_level": ""
+  },
+  "executive_summary": {
+    "meeting_outcome_assessment": "",
+    "overall_efficiency_rating": "",
+    "threat_level_changes": "",
+    "personnel_status_changes": ""
+  },
+  "summary_of_summary": {
+    "one_sentence_outcome": "",
+    "emperor_notification_required": "",
+    "immediate_crisis_level": ""
+  },
+  "action_items_extracted": [
+    {
+      "action_item_id": "",
+      "task_description": "",
+      "assigned_personnel": "",
+      "deadline": "",
+      "vader_interest_level": "",
+      "failure_consequences": "",
+      "completion_probability": "",
+      "resource_requirements": "",
+      "dependencies": ""
+    }
+  ],
+  "action_items_summary": {
+    "total_action_items": "",
+    "critical_priority_count": "",
+    "survival_dependent_tasks": "",
+    "estimated_completion_rate": ""
+  },
+  "meeting_metrics": {
+    "total_speaking_time_vader": "",
+    "total_speaking_time_others": "",
+    "number_of_threats_issued": "",
+    "personnel_reassignment_mentions": "",
+    "compactor_references": "",
+    "efficiency_mentions": "",
+    "loyalty_affirmations_required": "",
+    "medical_standby_activations": ""
+  },
+  "absurd_bureaucratic_metrics": {
+    "paperwork_generation_coefficient": "",
+    "meeting_scope_expansion_factor": "",
+    "bureaucratic_entropy_level": "",
+    "circular_discussion_index": "",
+    "unnecessary_coordination_requirements": "",
+    "vendor_dependency_complexity_score": "",
+    "training_program_multiplication_rate": "",
+    "budget_reallocation_cascade_depth": ""
+  },
+  "risk_assessment": {
+    "meeting_success_probability": "",
+    "attendee_retention_forecast": "",
+    "project_timeline_viability": "",
+    "imperial_compliance_status": "",
+    "rebellion_infiltration_indicators": ""
+  },
+  "follow_up_requirements": {
+    "next_meeting_necessity": "",
+    "progress_monitoring_frequency": "",
+    "escalation_protocols_activated": "",
+    "medical_team_alert_level": "",
+    "security_enhancement_needed": ""
+  },
+  "imperial_compliance_verification": {
+    "regulation_adherence_confirmed": "",
+    "dark_side_template_usage": "",
+    "loyalty_oath_compliance": "",
+    "fear_maintenance_effectiveness": ""
+  },
+  "attachments_referenced": []
+}

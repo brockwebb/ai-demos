@@ -1,0 +1,61 @@
+{
+  "imperial_meeting_designation": "",
+  "meeting_template_version": "",
+  "scheduled_timestamp": "",
+  "location_code": "",
+  "presiding_authority": {
+    "name": "",
+    "rank": "",
+    "authority_level": "",
+    "preferred_enforcement_method": ""
+  },
+  "meeting_parameters": {
+    "total_duration_minutes": 75,
+    "buffer_time_for_disciplinary_actions": 15,
+    "emergency_evacuation_protocol": "",
+    "medical_support_standby": ""
+  },
+  "opening_protocols": {
+    "imperial_loyalty_affirmation": "",
+    "previous_meeting_accountability_review": "",
+    "recent_personnel_changes_acknowledgment": ""
+  },
+  "briefing_sequence": [
+    {
+      "presentation_order": "",
+      "presenter_name": "",
+      "presenter_rank": "",
+      "briefing_topic": "",
+      "allocated_time_minutes": "",
+      "risk_assessment": "",
+      "backup_presenter": "",
+      "failure_contingency": ""
+    }
+  ],
+  "standard_agenda_items": {
+    "operational_efficiency_review": "",
+    "loyalty_verification_status": "",
+    "resource_allocation_justification": "",
+    "timeline_adherence_explanation": "",
+    "personnel_performance_evaluation": ""
+  },
+  "closing_protocols": {
+    "action_item_assignment": "",
+    "next_meeting_scheduling": "",
+    "dismissal_or_detention_determination": "",
+    "final_loyalty_affirmation": ""
+  },
+  "emergency_procedures": {
+    "force_choke_protocol": "",
+    "immediate_termination_procedures": "",
+    "successor_notification_process": "",
+    "cleanup_crew_contact": ""
+  },
+  "meeting_compliance": {
+    "regulation_reference": "",
+    "mandatory_recording_status": "",
+    "transcript_classification_level": "",
+    "distribution_list": ""
+  },
+  "attachments": []
+}

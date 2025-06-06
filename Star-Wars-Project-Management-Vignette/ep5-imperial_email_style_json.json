@@ -1,0 +1,113 @@
+{
+  "imperial_email_designation": "",
+  "email_template_version": "",
+  "distribution_classification": "",
+  "sender_information": {
+    "name": "",
+    "rank": "",
+    "department_code": "",
+    "imperial_employee_id": "",
+    "loyalty_verification_status": ""
+  },
+  "email_header": {
+    "subject_line": "",
+    "priority_level": "",
+    "security_classification": "",
+    "response_required_by": "",
+    "failure_to_respond_consequences": ""
+  },
+  "opening_protocols": {
+    "imperial_greeting": "",
+    "meeting_reference": "",
+    "vader_satisfaction_acknowledgment": "",
+    "loyalty_affirmation_requirement": ""
+  },
+  "action_items_section": {
+    "section_title": "",
+    "accountability_framework": "",
+    "action_items": [
+      {
+        "item_number": "",
+        "task_description": "",
+        "primary_assigned_personnel": "",
+        "secondary_assigned_personnel": "",
+        "backup_personnel": "",
+        "personal_accountability_statement": "",
+        "deadline": "",
+        "deliverable_format": "",
+        "escalation_protocol": "",
+        "failure_consequences": "",
+        "trash_compactor_cleaning_duty_trigger": "",
+        "success_metrics": "",
+        "reporting_frequency": "",
+        "vader_visibility_level": "",
+        "personnel_replacement_authorization": ""
+      }
+    ]
+  },
+  "timeline_and_deadlines": {
+    "critical_path_overview": "",
+    "milestone_schedule": "",
+    "daily_reporting_requirements": "",
+    "weekly_status_meetings": "",
+    "emergency_escalation_triggers": "",
+    "timeline_deviation_penalties": ""
+  },
+  "resource_allocations": {
+    "approved_budget_changes": "",
+    "personnel_reassignments": "",
+    "vendor_authorizations": "",
+    "equipment_requisitions": "",
+    "training_program_approvals": "",
+    "imperial_supply_command_priorities": ""
+  },
+  "next_meeting_details": {
+    "meeting_date": "",
+    "meeting_time": "",
+    "location": "",
+    "attendance_requirements": "",
+    "preparation_materials": "",
+    "agenda_preview": "",
+    "medical_standby_status": "",
+    "non_attendance_consequences": ""
+  },
+  "compliance_requirements": {
+    "regulatory_adherence": "",
+    "documentation_standards": "",
+    "security_protocols": "",
+    "loyalty_verification_frequency": "",
+    "performance_monitoring_methods": ""
+  },
+  "closing_protocols": {
+    "motivation_through_fear": "",
+    "success_expectations": "",
+    "imperial_objectives_reminder": "",
+    "vader_oversight_acknowledgment": "",
+    "final_loyalty_affirmation": ""
+  },
+  "email_footer": {
+    "distribution_list": "",
+    "classification_reminder": "",
+    "retention_policy": "",
+    "unauthorized_sharing_consequences": "",
+    "imperial_contact_information": "",
+    "approved_imperial_closing_phrases": [
+      "For the Glory of the Empire - Even Email Serves the Dark Side",
+      "Efficiency Through Fear - Communication is Power",
+      "The Emperor's Will Be Done - Documentation is Eternal", 
+      "Long Live the Empire - Even Bureaucracy Serves the Sith",
+      "May the Dark Side Guide Our Correspondence",
+      "Imperial Efficiency Through Electronic Communication",
+      "The Force is Strong with This Email",
+      "Failure to Reply is Not an Option"
+    ]
+  },
+  "bureaucratic_style_elements": {
+    "excessive_formality_level": "",
+    "passive_aggressive_tone": "",
+    "redundant_approval_references": "",
+    "unnecessary_regulation_citations": "",
+    "intimidation_subtlety_rating": "",
+    "professional_menace_coefficient": ""
+  }
+}
