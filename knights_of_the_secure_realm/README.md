@@ -21,11 +21,12 @@ This game is a **self-contained HTML + JavaScript** file, with:
 
 1. **Download the game file**:
    [knights\_of\_the\_secure\_realm.html](https://github.com/brockwebb/ai-demos/blob/main/knights_of_the_secure_realm/knights_of_the_secure_realm.html)
-2. Open it in your web browser.
-3. Use arrow keys to navigate the maze, visiting each training room to answer a question and earn gear.
-4. Collect all five gear pieces to unlock the key.
-5. Use the key to open the gate to the dragon’s lair.
-6. Defeat the dragon by answering **at least 4 out of 5** final questions correctly.
+2. Download the 'raw file' (upper right corner of the window)
+3. Open it in your web browser.
+4. Use arrow keys to navigate the maze, visiting each training room to answer a question and earn gear.
+5. Collect all five gear pieces to unlock the key.
+6. Use the key to open the gate to the dragon’s lair.
+7. Defeat the dragon by answering **at least 4 out of 5** final questions correctly.
 
 ## Learning Outcomes
 
