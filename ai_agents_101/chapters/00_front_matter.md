@@ -1,0 +1,44 @@
+# AI Agents 101: A Practical Guide
+
+**Version:** Draft 0.1  
+**Last Updated:** January 2025
+
+---
+
+## Disclaimers
+
+**Living Document**  
+This is a working document and has not been finalized. Content is subject to revision.
+
+**Educational Purpose**  
+This material is exploratory and educational. Views expressed are the author's own.
+
+**No Endorsements**  
+Any use of product or company names does not constitute an endorsement. Tools and platforms are mentioned for awareness only.
+
+**No Organizational Affiliation**  
+This document does not represent the official position of any organization. It is intended as speaker's notes and a handout for those interested in learning about and teaching AI agent concepts.
+
+---
+
+## About This Document
+
+This handout accompanies a short presentation on AI agents, agentic behavior, and practical design considerations. It is designed to:
+
+- Establish common vocabulary for discussing AI agents
+- Provide concrete examples at increasing levels of complexity
+- Stand alone as a reference for those who did not attend the presentation
+- Be stolen, shared, and taught from freely
+
+The goal is not mastery — it's baseline understanding and a common language.
+
+---
+
+## How to Use This Document
+
+**If you attended the talk:** Use this as a reference for the concepts discussed. The examples here expand on what was demonstrated.
+
+**If you're reading this cold:** Start with the Executive Summary, then work through the Vocabulary section before diving into examples.
+
+**If you want to teach this material:** Take it. Adapt it. Make it your own. Attribution appreciated but not required.
+
