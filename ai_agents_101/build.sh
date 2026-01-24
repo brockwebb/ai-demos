@@ -7,7 +7,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CHAPTERS_DIR="$SCRIPT_DIR/chapters"
-OUTPUT="$SCRIPT_DIR/handout.md"
+OUTPUT="$SCRIPT_DIR/course_notes.md"
 
 echo "Building handout from chapters..."
 
