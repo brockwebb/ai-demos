@@ -26,7 +26,7 @@ flowchart TB
 
     C[CASE STUDY<br/>Real project — design decisions, tradeoffs<br/>Third repetition]
 
-    D[DESIGN PRINCIPLES<br/>The "why" behind good agent design]
+    D[DESIGN PRINCIPLES<br/>The reasoning behind good agent design]
 
     R[TOOLS & RESOURCES<br/>Landscape awareness, further learning]
 
