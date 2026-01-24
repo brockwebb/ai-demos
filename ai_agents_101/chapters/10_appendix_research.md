@@ -15,7 +15,7 @@ Common patterns:
 
 Government-style guidance (e.g., NIST-aligned AI-risk frameworks) now treats **unbounded agents as high-risk by default**, pushing toward resource-bounded, contract-driven architectures.
 
-*Sources: arxiv.org/pdf/2601.08815.pdf, moveworks.com, machinelearningmastery.com, solutionsreview.com*
+*Sources: arxiv.org/pdf/2601.08815.pdf, moveworks.com*
 
 ### When NOT to Use Agents
 
@@ -27,7 +27,7 @@ Growing consensus that many use cases are better served by simpler patterns:
 
 Practitioner maxim: **"Start at the lowest level of sophistication that solves the problem; upgrade only when data and feedback justify it."**
 
-*Sources: linkedin.com (Santiago Valdarrama), kore.ai*
+*Source: kore.ai*
 
 ### Human-in-the-Loop Patterns
 
@@ -49,7 +49,7 @@ HITL is moving from binary approval gates to **risk- and confidence-aware patter
 
 Security and fraud teams describe **"crawl-walk-run" autonomy ladders**: agents first summarize, then suggest, then (only in high-confidence cases) auto-remediate.
 
-*Sources: detectionatscale.com, machinelearningmastery.com*
+*Source: detectionatscale.com*
 
 ### Prompt-Based vs Framework Approaches
 
@@ -69,7 +69,7 @@ Practitioner heuristic: **"Use prompt-only for exploratory and low-stakes tasks;
 
 Note: The patterns that frameworks provide (state management, tool contracts, observability) can also be implemented without frameworks. Frameworks provide scaffolding; they're not prerequisites.
 
-*Sources: o-mega.ai, solutionsreview.com*
+*Source: o-mega.ai*
 
 ### Teaching Non-Technical Staff
 
@@ -89,7 +89,7 @@ Training non-technical staff leans on **no-code/low-code platforms plus structur
 - Flag over-confidence
 - Refine guardrails based on collected examples
 
-*Sources: elearningindustry.com, kore.ai*
+*Source: kore.ai*
 
 ## Recommended Artifacts Per Agent
 
@@ -118,10 +118,7 @@ The FSCM case study demonstrates these patterns in a federal context: dual-model
 
 - arxiv.org/pdf/2601.08815.pdf (Resource-bounded agents)
 - moveworks.com/resources/blog/agentic-ai-vs-ai-agents-definitions-and-differences
-- machinelearningmastery.com/7-agentic-ai-trends-to-watch-in-2026/
-- solutionsreview.com/ai-and-enterprise-technology-predictions-from-industry-experts-for-2026/
 - detectionatscale.com/p/ai-security-operations-2025-patterns
 - kore.ai/blog/ai-agents-in-2026-from-hype-to-enterprise-reality
-- linkedin.com (Santiago Valdarrama on agent overuse)
 - o-mega.ai/articles/langgraph-vs-crewai-vs-autogen-top-10-agent-frameworks-2026
-- elearningindustry.com/how-no-code-and-agentic-ai-are-transforming-team-training-platforms-in-2026
+- World Economic Forum, "AI Agents in Action: Foundations for Evaluation and Governance" (2025)

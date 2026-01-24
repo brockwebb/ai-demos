@@ -53,11 +53,10 @@ Demonstrates:
 Research findings in the appendix draw from:
 
 - arxiv.org/pdf/2601.08815.pdf (Resource-bounded agents)
-- machinelearningmastery.com/7-agentic-ai-trends-to-watch-in-2026/
 - detectionatscale.com/p/ai-security-operations-2025-patterns
 - kore.ai/blog/ai-agents-in-2026-from-hype-to-enterprise-reality
 - o-mega.ai/articles/langgraph-vs-crewai-vs-autogen-top-10-agent-frameworks-2026
-- elearningindustry.com/how-no-code-and-agentic-ai-are-transforming-team-training-platforms-in-2026
+- World Economic Forum, "AI Agents in Action" (2025)
 
 ## Contact
 
@@ -67,4 +66,4 @@ Feedback, corrections, and contributions welcome.
 
 ---
 
-*This is a living document. Content reflects understanding as of January 2026.*
+*Content reflects understanding as of January 2026.*

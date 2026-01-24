@@ -1,7 +1,15 @@
-# AI Agents 101: A Practical Guide
+# AI Agents 101: Speaker Notes & Reference Material
 
 **Version:** Draft 0.1  
-**Last Updated:** January 2025
+**Last Updated:** January 2026
+
+---
+
+## Purpose
+
+This document is **source material for teaching**, not a standalone course. It contains more depth than any single session can cover, organized for an instructor to draw from selectively.
+
+Primary use: Speaker notes for a 40-60 minute webinar on AI agents, with supplementary reference material for attendees.
 
 ---
 
@@ -17,7 +25,7 @@ This material is exploratory and educational. Views expressed are the author's o
 Any use of product or company names does not constitute an endorsement. Tools and platforms are mentioned for awareness only.
 
 **No Organizational Affiliation**  
-This document does not represent the official position of any organization. It is intended as speaker's notes and a handout for those interested in learning about and teaching AI agent concepts.
+This document does not represent the official position of any organization.
 
 ---
 
@@ -122,17 +130,17 @@ Salesforce is a massive company with enormous resources, selling their *own* AI 
 
 ```mermaid
 flowchart TB
-    V[VOCABULARYLearn the terms: workflow, agent, agency, agenticFoundation — everything builds on this]
+    V[VOCABULARY<br/>Learn the terms: workflow, agent, agency, agentic<br/>Foundation — everything builds on this]
 
-    B[BASIC PIPELINESee the vocabulary in a simple exampleFirst repetition]
+    B[BASIC PIPELINE<br/>See the vocabulary in a simple example<br/>First repetition]
 
-    S[SIMPLE SCRIPTTry it yourself — no API keys, just a promptSecond repetition]
+    S[SIMPLE SCRIPT<br/>Try it yourself — no API keys, just a prompt<br/>Second repetition]
 
-    C[CASE STUDYReal project — design decisions, tradeoffsThird repetition]
+    C[CASE STUDY<br/>Real project — design decisions, tradeoffs<br/>Third repetition]
 
-    D[DESIGN PRINCIPLESThe "why" behind good agent design]
+    D[DESIGN PRINCIPLES<br/>The "why" behind good agent design]
 
-    R[TOOLS & RESOURCESLandscape awareness, further learning]
+    R[TOOLS & RESOURCES<br/>Landscape awareness, further learning]
 
     V --> B --> S --> C --> D --> R
 ```
@@ -1294,11 +1302,10 @@ Demonstrates:
 Research findings in the appendix draw from:
 
 - arxiv.org/pdf/2601.08815.pdf (Resource-bounded agents)
-- machinelearningmastery.com/7-agentic-ai-trends-to-watch-in-2026/
 - detectionatscale.com/p/ai-security-operations-2025-patterns
 - kore.ai/blog/ai-agents-in-2026-from-hype-to-enterprise-reality
 - o-mega.ai/articles/langgraph-vs-crewai-vs-autogen-top-10-agent-frameworks-2026
-- elearningindustry.com/how-no-code-and-agentic-ai-are-transforming-team-training-platforms-in-2026
+- World Economic Forum, "AI Agents in Action" (2025)
 
 ## Contact
 
@@ -1308,7 +1315,7 @@ Feedback, corrections, and contributions welcome.
 
 ---
 
-*This is a living document. Content reflects understanding as of January 2026.*
+*Content reflects understanding as of January 2026.*
 
 
 ---
@@ -1330,7 +1337,7 @@ Common patterns:
 
 Government-style guidance (e.g., NIST-aligned AI-risk frameworks) now treats **unbounded agents as high-risk by default**, pushing toward resource-bounded, contract-driven architectures.
 
-*Sources: arxiv.org/pdf/2601.08815.pdf, moveworks.com, machinelearningmastery.com, solutionsreview.com*
+*Sources: arxiv.org/pdf/2601.08815.pdf, moveworks.com*
 
 ### When NOT to Use Agents
 
@@ -1342,7 +1349,7 @@ Growing consensus that many use cases are better served by simpler patterns:
 
 Practitioner maxim: **"Start at the lowest level of sophistication that solves the problem; upgrade only when data and feedback justify it."**
 
-*Sources: linkedin.com (Santiago Valdarrama), kore.ai*
+*Source: kore.ai*
 
 ### Human-in-the-Loop Patterns
 
@@ -1364,7 +1371,7 @@ HITL is moving from binary approval gates to **risk- and confidence-aware patter
 
 Security and fraud teams describe **"crawl-walk-run" autonomy ladders**: agents first summarize, then suggest, then (only in high-confidence cases) auto-remediate.
 
-*Sources: detectionatscale.com, machinelearningmastery.com*
+*Source: detectionatscale.com*
 
 ### Prompt-Based vs Framework Approaches
 
@@ -1384,7 +1391,7 @@ Practitioner heuristic: **"Use prompt-only for exploratory and low-stakes tasks;
 
 Note: The patterns that frameworks provide (state management, tool contracts, observability) can also be implemented without frameworks. Frameworks provide scaffolding; they're not prerequisites.
 
-*Sources: o-mega.ai, solutionsreview.com*
+*Source: o-mega.ai*
 
 ### Teaching Non-Technical Staff
 
@@ -1404,7 +1411,7 @@ Training non-technical staff leans on **no-code/low-code platforms plus structur
 - Flag over-confidence
 - Refine guardrails based on collected examples
 
-*Sources: elearningindustry.com, kore.ai*
+*Source: kore.ai*
 
 ## Recommended Artifacts Per Agent
 
@@ -1433,13 +1440,10 @@ The FSCM case study demonstrates these patterns in a federal context: dual-model
 
 - arxiv.org/pdf/2601.08815.pdf (Resource-bounded agents)
 - moveworks.com/resources/blog/agentic-ai-vs-ai-agents-definitions-and-differences
-- machinelearningmastery.com/7-agentic-ai-trends-to-watch-in-2026/
-- solutionsreview.com/ai-and-enterprise-technology-predictions-from-industry-experts-for-2026/
 - detectionatscale.com/p/ai-security-operations-2025-patterns
 - kore.ai/blog/ai-agents-in-2026-from-hype-to-enterprise-reality
-- linkedin.com (Santiago Valdarrama on agent overuse)
 - o-mega.ai/articles/langgraph-vs-crewai-vs-autogen-top-10-agent-frameworks-2026
-- elearningindustry.com/how-no-code-and-agentic-ai-are-transforming-team-training-platforms-in-2026
+- World Economic Forum, "AI Agents in Action: Foundations for Evaluation and Governance" (2025)
 
 
 ---

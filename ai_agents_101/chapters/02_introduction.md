@@ -18,17 +18,17 @@ Salesforce is a massive company with enormous resources, selling their *own* AI 
 
 ```mermaid
 flowchart TB
-    V[VOCABULARYLearn the terms: workflow, agent, agency, agenticFoundation — everything builds on this]
+    V[VOCABULARY<br/>Learn the terms: workflow, agent, agency, agentic<br/>Foundation — everything builds on this]
 
-    B[BASIC PIPELINESee the vocabulary in a simple exampleFirst repetition]
+    B[BASIC PIPELINE<br/>See the vocabulary in a simple example<br/>First repetition]
 
-    S[SIMPLE SCRIPTTry it yourself — no API keys, just a promptSecond repetition]
+    S[SIMPLE SCRIPT<br/>Try it yourself — no API keys, just a prompt<br/>Second repetition]
 
-    C[CASE STUDYReal project — design decisions, tradeoffsThird repetition]
+    C[CASE STUDY<br/>Real project — design decisions, tradeoffs<br/>Third repetition]
 
-    D[DESIGN PRINCIPLESThe "why" behind good agent design]
+    D[DESIGN PRINCIPLES<br/>The "why" behind good agent design]
 
-    R[TOOLS & RESOURCESLandscape awareness, further learning]
+    R[TOOLS & RESOURCES<br/>Landscape awareness, further learning]
 
     V --> B --> S --> C --> D --> R
 ```

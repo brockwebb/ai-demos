@@ -1,7 +1,15 @@
-# AI Agents 101: A Practical Guide
+# AI Agents 101: Speaker Notes & Reference Material
 
 **Version:** Draft 0.1  
-**Last Updated:** January 2025
+**Last Updated:** January 2026
+
+---
+
+## Purpose
+
+This document is **source material for teaching**, not a standalone course. It contains more depth than any single session can cover, organized for an instructor to draw from selectively.
+
+Primary use: Speaker notes for a 40-60 minute webinar on AI agents, with supplementary reference material for attendees.
 
 ---
 
@@ -17,7 +25,7 @@ This material is exploratory and educational. Views expressed are the author's o
 Any use of product or company names does not constitute an endorsement. Tools and platforms are mentioned for awareness only.
 
 **No Organizational Affiliation**  
-This document does not represent the official position of any organization. It is intended as speaker's notes and a handout for those interested in learning about and teaching AI agent concepts.
+This document does not represent the official position of any organization.
 
 ---
 
