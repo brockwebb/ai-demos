@@ -1700,7 +1700,3 @@ If "no" to any, mark as **"bad example"** and send to the technical team with a 
 - Training Handouts A & B (Template 7)
 
 These templates encode the same principles described in this document: bounded agency, confidence-based routing, human oversight, and auditability.
-
-
----
-
