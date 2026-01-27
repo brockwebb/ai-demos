@@ -50,3 +50,9 @@ The goal is not mastery — it's baseline understanding and a common language.
 
 **If you want to teach this material:** Take it. Adapt it. Make it your own. Attribution appreciated but not required.
 
+---
+
+## Acknowledgements
+
+Thanks to Tam Nguyen for generous feedback that improved these materials—including flagging "circuit breaker" as important emerging terminology for agentic AI safety. Thanks also to the broader AI practitioner community for the culture of sharing knowledge and helping each other figure this out as we go.
+

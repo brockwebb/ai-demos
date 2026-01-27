@@ -40,6 +40,8 @@ Observe → Decide → Act → Check → (repeat)
 
 **The meta-principle:** AI amplifies your process. Good process + AI = faster good outcomes. Bad process + AI = faster bad outcomes.
 
+**The stakes:** Microsoft's AI Red Team documented failure modes in agentic systems—misalignment, cascading failures, unauthorized actions, denial of service. Nearly every failure traces back to ignoring these principles. They're not caution; they're how you build systems that work.
+
 ---
 
 ## Template: Describing an Agent
@@ -129,6 +131,14 @@ You don't need expensive tools or deep technical skills to work with AI agents e
 - Appropriate skepticism about what automation can and should do
 
 **Start simple. Add complexity only when justified. Design for uncertainty. Keep humans in the loop where it matters.**
+
+---
+
+## Further Reading
+
+- Microsoft AI Red Team, "Taxonomy of Failure Modes in Agentic AI Systems" (2025)
+- OpenAI, "A Practical Guide to Building Agents" (2025)
+- Anthropic, "Building Effective Agents" (2024)
 
 ---
 

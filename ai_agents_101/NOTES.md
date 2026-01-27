@@ -72,14 +72,72 @@ After completing section drafts, conduct research phase:
 
 | Section | Status | Notes |
 |---------|--------|-------|
-| 00_front_matter | Done | Disclaimers, about doc |
-| 01_exec_summary | Placeholder | Write last |
-| 02_introduction | Draft done | Needs Salesforce edit + journey mermaid insert |
-| 03_vocabulary | Draft done | Core terms + memory/context + AGENTS.md |
-| 04_pipeline_basics | Placeholder | Hello world example |
-| 05_simple_script | Placeholder | Agent-lite, prompt-as-script |
-| 06_case_study | Placeholder | FederalSurveyConceptMapper |
-| 07_design_principles | Placeholder | Main ideas explicit |
-| 08_tools_landscape | Placeholder | Table, no endorsements |
-| 09_resources | Placeholder | Light, citations |
+| 00_front_matter | Done | Disclaimers, about doc, acknowledgements |
+| 01_exec_summary | Done | |
+| 02_introduction | Done | Salesforce story, journey framing |
+| 03_vocabulary | Done | Core terms + memory/context |
+| 04_pipeline_basics | Done | Recipe workflow example |
+| 05_simple_script | Done | Prompt-as-script approach |
+| 06_case_study | Done | Federal Survey Concept Mapper |
+| 07_design_principles | Done | Six principles + failure mode callouts |
+| 08_tools_landscape | Done | Table, no endorsements |
+| 09_resources | Done | Vendor guides + Microsoft failure modes paper |
+| 10_appendix_research | Done | Lit review findings |
+| 11_appendix_templates | Done | Copy-paste templates |
+| 12_extended_glossary | Done | Full glossary with guardrails/fail-safes |
+
+---
+
+## Failure Mode Integration (January 2026)
+
+Integrated Microsoft AI Red Team "Taxonomy of Failure Modes in Agentic AI Systems" throughout materials.
+
+**Key insight (from Tam Nguyen's feedback):** The failure modes list is essentially "what happens when you ignore the design principles" — framed that way, not as fear-mongering.
+
+### Changes Made
+
+**Chapter 07 (Design Principles):**
+- Added "What ignoring this causes" callouts after each of 6 principles
+- Added "The Stakes: What These Principles Prevent" summary section
+- Maps principle violations → specific failure modes from Microsoft taxonomy
+
+**Chapter 09 (Resources):**
+- Added Microsoft paper under new "What Can Go Wrong: Failure Mode Analysis" subsection
+
+**Chapter 12 (Glossary):**
+- Expanded Guardrails entry to include fail-safes and circuit breakers
+- "Fail-safe" = general engineering concept (fails in safe state)
+- "Circuit breaker" = emerging AI agent terminology (confirmed by Forbes, AccuKnox, practitioners)
+- "Control flow control" = Microsoft's term, noted but not oversold
+
+**Chapter 00 (Front Matter):**
+- Added Acknowledgements section
+- Credits Tam Nguyen for feedback including circuit breaker terminology
+
+**Slides (slides.md, slides_full.md):**
+- New "The Stakes: What Ignoring These Causes" slide after Design Principles
+- Updated Resources slide with Microsoft paper + vendor guides
+- slides_full.md: new Guardrails/Fail-safes backup slide
+
+**Student Handout:**
+- Added stakes paragraph after Design Principles table
+- Added Further Reading section
+
+**Facilitator Guide:**
+- Added Microsoft paper to recommended prep reading
+- Updated timing guides to reference Stakes slide
+- Added Q&A: "What are the biggest risks with AI agents?"
+- Added Q&A: "What's a circuit breaker?"
+
+### Terminology Decisions
+
+- **Fail-safe** = primary term (accurate, universal engineering concept)
+- **Circuit breaker** = introduced as emerging AI agent term with real adoption
+- **Control flow control** = Microsoft's term, mentioned for completeness
+- Did NOT invent terminology — traced origins honestly
+
+### Source
+
+Microsoft AI Red Team, "Taxonomy of Failure Modes in Agentic AI Systems" (2025)  
+https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/final/en-us/microsoft-brand/documents/Taxonomy-of-Failure-Mode-in-Agentic-AI-Systems-Whitepaper.pdf
 

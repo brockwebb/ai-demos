@@ -216,6 +216,20 @@ Programmable safety controls in AI systems ensuring outputs remain within accept
 **Source:** [WIKI] "Guardrails (artificial intelligence)"  
 https://en.wikipedia.org/wiki/Guardrails_(artificial_intelligence)
 
+**Fail-safes** are critical: mechanisms that stop a system when predefined conditions are met, ensuring it fails in a safe state rather than causing cascading damage. The concept is fundamental to engineering (dead man's switches, electrical circuit breakers, pressure relief valves).
+
+In agentic AI, **"circuit breaker"** is emerging as the common term for this pattern—mechanisms that halt agent operations when they exceed risk thresholds, fail repeatedly, or act unpredictably. Common implementations include:
+- Token/cost limits (budget control)
+- Iteration caps (preventing "doom loops")
+- Confidence thresholds (flagging uncertainty)
+- Time bounds (maximum execution duration)
+
+Microsoft's AI Red Team uses **"control flow control"** for these deterministic safeguards, though "circuit breaker" appears to be gaining broader adoption among practitioners.
+
+**Key principle:** An agent that can't stop itself is an agent you can't trust.
+
+**Further reading:** Forbes, "Embedding LLM Circuit Breakers Into AI" (2025); AccuKnox, "Agentic AI Security"
+
 ---
 
 ### Explainability

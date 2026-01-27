@@ -23,6 +23,8 @@ This guide helps you deliver the course or adapt it for your team. The materials
 | `exercises.md` | Post-session practice | Share after session |
 | `course_notes.md` | Full speaker notes and depth | Your prep; reference for Q&A |
 
+**Recommended prep reading:** Microsoft AI Red Team, "Taxonomy of Failure Modes in Agentic AI Systems" (2025). Understanding what goes wrong helps you explain why the design principles matter.
+
 ---
 
 ## Timing Guide (40-minute version)
@@ -33,8 +35,8 @@ This guide helps you deliver the course or adapt it for your team. The materials
 | Vocabulary | 8 min | 4-7 | Don't rush. These terms do the heavy lifting. |
 | Live Demo | 12 min | 8-10 | Run the prompt live. Let them see it work. |
 | Case Study | 5 min | 11-12 | Gloss over details. Point is "bounded agency at scale." |
-| Design Principles | 8 min | 13-16 | Hit 2-3 principles hard, skim the rest. |
-| Close + Q&A | 5 min | 17-19 | Point to resources. Take questions. |
+| Design Principles + Stakes | 8 min | 13-17 | Hit 2-3 principles hard, use Stakes slide to land "why it matters." |
+| Close + Q&A | 5 min | 18-20 | Point to resources. Take questions. |
 
 **If running short:** Cut the case study to one sentence ("Here's what this looks like at scale — 7,000 items, $15, complete audit trail"). Spend the time on vocabulary and demo instead.
 
@@ -50,8 +52,8 @@ This guide helps you deliver the course or adapt it for your team. The materials
 | Vocabulary | 10 min | 4-7 | Take questions here. Clarify terms. |
 | Live Demo | 15 min | 8-10 | Run prompt, then try one "break it" scenario live |
 | Case Study | 10 min | 11-12 | Walk through the architecture briefly |
-| Design Principles | 12 min | 13-16 | Cover all six with examples |
-| Close + Q&A | 8 min | 17-19 | Extended discussion |
+| Design Principles + Stakes | 12 min | 13-17 | Cover all six with examples; Stakes slide connects to real failures |
+| Close + Q&A | 8 min | 18-20 | Extended discussion |
 
 ---
 
@@ -87,6 +89,12 @@ This guide helps you deliver the course or adapt it for your team. The materials
 
 **"What tools do you recommend?"**
 > Start with what you have access to. Chat interfaces (Claude, ChatGPT) are fine for learning. Don't buy tools until you've outgrown the free tier.
+
+**"What are the biggest risks with AI agents?"**
+> Microsoft's AI Red Team catalogued them: agents acting outside their intended scope, cascading failures when there's no stop condition, misalignment between what you asked for and what it does, denial of service from runaway loops. The design principles directly address these — that's why they matter.
+
+**"What's a circuit breaker?"**
+> It's a fail-safe — a mechanism that stops the agent when predefined conditions are met. Token limits, iteration caps, confidence thresholds. The concept comes from engineering: electrical circuit breakers, dead man's switches. An agent that can't stop itself is an agent you can't trust.
 
 ---
 

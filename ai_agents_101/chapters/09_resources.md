@@ -31,6 +31,29 @@ Demonstrates:
 
 ### On Agent Design Patterns
 
+**What Can Go Wrong: Failure Mode Analysis**
+
+- **Microsoft AI Red Team** - "Taxonomy of Failure Modes in Agentic AI Systems" (2025)  
+  [cdn.microsoft.com/.../Taxonomy-of-Failure-Mode-in-Agentic-AI-Systems-Whitepaper.pdf](https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/final/en-us/microsoft-brand/documents/Taxonomy-of-Failure-Mode-in-Agentic-AI-Systems-Whitepaper.pdf)  
+  Comprehensive analysis of security and safety failures specific to agentic systems. Essential reading for understanding *why* the design principles in this course matter. The failure modes documented here are what happens when you ignore bounded autonomy, skip human-in-the-loop controls, or deploy agents without clear specifications.
+
+**Vendor Guides (Next Steps)**
+
+When you're ready to move from concepts to implementation, these official guides from major AI providers offer detailed technical guidance. The foundations covered in this course—agent components, bounded autonomy, guardrails, human oversight—will prepare you to navigate whichever ecosystem your organization adopts.
+
+- **OpenAI** - "A Practical Guide to Building Agents" (January 2025)  
+  [cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)  
+
+- **Anthropic** - "Building Effective Agents" (December 2024)  
+  [anthropic.com/research/building-effective-agents](https://www.anthropic.com/research/building-effective-agents)  
+
+- **Google Cloud** - "Agents" Whitepaper Series (2024-2025)  
+  [cloud.google.com/whitepapers](https://cloud.google.com/whitepapers) (search "agents")  
+
+Each vendor uses different terminology, but the core concepts are the same. You'll recognize the patterns.
+
+**General Documentation**
+
 - Anthropic's documentation on tool use and agent patterns: [docs.anthropic.com](https://docs.anthropic.com)
 - OpenAI's guide to function calling: [platform.openai.com/docs](https://platform.openai.com/docs)
 

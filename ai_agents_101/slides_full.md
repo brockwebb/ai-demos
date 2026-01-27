@@ -144,6 +144,24 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 
 ---
 
+# The Stakes: What Ignoring These Causes
+
+Microsoft's AI Red Team documented failure modes in agentic systems.
+
+Nearly every one traces back to violating these principles:
+
+| Ignore This... | ...And Get This |
+|----------------|----------------|
+| Good judgment upfront | Misalignment, hallucinations, misinterpretation |
+| Autonomy as governance | Actions outside scope, user harm |
+| Simple solutions first | Attack surface, knowledge loss |
+| Clear specifications | Wrong permissions, accountability gaps |
+| Designing for uncertainty | Cascading failures, denial of service |
+
+**These principles aren't caution. They're how you build systems that work.**
+
+---
+
 # The Meta-Principle
 
 [![h:300](img/design_quality.png)](img/design_quality.png)
@@ -183,6 +201,11 @@ You need:
 **Course Notes:** Full speaker notes and reference material
 
 **Code:** [github.com/brockwebb/federal-survey-concept-mapper](https://github.com/brockwebb/federal-survey-concept-mapper) *(case study source)*
+
+**Further Reading:**
+- Microsoft AI Red Team, "Taxonomy of Failure Modes in Agentic AI Systems" (2025)
+- OpenAI, "A Practical Guide to Building Agents" (2025)
+- Anthropic, "Building Effective Agents" (2024)
 
 ---
 

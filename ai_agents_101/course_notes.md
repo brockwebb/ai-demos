@@ -50,6 +50,12 @@ The goal is not mastery — it's baseline understanding and a common language.
 
 **If you want to teach this material:** Take it. Adapt it. Make it your own. Attribution appreciated but not required.
 
+---
+
+## Acknowledgements
+
+Thanks to Tam Nguyen for generous feedback that improved these materials—including flagging "circuit breaker" as important emerging terminology for agentic AI safety. Thanks also to the broader AI practitioner community for the culture of sharing knowledge and helping each other figure this out as we go.
+
 
 
 ---
@@ -931,6 +937,8 @@ flowchart LR
 
 **Practical implication:** Spend more time on design than you think you need. The time you "save" by rushing into implementation, you'll spend debugging unexpected behavior.
 
+> **What ignoring this causes:** Misinterpretation of instructions, agent misalignment, hallucinations, and incorrect decision-making. Microsoft's AI Red Team documents these as the most common failure modes in deployed agents—nearly all trace back to insufficient upfront design.
+
 ## 2. Autonomy Is a Governance Choice, Not a Technical Upgrade
 
 Giving an agent more autonomy is not an improvement. It's a tradeoff.
@@ -955,6 +963,8 @@ Move right only when you have to. Stay left when you can.
 
 **Practical implication:** Start with the least autonomy that accomplishes the goal. Add agency only when you've identified specific decisions that require it.
 
+> **What ignoring this causes:** Excessive agency, impact outside intended environment, and prioritization failures that harm users. Autonomous agents given latitude without governance make decisions their designers never anticipated—sometimes catastrophically.
+
 ## 3. Most Problems Don't Need Agents (And That's Fine)
 
 The hype cycle wants you to believe everything should be agentic. That's marketing, not engineering.
@@ -972,6 +982,8 @@ Agents add value when:
 If those conditions aren't met, you don't need an agent. You need a simpler solution.
 
 **Practical implication:** Before building an agent, ask: "What's the simplest thing that could work?" Often, that's the right answer.
+
+> **What ignoring this causes:** Organizational knowledge loss and unnecessary attack surface. Every capability you add is a capability that can fail or be exploited. Simpler systems have fewer failure modes.
 
 ## 4. The Skill Is Describing What You Want and Spotting Bad Design
 
@@ -994,6 +1006,8 @@ Both skills improve with practice. Neither requires a computer science degree.
 | How will you know if it's wrong? | You need feedback loops |
 
 **Practical implication:** Practice writing prompts that are unambiguous. Show them to someone else. If they interpret them differently than you intended, the agent will too.
+
+> **What ignoring this causes:** Incorrect permissions, insufficient transparency, and accountability gaps. When specifications are vague, agents interpret them—and their interpretations may grant themselves capabilities you never intended.
 
 ### Quick Reference: Describing an Agent
 
@@ -1061,6 +1075,8 @@ flowchart TD
 
 **Practical implication:** For every step in your workflow, ask: "What happens if this fails?" If you don't have an answer, you have a gap.
 
+> **What ignoring this causes:** Human-in-the-loop bypass, insufficient isolation, and agent denial of service. Systems without fail-safes run until they hit something hard—often taking other systems down with them.
+
 ## 6. Break Tasks Into Digestible Chunks
 
 Context windows have hard limits. More importantly, model performance degrades before you hit those limits.
@@ -1087,6 +1103,8 @@ flowchart LR
 
 **Practical implication:** If your prompt is getting long and complex, that's a signal to decompose the task, not a challenge to fit more in.
 
+> **What ignoring this causes:** Resource exhaustion, loss of data provenance, and increased hallucination rates. Overloaded contexts don't fail gracefully—they fail subtly, producing confident-sounding garbage.
+
 ## The Meta-Principle: AI Amplifies Your Process
 
 Good process + AI = faster good outcomes.
@@ -1111,6 +1129,19 @@ AI is a multiplier. What it multiplies is up to you.
 | 4. Specification is the skill | Clarity beats capability |
 | 5. Design for uncertainty | Plan for failure, not just success |
 | 6. Digestible chunks | Focused beats sprawling |
+
+### The Stakes: What These Principles Prevent
+
+These aren't abstract best practices. Microsoft's AI Red Team has documented a taxonomy of failure modes in agentic AI systems—security breaches, safety failures, cascading errors, unintended actions. Nearly every failure mode they identify traces back to violating one of these principles:
+
+- **Insufficient upfront design** → misinterpretation, misalignment, hallucinations
+- **Excessive autonomy** → actions outside intended scope, user harm
+- **Unnecessary complexity** → attack surface, organizational knowledge loss
+- **Vague specifications** → incorrect permissions, accountability gaps
+- **No failure planning** → cascading failures, denial of service
+- **Overloaded contexts** → subtle degradation, lost provenance
+
+The principles aren't about being cautious. They're about building systems that work.
 
 These principles won't make you an AI expert. They'll help you avoid the mistakes that trip up people who think tools alone are the answer.
 
@@ -1279,6 +1310,29 @@ Demonstrates:
 ## Further Reading
 
 ### On Agent Design Patterns
+
+**What Can Go Wrong: Failure Mode Analysis**
+
+- **Microsoft AI Red Team** - "Taxonomy of Failure Modes in Agentic AI Systems" (2025)  
+  [cdn.microsoft.com/.../Taxonomy-of-Failure-Mode-in-Agentic-AI-Systems-Whitepaper.pdf](https://cdn-dynmedia-1.microsoft.com/is/content/microsoftcorp/microsoft/final/en-us/microsoft-brand/documents/Taxonomy-of-Failure-Mode-in-Agentic-AI-Systems-Whitepaper.pdf)  
+  Comprehensive analysis of security and safety failures specific to agentic systems. Essential reading for understanding *why* the design principles in this course matter. The failure modes documented here are what happens when you ignore bounded autonomy, skip human-in-the-loop controls, or deploy agents without clear specifications.
+
+**Vendor Guides (Next Steps)**
+
+When you're ready to move from concepts to implementation, these official guides from major AI providers offer detailed technical guidance. The foundations covered in this course—agent components, bounded autonomy, guardrails, human oversight—will prepare you to navigate whichever ecosystem your organization adopts.
+
+- **OpenAI** - "A Practical Guide to Building Agents" (January 2025)  
+  [cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)  
+
+- **Anthropic** - "Building Effective Agents" (December 2024)  
+  [anthropic.com/research/building-effective-agents](https://www.anthropic.com/research/building-effective-agents)  
+
+- **Google Cloud** - "Agents" Whitepaper Series (2024-2025)  
+  [cloud.google.com/whitepapers](https://cloud.google.com/whitepapers) (search "agents")  
+
+Each vendor uses different terminology, but the core concepts are the same. You'll recognize the patterns.
+
+**General Documentation**
 
 - Anthropic's documentation on tool use and agent patterns: [docs.anthropic.com](https://docs.anthropic.com)
 - OpenAI's guide to function calling: [platform.openai.com/docs](https://platform.openai.com/docs)
@@ -1921,6 +1975,20 @@ Programmable safety controls in AI systems ensuring outputs remain within accept
 
 **Source:** [WIKI] "Guardrails (artificial intelligence)"  
 https://en.wikipedia.org/wiki/Guardrails_(artificial_intelligence)
+
+**Fail-safes** are critical: mechanisms that stop a system when predefined conditions are met, ensuring it fails in a safe state rather than causing cascading damage. The concept is fundamental to engineering (dead man's switches, electrical circuit breakers, pressure relief valves).
+
+In agentic AI, **"circuit breaker"** is emerging as the common term for this pattern—mechanisms that halt agent operations when they exceed risk thresholds, fail repeatedly, or act unpredictably. Common implementations include:
+- Token/cost limits (budget control)
+- Iteration caps (preventing "doom loops")
+- Confidence thresholds (flagging uncertainty)
+- Time bounds (maximum execution duration)
+
+Microsoft's AI Red Team uses **"control flow control"** for these deterministic safeguards, though "circuit breaker" appears to be gaining broader adoption among practitioners.
+
+**Key principle:** An agent that can't stop itself is an agent you can't trust.
+
+**Further reading:** Forbes, "Embedding LLM Circuit Breakers Into AI" (2025); AccuKnox, "Agentic AI Security"
 
 ---
 
