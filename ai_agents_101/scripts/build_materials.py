@@ -16,6 +16,7 @@ Dependencies:
 """
 
 import argparse
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -30,10 +31,14 @@ IMG_DIR = ROOT_DIR / "img"
 
 # Source files
 SLIDES_MD = ROOT_DIR / "slides.md"
+SLIDES_FULL_MD = ROOT_DIR / "slides_full.md"  # Combined with glossary backup
 COURSE_NOTES_MD = ROOT_DIR / "course_notes.md"
 STUDENT_HANDOUT_MD = ROOT_DIR / "student_handout.md"
 EXERCISES_MD = ROOT_DIR / "exercises.md"
 FACILITATOR_GUIDE_MD = ROOT_DIR / "facilitator_guide.md"
+
+# Chapter files (explicit for clarity)
+EXTENDED_GLOSSARY_MD = CHAPTERS_DIR / "12_extended_glossary.md"
 
 
 def check_command(cmd: str) -> bool:
@@ -91,16 +96,104 @@ def render_diagrams():
     print(f"  Done: {len(mmd_files)} diagrams rendered")
 
 
+def extract_glossary_slides() -> str:
+    """
+    Extract [SLIDE] tagged terms from extended glossary and format as Marp slides.
+    
+    Returns backup slides section for appending to slide deck.
+    """
+    if not EXTENDED_GLOSSARY_MD.exists():
+        print(f"  Warning: {EXTENDED_GLOSSARY_MD.name} not found, skipping glossary slides")
+        return ""
+    
+    content = EXTENDED_GLOSSARY_MD.read_text()
+    
+    # Find all ### headings with [SLIDE] tag
+    # Pattern: ### Term Name **[SLIDE]** followed by content until next ### or ---
+    pattern = r'### ([^\n]+?)\s*\*\*\[SLIDE\]\*\*\n(.*?)(?=\n---|\n### |\Z)'
+    matches = re.findall(pattern, content, re.DOTALL)
+    
+    if not matches:
+        print("  No [SLIDE] tagged terms found in glossary")
+        return ""
+    
+    print(f"  Found {len(matches)} glossary terms marked for slides")
+    
+    # Build backup slides section
+    slides = []
+    slides.append("\n---\n")
+    slides.append("<!-- Backup Slides: Selected Glossary Terms -->\n")
+    slides.append("# Backup: Key Terms Reference\n")
+    slides.append("\n*Reference slides for selected vocabulary*\n")
+    
+    for term_name, term_content in matches:
+        term_name = term_name.strip()
+        term_content = term_content.strip()
+        
+        # Extract just the definition (first paragraph/line after the heading)
+        # Stop at **Source:** or **Note:** or **Why it matters:**
+        definition_match = re.match(r'^([^\n]+(?:\n(?![*\n]).[^\n]*)*)', term_content)
+        definition = definition_match.group(1).strip() if definition_match else term_content[:500]
+        
+        # Extract source if present
+        source_match = re.search(r'\*\*Source:\*\*[^\n]*\n([^\n]+)', term_content)
+        source = source_match.group(1).strip() if source_match else ""
+        
+        # Extract "Why it's a misnomer" or "Why it matters" or key note
+        note_match = re.search(r'\*\*(?:Why it\'s a misnomer|Why it matters|Critical implication|Note):\*\*([^\n]+)', term_content)
+        note = note_match.group(1).strip() if note_match else ""
+        
+        # Format slide
+        slide = f"\n---\n\n# {term_name}\n\n"
+        slide += f"{definition}\n"
+        
+        if note:
+            slide += f"\n**Key point:** {note}\n"
+        
+        if source:
+            slide += f"\n<small>{source}</small>\n"
+        
+        slides.append(slide)
+    
+    return "".join(slides)
+
+
 def build_slides():
-    """Build slides PDF with Marp."""
+    """Build slides PDF with Marp, including glossary backup slides."""
     print("\n=== Building slides ===")
     
+    # Read base slides
+    base_slides = SLIDES_MD.read_text()
+    
+    # Extract glossary slides
+    glossary_slides = extract_glossary_slides()
+    
+    # Combine: insert glossary backup after "# Questions?" slide
+    if glossary_slides:
+        # Find the Questions slide and append glossary after it
+        if "# Questions?" in base_slides:
+            combined = base_slides.replace(
+                "# Questions?",
+                "# Questions?\n" + glossary_slides
+            )
+        else:
+            # Fallback: just append at end
+            combined = base_slides + glossary_slides
+        
+        # Write combined version
+        SLIDES_FULL_MD.write_text(combined)
+        print(f"  Created {SLIDES_FULL_MD.name} with glossary backup slides")
+        source_file = SLIDES_FULL_MD
+    else:
+        source_file = SLIDES_MD
+    
+    # Build PDF
     output_pdf = SLIDES_MD.with_suffix(".pdf")
-    print(f"  {SLIDES_MD.name} → {output_pdf.name}")
+    print(f"  {source_file.name} → {output_pdf.name}")
     
     subprocess.run([
         "marp",
-        str(SLIDES_MD),
+        str(source_file),
         "--pdf",
         "-o", str(output_pdf),
         "--allow-local-files"
@@ -118,9 +211,13 @@ def compile_chapters():
         print("  No chapter files found")
         return
     
+    # List chapters for visibility
+    print("  Chapters to compile:")
+    for cf in chapter_files:
+        print(f"    - {cf.name}")
+    
     content_parts = []
     for chapter_file in chapter_files:
-        print(f"  Adding: {chapter_file.name}")
         content_parts.append(chapter_file.read_text())
     
     # Join with separator
@@ -132,7 +229,7 @@ def compile_chapters():
     COURSE_NOTES_MD.write_text(full_content)
     
     word_count = len(full_content.split())
-    print(f"  Done: {COURSE_NOTES_MD.name} ({word_count} words)")
+    print(f"  Done: {COURSE_NOTES_MD.name} ({word_count} words, {len(chapter_files)} chapters)")
 
 
 def markdown_to_pdf(md_file: Path):
