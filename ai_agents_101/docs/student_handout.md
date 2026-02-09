@@ -1,4 +1,16 @@
+---
+title: "AI Agents 101: Quick Reference"
+format:
+  pdf:
+    documentclass: article
+    colorlinks: true
+    margin-left: 1in
+    margin-right: 1in
+---
+
 # AI Agents 101: Quick Reference
+
+*The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce.*
 
 **Course materials:** [github.com/brockwebb/ai-demos/ai_agents_101](https://github.com/brockwebb/ai-demos/tree/main/ai_agents_101)
 

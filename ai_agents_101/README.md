@@ -6,136 +6,98 @@ A practical course for teams evaluating AI agents — common vocabulary, working
 
 ---
 
-## What This Is
+## 📖 Read Online (Markdown)
 
-A 40-60 minute course that teaches:
-- Shared vocabulary (workflow, agent, agency, agentic)
-- The Observe-Decide-Act-Check loop
-- How to specify and evaluate agent behavior
-- When agents help vs. when they're overkill
+Click any link to read on GitHub:
+
+| Document | Description |
+|----------|-------------|
+| [Student Handout](docs/student_handout.md) | Vocabulary, templates, checklists, copy-paste recipe prompt |
+| [Exercises](docs/exercises.md) | Post-session practice — try it yourself |
+| [Facilitator Guide](docs/facilitator_guide.md) | Timing, tips, audience adaptations, common Q&A |
+| [Slides](slides/slides.md) | Presentation deck (Markdown source) |
+
+**Full course notes** (speaker prep — 12 chapters): [docs/course_notes/](docs/course_notes/)
+
+| Chapter | Topic |
+|---------|-------|
+| [01](docs/course_notes/01_exec_summary.md) | Executive Summary |
+| [02](docs/course_notes/02_introduction.md) | Introduction |
+| [03](docs/course_notes/03_vocabulary.md) | Vocabulary |
+| [04](docs/course_notes/04_pipeline_basics.md) | Pipeline Basics |
+| [05](docs/course_notes/05_simple_script.md) | Simple Script |
+| [06](docs/course_notes/06_case_study.md) | Case Study |
+| [07](docs/course_notes/07_design_principles.md) | Design Principles |
+| [08](docs/course_notes/08_tools_landscape.md) | Tools Landscape |
+| [09](docs/course_notes/09_resources.md) | Resources |
+| [10](docs/course_notes/10_appendix_research.md) | Appendix: Research |
+| [11](docs/course_notes/11_appendix_templates.md) | Appendix: Templates |
+| [12](docs/course_notes/12_extended_glossary.md) | Appendix: Glossary |
+
+---
+
+## 📥 Download PDFs
+
+Built PDFs are in the **[pdf/](pdf/)** folder:
+
+| File | Contents |
+|------|----------|
+| `student_handout.pdf` | Quick reference for attendees |
+| `exercises.pdf` | Practice prompts |
+| `facilitator_guide.pdf` | Teaching guide |
+| `slides.pdf` | Presentation slides |
+| `AI-Agents-101.pdf` | Full course notes (all chapters) |
+
+---
+
+## Quick Paths
+
+**Just want to learn?** Read the [student handout](docs/student_handout.md), then try the [exercises](docs/exercises.md).
+
+**Want to teach it?** Read the [facilitator guide](docs/facilitator_guide.md). Present with the slides. Distribute the handout and exercises.
+
+**Want to adapt?** Edit files in `docs/` and `slides/`, then rebuild. No permission needed.
+
+---
+
+## What This Course Covers
+
+- Shared vocabulary: workflow, agent, agency, agentic, tool
+- The Observe → Decide → Act → Check loop
+- Live demo: a recipe workflow prompt with bounded agency
+- Case study: 6,987 survey questions classified at 99.5% accuracy for ~$15
+- Six design principles for evaluating agent systems
+- What goes wrong when you ignore them (Microsoft AI Red Team failure modes)
 
 **Who it's for:** Anyone making decisions about AI agents — technical or not. No coding required.
 
-**What it's not:** A framework tutorial. A "build fast and ship" guide. A celebration of autonomy.
+**Core message:** Start simple. Add complexity only when justified. Design for uncertainty. Keep humans in the loop where it matters.
 
 ---
 
-## Course Materials
-
-| File | What It Is | Who Uses It |
-|------|------------|-------------|
-| `student_handout.md` | Quick reference: vocab, templates, checklists | Attendees |
-| `slides.md` / `slides.pdf` | Presentation deck (Marp format) | Presenter |
-| `exercises.md` | Post-session practice prompts | Attendees |
-| `facilitator_guide.md` | Timing, tips, common questions | Anyone teaching this |
-| `course_notes.md` | Full speaker notes and reference | Presenter prep |
-
-### Want to teach this at your org?
-
-Go for it. The facilitator guide has timing, tips, and audience adaptations. No permission needed.
-
----
-
-## Quick Start
-
-**Just want to learn?**
-- Read `student_handout.md` for the essentials
-- Try the prompts in `exercises.md`
-
-**Want to teach it?**
-- Read `facilitator_guide.md` for timing and tips
-- Use `slides.pdf` for presentation
-- Reference `course_notes.md` for depth
-
-**Want to adapt or contribute?**
-- Edit files in `chapters/`
-- Run build scripts to regenerate outputs
-
----
-
-## Project Structure
-
-```
-ai_agents_101/
-├── README.md                # You are here
-├── student_handout.md       # Quick reference for attendees
-├── slides.md                # Marp presentation source
-├── slides.pdf               # GENERATED presentation
-├── exercises.md             # Post-session practice
-├── facilitator_guide.md     # Teaching guide
-├── course_notes.md          # GENERATED full speaker notes
-│
-├── chapters/                # Source material (edit these)
-│   ├── 00_front_matter.md
-│   ├── 01_exec_summary.md
-│   ├── 02_introduction.md
-│   ├── 03_vocabulary.md
-│   ├── 04_pipeline_basics.md
-│   ├── 05_simple_script.md
-│   ├── 06_case_study.md
-│   ├── 07_design_principles.md
-│   ├── 08_tools_landscape.md
-│   ├── 09_resources.md
-│   ├── 10_appendix_research.md
-│   └── 11_appendix_templates.md
-│
-├── diagrams/                # Mermaid source files (.mmd)
-├── img/                     # GENERATED diagram images
-│
-└── scripts/
-    ├── build_materials.py   # Main build script
-    ├── cleanup.py           # Remove deprecated files
-    ├── pdf-config.json      # PDF generation config
-    └── pdf-style.css        # PDF styling
-```
-
----
-
-## Building Outputs
+## Building from Source
 
 ### Requirements
 
-```bash
-npm install -g @mermaid-js/mermaid-cli   # mmdc - diagram rendering
-npm install -g @marp-team/marp-cli       # marp - slide generation
-npm install -g md-to-pdf                 # markdown to PDF
-```
+- [Quarto](https://quarto.org)
+- `npm install -g @mermaid-js/mermaid-cli`
 
-### Build Commands
+### Commands
 
 ```bash
-# Build everything
-python scripts/build_materials.py --all
-
-# Or build selectively:
-python scripts/build_materials.py --slides     # Diagrams + slides.pdf
-python scripts/build_materials.py --notes      # course_notes.md + PDF
-python scripts/build_materials.py --handouts   # student_handout.pdf, exercises.pdf, facilitator_guide.pdf
-python scripts/build_materials.py --diagrams   # Just render Mermaid diagrams
+chmod +x scripts/build.sh
+./scripts/build.sh all        # Everything
+./scripts/build.sh book       # Course notes PDF
+./scripts/build.sh slides     # Slide deck
+./scripts/build.sh handouts   # Handout PDFs
+./scripts/build.sh diagrams   # Mermaid → PNG
 ```
-
-### ⚠️ Edit Sources, Not Outputs
-
-- ✅ Edit files in `chapters/` and `diagrams/`
-- ❌ Don't edit `course_notes.md`, `slides.pdf`, or `img/` directly
-
-Generated files get overwritten on rebuild.
-
----
-
-## The Core Idea
-
-The hype says: autonomous agents will handle everything.
-
-The reality: production systems treat agents as bounded, auditable components with explicit constraints, confidence thresholds, and human oversight.
-
-This course teaches the reality.
 
 ---
 
 ## Case Study
 
-The course references the Multi-Survey Concept Mapper — a real project that classified 6,987 survey questions using dual-model cross-validation, confidence-based routing, and human review flags.
+References the Multi-Survey Concept Mapper — a real project that classified 6,987 survey questions using dual-model cross-validation, confidence-based routing, and human review flags.
 
 Code: [github.com/brockwebb/federal-survey-concept-mapper](https://github.com/brockwebb/federal-survey-concept-mapper)
 
@@ -145,12 +107,4 @@ Code: [github.com/brockwebb/federal-survey-concept-mapper](https://github.com/br
 
 MIT — adapt, teach, share. Attribution appreciated but not required.
 
----
-
-## Disclaimers
-
-- Views are the author's own
-- Product/company names are not endorsements
-- This is a living document
-
-See `chapters/00_front_matter.md` for full disclaimers.
+*Views are the author's own. Product/company names are not endorsements. This is a living document.*

@@ -1,4 +1,16 @@
+---
+title: "AI Agents 101: Exercises"
+format:
+  pdf:
+    documentclass: article
+    colorlinks: true
+    margin-left: 1in
+    margin-right: 1in
+---
+
 # AI Agents 101: Exercises
+
+*The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce.*
 
 These exercises let you try the concepts yourself. All you need is access to Claude, ChatGPT, or another capable chat interface.
 

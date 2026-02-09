@@ -1,0 +1,24 @@
+flowchart TD
+    Start[Question]
+    
+    Q1{Models Agree?}
+    Q2{Arbitration<br/>Available?}
+    Q3{Categorization<br/>Successful?}
+    
+    R1[Use Agreed Categorization<br/>decision_method: agreement]
+    R2[Use Arbitration Result<br/>decision_method: arbitrated]
+    R3[Flag Unresolved<br/>needs_human_review: true]
+    R4[Flag Failed<br/>needs_human_review: true]
+    
+    Start --> Q1
+    Q1 -->|Yes| Q3
+    Q1 -->|No| Q2
+    Q2 -->|Yes| R2
+    Q2 -->|No| R3
+    Q3 -->|Yes| R1
+    Q3 -->|No| R4
+    
+    style R1 fill:#d4edda
+    style R2 fill:#d1ecf1
+    style R3 fill:#fff3cd
+    style R4 fill:#f8d7da

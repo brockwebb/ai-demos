@@ -25,11 +25,7 @@ This isn't a workaround. It's a legitimate architecture pattern. You're using a 
 
 Modern reasoning models (Claude, GPT-4, etc.) already have The Loop built in:
 
-```mermaid
-flowchart LR
-    O[Observe<br>Read input] --> D[Decide<br>Plan approach] --> A[Act<br>Execute step] --> C[Check<br>Evaluate result]
-    C --> O
-```
+![The Loop](../../img/the_loop.png)
 
 When you give a reasoning model a complex task, it doesn't just blurt out an answer. It:
 

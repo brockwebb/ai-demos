@@ -10,26 +10,7 @@ If your workflow is poorly defined, an agent will produce poorly defined outputs
 
 The quality of agent output is bounded by the quality of agent design. No amount of model capability compensates for unclear instructions, missing constraints, or unexamined assumptions.
 
-```mermaid
-flowchart LR
-    subgraph Input Quality
-        Good[Clear goals<br/>Defined constraints<br/>Explicit edge cases]
-        Bad[Vague goals<br/>Missing constraints<br/>Unexamined assumptions]
-    end
-    
-    subgraph Output Quality
-        GoodOut[Consistent<br/>Auditable<br/>Predictable]
-        BadOut[Inconsistent<br/>Mysterious<br/>Surprising]
-    end
-    
-    Good --> GoodOut
-    Bad --> BadOut
-    
-    style Good fill:#d4edda
-    style GoodOut fill:#d4edda
-    style Bad fill:#f8d7da
-    style BadOut fill:#f8d7da
-```
+![Design Quality](../../img/design_quality.png)
 
 **Practical implication:** Spend more time on design than you think you need. The time you "save" by rushing into implementation, you'll spend debugging unexpected behavior.
 
@@ -45,15 +26,7 @@ Most tasks don't require much. A well-structured workflow with minimal agency of
 
 **The dial, not the switch:**
 
-```mermaid
-flowchart LR
-    A[No Agency<br/>Fixed script<br/>Same every time] --> B[Low Agency<br/>Small adjustments<br/>Within tight bounds] --> C[Moderate Agency<br/>Meaningful decisions<br/>Clear constraints] --> D[High Agency<br/>Open-ended<br/>Minimal guardrails]
-    
-    style A fill:#d4edda
-    style B fill:#d1ecf1
-    style C fill:#fff3cd
-    style D fill:#f8d7da
-```
+![Autonomy Dial](../../img/autonomy_dial.png)
 
 Move right only when you have to. Stay left when you can.
 
@@ -142,32 +115,7 @@ Things will go wrong. The question is whether you've designed for that possibili
 
 **Design for what goes wrong, not just what goes right.** Happy path design is easy. Robust design considers: What if the input is malformed? What if the external service is down? What if the model returns garbage? Each failure mode needs a response.
 
-```mermaid
-flowchart TD
-    Input[Input arrives]
-    Valid{Valid input?}
-    Process[Process normally]
-    External{External<br/>service OK?}
-    Result{Confidence<br/>high enough?}
-    Output[Return result]
-    
-    Invalid[Reject with<br/>clear error message]
-    Fallback[Use fallback<br/>or cache]
-    Flag[Flag for<br/>human review]
-    
-    Input --> Valid
-    Valid -->|Yes| Process
-    Valid -->|No| Invalid
-    Process --> External
-    External -->|Yes| Result
-    External -->|No| Fallback
-    Result -->|Yes| Output
-    Result -->|No| Flag
-    
-    style Invalid fill:#f8d7da
-    style Fallback fill:#fff3cd
-    style Flag fill:#fff3cd
-```
+![Uncertainty Handling](../../img/uncertainty_handling.png)
 
 **Practical implication:** For every step in your workflow, ask: "What happens if this fails?" If you don't have an answer, you have a gap.
 
@@ -183,19 +131,7 @@ Stuffing everything into one massive prompt doesn't work. The model loses track,
 
 **Specificity is kindness:** A focused prompt with clear scope outperforms a sprawling prompt that tries to cover everything. If your task is complex, break it into stages. Let each stage do one thing well.
 
-```mermaid
-flowchart LR
-    subgraph Bad[Overloaded Context]
-        A1[All instructions<br/>All data<br/>All examples<br/>All edge cases<br/>...]
-    end
-    
-    subgraph Good[Staged Processing]
-        B1[Stage 1<br/>Focused task] --> B2[Stage 2<br/>Focused task] --> B3[Stage 3<br/>Focused task]
-    end
-    
-    style Bad fill:#f8d7da
-    style Good fill:#d4edda
-```
+![Chunking](../../img/chunking.png)
 
 **Practical implication:** If your prompt is getting long and complex, that's a signal to decompose the task, not a challenge to fit more in.
 

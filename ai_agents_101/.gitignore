@@ -1,0 +1,15 @@
+# Quarto build cache
+/.quarto/
+**/*.quarto_ipynb
+
+# Quarto scattered artifacts (build.sh cleans these)
+slides/slides_files/
+docs/*_files/
+docs/course_notes/*.html
+docs/*.html
+
+# Notes
+notes/
+
+# OS
+.DS_Store

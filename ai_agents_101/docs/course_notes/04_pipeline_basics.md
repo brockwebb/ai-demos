@@ -17,25 +17,7 @@ That's a workflow with multiple steps, decisions, and potential stopping points.
 
 ## The Workflow
 
-```mermaid
-flowchart TD
-    A[User Request<br>'I want to make chicken cacciatore'] --> B[Search Recipes]
-    B --> C{Meets Criteria?<br>4+ stars, reputable source}
-    C -->|No| B
-    C -->|Yes| D[Select Recipe<br>Explain reasoning]
-    D --> E[Extract Ingredients]
-    E --> F{Allergen/Diet<br>Conflict?}
-    F -->|Yes| G[STOP<br>Ask user about<br>substitution or<br>different recipe]
-    G --> H{User Decision}
-    H -->|Substitute| E
-    H -->|New Recipe| B
-    F -->|No| I[Generate Grocery List<br>Organized by store section]
-    I --> J[Present List<br>'Anything you already have?']
-    J --> K{User has items?}
-    K -->|Yes| L[Remove items<br>Regenerate list]
-    L --> J
-    K -->|No/Done| M[Final List]
-```
+![Recipe Workflow](../../img/recipe_workflow.png)
 
 Here's what we're asking the system to do:
 

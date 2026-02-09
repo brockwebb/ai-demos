@@ -22,57 +22,7 @@ Instead, we built a **workflow with selective agency**. The system does the heav
 
 ## The Architecture
 
-```mermaid
-flowchart TB
-    Input[(6,987 Survey Questions)]
-    
-    subgraph Stage1[Stage 1: Independent Classification]
-        Claude[Claude Haiku<br/>Categorizes all questions]
-        GPT[GPT-4o-mini<br/>Categorizes all questions]
-    end
-    
-    Compare{Do models<br/>agree?}
-    
-    Agree[Use agreed<br/>categorization<br/>~89% of questions]
-    
-    subgraph Stage2[Stage 2: Disagreement Handling]
-        ConfCheck{Min confidence<br/>≥ 0.90?}
-        AutoDual[Auto dual-modal<br/>Higher conf = primary<br/>Lower conf = secondary]
-        Arbitrate[Arbitrator<br/>Claude Sonnet]
-    end
-    
-    subgraph Decisions[Arbitrator Decisions]
-        Pick1[Pick Model A]
-        Pick2[Pick Model B]
-        Dual[Dual-modal<br/>Both valid]
-        New[New categorization<br/>Both wrong]
-        Flag[Flag for<br/>human review]
-    end
-    
-    Output[(Final Dataset<br/>with confidence tiers<br/>and review flags)]
-    
-    Input --> Stage1
-    Claude --> Compare
-    GPT --> Compare
-    Compare -->|Yes| Agree
-    Compare -->|No| Stage2
-    ConfCheck -->|Yes| AutoDual
-    ConfCheck -->|No| Arbitrate
-    Arbitrate --> Decisions
-    
-    Agree --> Output
-    AutoDual --> Output
-    Pick1 --> Output
-    Pick2 --> Output
-    Dual --> Output
-    New --> Output
-    Flag --> Output
-    
-    style Input fill:#e1f5e1
-    style Output fill:#e1f5e1
-    style Arbitrate fill:#f8d7da
-    style Flag fill:#fff3cd
-```
+![FSCM Architecture](../../img/fscm_architecture.png)
 
 Two cheaper models classify independently. When they agree (89% of the time), we use that answer. When they disagree, a more capable model arbitrates.
 
@@ -101,32 +51,7 @@ It cannot invent new taxonomy categories. It cannot skip questions. It cannot ch
 
 This diagram shows exactly how every question gets resolved:
 
-```mermaid
-flowchart TD
-    Start[Question]
-    
-    Q1{Models Agree?}
-    Q2{Arbitration<br/>Available?}
-    Q3{Categorization<br/>Successful?}
-    
-    R1[Use Agreed Categorization<br/>decision_method: agreement]
-    R2[Use Arbitration Result<br/>decision_method: arbitrated]
-    R3[Flag Unresolved<br/>needs_human_review: true]
-    R4[Flag Failed<br/>needs_human_review: true]
-    
-    Start --> Q1
-    Q1 -->|Yes| Q3
-    Q1 -->|No| Q2
-    Q2 -->|Yes| R2
-    Q2 -->|No| R3
-    Q3 -->|Yes| R1
-    Q3 -->|No| R4
-    
-    style R1 fill:#d4edda
-    style R2 fill:#d1ecf1
-    style R3 fill:#fff3cd
-    style R4 fill:#f8d7da
-```
+![Reconciliation Decision Tree](../../img/reconciliation_tree.png)
 
 Notice: **every path has a defined outcome**. There's no ambiguity about what happens. The system either resolves the question or explicitly flags it for human attention.
 

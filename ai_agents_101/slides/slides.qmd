@@ -1,19 +1,39 @@
 ---
-marp: true
-theme: default
-paginate: true
-footer: 'AI Agents 101 — Bounded Agency Over Autonomous Agents'
+title: "AI Agents 101"
+subtitle: "Bounded Agency Over Autonomous Agents"
+author: "Brock Webb"
+date: today
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    transition: fade
+    width: 1600
+    height: 900
+    margin: 0.1
+    center: false
+    footer: "AI Agents 101 — Bounded Agency Over Autonomous Agents"
 ---
 
-# AI Agents 101
+## {.center}
 
-## Bounded Agency Over Autonomous Agents
+### AI Agents 101
+
+#### Bounded Agency Over Autonomous Agents
 
 *Practical guidance for teams navigating AI hype*
 
+::: {.notes}
+Disclaimer on title slide
+:::
+
+::: {style="font-size: 0.5em; color: #666; margin-top: 2em;"}
+*The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce.*
+:::
+
 ---
 
-# The Problem
+## The Problem
 
 **Everyone is talking about AI agents. Few agree on what the terms mean.**
 
@@ -23,7 +43,7 @@ Usually not.
 
 ---
 
-# The Salesforce Lesson
+## The Salesforce Lesson
 
 - **September 2025:** Cut ~4,000 support staff citing AI product "Agentforce"
 - **December 2025:** Leadership had been "more confident than they should have been"
@@ -33,7 +53,7 @@ Usually not.
 
 ---
 
-# What We'll Cover
+## What We'll Cover
 
 1. **Vocabulary** — shared definitions for the terms that matter
 2. **Live Demo** — see the concepts in a simple workflow
@@ -42,7 +62,7 @@ Usually not.
 
 ---
 
-# Core Vocabulary
+## Core Vocabulary
 
 | Term | What It Is | Key Question |
 |------|-----------|--------------|
@@ -54,11 +74,11 @@ Usually not.
 
 ---
 
-# The Loop
+## The Loop
 
 The heartbeat of agent behavior:
 
-[![h:300](img/the_loop.png)](img/the_loop.png)
+![](../img/the_loop.png){height=400}
 
 **Observe → Decide → Act → Check → (repeat)**
 
@@ -66,15 +86,15 @@ Every framework, every tool — this pattern remains constant.
 
 ---
 
-# Agentic Is a Dial, Not a Switch
+## Agentic Is a Dial, Not a Switch
 
-[![h:350](img/autonomy_dial.png)](img/autonomy_dial.png)
+![](../img/autonomy_dial.png){height=450}
 
 **Move right only when you have to. Stay left when you can.**
 
 ---
 
-# The Loop in Practice
+## The Loop in Practice
 
 A recipe assistant — simple enough to understand, complex enough to be useful.
 
@@ -89,15 +109,13 @@ The loop repeats until done — or until it needs to stop and ask.
 
 ---
 
-# Live Demo: Recipe Workflow
+## Live Demo: Recipe Workflow
 
-[![h:400](img/recipe_workflow.png)](img/recipe_workflow.png)
-
-[View full diagram](img/recipe_workflow.png)
+![](../img/recipe_workflow.png){height=500}
 
 ---
 
-# What Makes It Agentic?
+## What Makes It Agentic?
 
 - **Decision points with criteria** — which recipe? (4+ stars, reputable source)
 - **Conditional branching** — allergen check is a hard stop
@@ -108,17 +126,15 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 
 ---
 
-# Case Study: Multi-Survey Concept Mapper
+## Case Study: Multi-Survey Concept Mapper
 
 6,987 questions across 46 surveys → mapped to official taxonomy
 
-[![h:320](img/fscm_architecture.png)](img/fscm_architecture.png)
-
-[View full diagram](img/fscm_architecture.png)
+![](../img/fscm_architecture.png){height=420}
 
 ---
 
-# Why Bounded Agency?
+## Why Bounded Agency?
 
 | Autonomous Agent Approach | This Workflow |
 |--------------------------|---------------|
@@ -131,7 +147,7 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 
 ---
 
-# Design Principles
+## Design Principles
 
 | # | Principle | One-Liner |
 |---|-----------|-----------|
@@ -144,7 +160,7 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 
 ---
 
-# The Stakes: What Ignoring These Causes
+## The Stakes: What Ignoring These Causes
 
 Microsoft's AI Red Team documented failure modes in agentic systems.
 
@@ -162,15 +178,15 @@ Nearly every one traces back to violating these principles:
 
 ---
 
-# The Meta-Principle
+## The Meta-Principle
 
-[![h:300](img/design_quality.png)](img/design_quality.png)
+![](../img/design_quality.png){height=400}
 
 **AI amplifies your process.** Good process + AI = faster good outcomes.
 
 ---
 
-# The Skill Is Specification
+## The Skill Is Specification
 
 When reviewing agent behavior, ask:
 
@@ -181,11 +197,12 @@ When reviewing agent behavior, ask:
 
 ---
 
-# The Bottom Line
+## The Bottom Line
 
 You don't need expensive tools or deep technical skills.
 
 You need:
+
 - Clear thinking
 - Well-structured prompts
 - Appropriate skepticism
@@ -194,7 +211,7 @@ You need:
 
 ---
 
-# Resources
+## Resources
 
 **Student Handout:** Vocabulary, templates, copy-paste recipe prompt
 
@@ -203,11 +220,11 @@ You need:
 **Code:** [github.com/brockwebb/federal-survey-concept-mapper](https://github.com/brockwebb/federal-survey-concept-mapper) *(case study source)*
 
 **Further Reading:**
+
 - Microsoft AI Red Team, "Taxonomy of Failure Modes in Agentic AI Systems" (2025)
 - OpenAI, "A Practical Guide to Building Agents" (2025)
 - Anthropic, "Building Effective Agents" (2024)
 
 ---
 
-# Questions?
-
+## Questions? {.center}

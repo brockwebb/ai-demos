@@ -1,4 +1,16 @@
+---
+title: "AI Agents 101: Facilitator Guide"
+format:
+  pdf:
+    documentclass: article
+    colorlinks: true
+    margin-left: 1in
+    margin-right: 1in
+---
+
 # AI Agents 101: Facilitator Guide
+
+*The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce.*
 
 This guide helps you deliver the course or adapt it for your team. The materials are designed to work as-is, but you know your audience better than we do.
 

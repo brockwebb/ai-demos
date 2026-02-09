@@ -1,0 +1,24 @@
+flowchart TD
+    Input[Input arrives]
+    Valid{Valid input?}
+    Process[Process normally]
+    External{External<br/>service OK?}
+    Result{Confidence<br/>high enough?}
+    Output[Return result]
+    
+    Invalid[Reject with<br/>clear error message]
+    Fallback[Use fallback<br/>or cache]
+    Flag[Flag for<br/>human review]
+    
+    Input --> Valid
+    Valid -->|Yes| Process
+    Valid -->|No| Invalid
+    Process --> External
+    External -->|Yes| Result
+    External -->|No| Fallback
+    Result -->|Yes| Output
+    Result -->|No| Flag
+    
+    style Invalid fill:#f8d7da
+    style Fallback fill:#fff3cd
+    style Flag fill:#fff3cd

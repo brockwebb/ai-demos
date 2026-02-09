@@ -1,0 +1,11 @@
+flowchart LR
+    subgraph Bad[Overloaded Context]
+        A1[All instructions<br/>All data<br/>All examples<br/>All edge cases<br/>...]
+    end
+    
+    subgraph Good[Staged Processing]
+        B1[Stage 1<br/>Focused task] --> B2[Stage 2<br/>Focused task] --> B3[Stage 3<br/>Focused task]
+    end
+    
+    style Bad fill:#f8d7da
+    style Good fill:#d4edda

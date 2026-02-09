@@ -16,22 +16,7 @@ Salesforce is a massive company with enormous resources, selling their *own* AI 
 
 ## The Journey
 
-```mermaid
-flowchart TB
-    V[VOCABULARY<br/>Learn the terms: workflow, agent, agency, agentic<br/>Foundation — everything builds on this]
-
-    B[BASIC PIPELINE<br/>See the vocabulary in a simple example<br/>First repetition]
-
-    S[SIMPLE SCRIPT<br/>Try it yourself — no API keys, just a prompt<br/>Second repetition]
-
-    C[CASE STUDY<br/>Real project — design decisions, tradeoffs<br/>Third repetition]
-
-    D[DESIGN PRINCIPLES<br/>The reasoning behind good agent design]
-
-    R[TOOLS & RESOURCES<br/>Landscape awareness, further learning]
-
-    V --> B --> S --> C --> D --> R
-```
+![The Journey](../../img/the_journey.png)
 
 **The idea:** You'll see the same core concepts three times — each time with more context. By the end, the vocabulary should feel like tools you can use, not jargon to memorize.
 

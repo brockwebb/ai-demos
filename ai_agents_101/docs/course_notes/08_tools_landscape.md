@@ -96,31 +96,6 @@ If you demonstrate value with simple tools, you create the case for more capable
 
 ## Choosing Your Entry Point
 
-```mermaid
-flowchart TD
-    Start[What do you have access to?]
-    
-    A{Developer skills?}
-    B{API keys approved?}
-    C{Enterprise license?}
-    
-    Chat[Start with chat interfaces<br/>Prompt-as-script approach]
-    API[Use APIs directly<br/>Build custom workflows]
-    Framework[Consider frameworks<br/>For complex, stateful work]
-    NoCode[Try no-code platforms<br/>For simple automations]
-    
-    Start --> A
-    A -->|No| C
-    A -->|Yes| B
-    B -->|No| Chat
-    B -->|Yes| Framework
-    C -->|Yes| NoCode
-    C -->|No| Chat
-    
-    style Chat fill:#d4edda
-    style API fill:#d1ecf1
-    style Framework fill:#fff3cd
-    style NoCode fill:#d1ecf1
-```
+![Entry Point Decision Tree](../../img/entry_point.png)
 
 Most people should start in the green box. Move to other options when you have a specific reason to.

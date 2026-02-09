@@ -11,6 +11,8 @@ footer: 'AI Agents 101 — Bounded Agency Over Autonomous Agents'
 
 *Practical guidance for teams navigating AI hype*
 
+<small>*The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce.*</small>
+
 ---
 
 # The Problem
@@ -210,63 +212,4 @@ You need:
 ---
 
 # Questions?
-
----
-<!-- Backup Slides: Selected Glossary Terms -->
-# Backup: Key Terms Reference
-
-*Reference slides for selected vocabulary*
-
----
-
-# Artificial Intelligence (AI)
-
-A machine-based system that can, for a given set of human-defined objectives, make predictions, recommendations, or decisions influencing real or virtual environments.
-
-<small>https://csrc.nist.gov/glossary/term/artificial_intelligence</small>
-
----
-
-# Context Window
-
-The maximum span of text (measured in tokens) that a language model can process at once—including both input and output. Functions as the model's working memory.
-
-<small>https://en.wikipedia.org/wiki/Large_language_model</small>
-
----
-
-# Hallucination
-
-A common but imprecise term for AI confabulation (see above). Widely used in industry and media.
-
-**Key point:** Hallucination implies perceiving something that isn't there. LLMs don't perceive—they generate. Confabulation (generating plausible content to fill gaps) is the accurate descriptor. The term "hallucination" persists because it's convenient and dramatic, not because it's correct.
-
-<small>https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)</small>
-
----
-
-# Few-Shot Prompting
-
-Providing a small number of examples (typically 2-5) in your prompt to demonstrate the desired pattern before asking the model to perform on new input.
-
-<small>https://arxiv.org/abs/2005.14165</small>
-
----
-
-# Retrieval-Augmented Generation (RAG)
-
-A generative AI approach where a model is paired with an information retrieval system. Retrieved information is incorporated into the prompt to ground the response in actual sources.
-
-**Key point:** Reduces hallucination. Enables AI to answer questions about your documents.
-
-<small>https://csrc.nist.gov/glossary/term/retrieval_augmented_generation</small>
-
----
-
-# Bias (in AI)
-
-Systematic errors in AI outputs that can result in unfair outcomes, such as privileging one group over others.
-
-<small>https://www.nist.gov/publications/towards-standard-identifying-and-managing-bias-artificial-intelligence</small>
-
 

@@ -96,11 +96,7 @@ Different tools use different filenames (AGENTS.md, claude.md, .cursorrules, etc
 
 At the center of agent behavior is a simple pattern:
 
-```mermaid
-flowchart LR
-    O[Observe] --> D[Decide] --> A[Act] --> C[Check]
-    C --> O
-```
+![The Loop](../../img/the_loop.png)
 
 **Observe:** Take in information about the current state.
 
