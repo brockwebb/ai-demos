@@ -64,6 +64,21 @@ User request: I want to make chicken cacciatore
 
 What happens? Where does it handle well? Where does it struggle?
 
+### Try different models:
+
+Run the exact same prompt on different model tiers. In testing, this produced dramatically different results:
+
+| Behavior | Frontier (Sonnet 4) | Small (Haiku 3.5) |
+|---|---|---|
+| No user input → wait? | ✅ Asked what to cook | ❌ Built a React app |
+| Tool selection | ✅ Used web search | ❌ Searched ML papers for meatballs |
+| Followed step sequence | ✅ Correct order | ❌ Skipped/hallucinated |
+| Stayed in role | ✅ Recipe assistant | ❌ Became a software engineer |
+
+**Why this matters:** Modern frontier models are reasoning agents with built-in capabilities for intent inference, tool routing, and conditional logic. Smaller/older models lack this. The same prompt, the same framework, wildly different results. The "agent" lives in the interaction between prompt design and model capability — not in either one alone.
+
+This is why the Jobs doctrine applies: don't cling too tightly to yesterday's model assumptions. The capability floor is rising fast, and what broke on Haiku 3.5 six months ago may work on the next generation's smallest model. Design for the trajectory, not the snapshot.
+
 ---
 
 ## Exercise 2: The Generic Skeleton

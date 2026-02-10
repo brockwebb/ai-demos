@@ -132,6 +132,11 @@ User request: I want to make chicken cacciatore
 - Ask for something obscure
 - Give a vague request like "something Italian"
 
+**Try different models:**
+This prompt was tested across model tiers with dramatically different results. Sonnet-class models (Claude Sonnet 4, GPT-4o, Gemini Pro) followed the workflow correctly — waiting for input, using web search, following steps in order. Smaller models (Claude Haiku 3.5, GPT-4o-mini) broke spectacularly: ignoring the workflow entirely, searching academic databases for meatball recipes, or building a React app instead of following instructions.
+
+The lesson: modern frontier models have built-in reasoning capabilities that make them natural "reasoning agents." They can infer intent, route to the right tools, and follow conditional logic. Smaller/older models lack this and need much more explicit instruction — or simply can't handle the inference load. **The same prompt, the same framework, wildly different results.** The agent lives in the interaction between prompt design and model capability.
+
 ---
 
 ## The Bottom Line
