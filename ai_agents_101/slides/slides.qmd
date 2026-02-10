@@ -13,24 +13,27 @@ format:
     margin: 0.1
     center: false
     footer: "AI Agents 101 — Bounded Agency Over Autonomous Agents"
----
-
-## {.center}
-
-### AI Agents 101
-
-#### Bounded Agency Over Autonomous Agents
-
-*Practical guidance for teams navigating AI hype*
-
-::: {.notes}
-Disclaimer on title slide
-:::
-
-::: {style="font-size: 0.5em; color: #666; margin-top: 2em;"}
-*The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce.*
-:::
-
+  beamer:
+    theme: default
+    colortheme: seahorse
+    aspectratio: 169
+    include-in-header:
+      text: |
+        \setbeamertemplate{title page}{
+          \begin{centering}
+            \vfill
+            {\usebeamerfont{title}\inserttitle\par}
+            \vskip0.5em
+            {\usebeamerfont{subtitle}\insertsubtitle\par}
+            \vskip0.5em
+            {\small\textit{Practical guidance for teams navigating AI hype}\par}
+            \vskip1em
+            {\usebeamerfont{author}\insertauthor\par}
+            {\usebeamerfont{date}\insertdate\par}
+            \vfill
+            {\footnotesize\textit{The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce.}\par}
+          \end{centering}
+        }
 ---
 
 ## The Problem
@@ -109,9 +112,9 @@ The loop repeats until done — or until it needs to stop and ask.
 
 ---
 
-## Live Demo: Recipe Workflow
+## Live Demo: Recipe Workflow {.plain}
 
-![](../img/recipe_workflow.png){height=500}
+![](../img/recipe_workflow.png){width=100%}
 
 ---
 
@@ -128,9 +131,9 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 
 ## Case Study: Multi-Survey Concept Mapper
 
-6,987 questions across 46 surveys → mapped to official taxonomy
+6,987 questions across 46 surveys → mapped to Census topic and subtopic lists
 
-![](../img/fscm_architecture.png){height=420}
+![](../img/fscm_architecture.png){width=90%}
 
 ---
 
@@ -143,7 +146,11 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 | Edge cases get guessed | Edge cases get flagged |
 | Failures are silent | Failures are surfaced |
 
-**Result:** 99.5% success rate, ~$15 total cost, complete audit trail.
+**Result:** 99.5% success rate, ~$15 total cost*, complete audit trail.
+
+::: {style="font-size: 0.7em"}
+*\*Reality check: That was the working version. Getting there took ~8 hours of setup, testing, failures, and restarts. Always start with a small sample run. It's a do-loop until done right.*
+:::
 
 ---
 
@@ -162,7 +169,7 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 
 ## The Stakes: What Ignoring These Causes
 
-Microsoft's AI Red Team documented failure modes in agentic systems.
+Microsoft's AI Red Team documented failure modes in agentic systems.^[Microsoft AI Red Team, *Taxonomy of Failure Modes in Agentic AI Systems* (2025)]
 
 Nearly every one traces back to violating these principles:
 
@@ -180,7 +187,7 @@ Nearly every one traces back to violating these principles:
 
 ## The Meta-Principle
 
-![](../img/design_quality.png){height=400}
+![](../img/design_quality.png){height=250}
 
 **AI amplifies your process.** Good process + AI = faster good outcomes.
 
@@ -215,7 +222,7 @@ You need:
 
 **Student Handout:** Vocabulary, templates, copy-paste recipe prompt
 
-**Course Notes:** Full speaker notes and reference material
+**Course Companion:** Full speaker notes and reference material
 
 **Code:** [github.com/brockwebb/federal-survey-concept-mapper](https://github.com/brockwebb/federal-survey-concept-mapper) *(case study source)*
 
@@ -228,3 +235,9 @@ You need:
 ---
 
 ## Questions? {.center}
+
+\begin{center}
+\includegraphics[height=0.60\textheight]{img/unbounded_agency_comic.png}
+
+\small\textit{"When you forget to bound the agency"}
+\end{center}

@@ -141,28 +141,6 @@ Brock Webb
 
   <p class="date">2026-02-10</p>
 </section>
-<section id="section" class="slide level2 center">
-<h2></h2>
-<h3 id="ai-agents-101">AI Agents 101</h3>
-<h4 id="bounded-agency-over-autonomous-agents">Bounded Agency Over Autonomous Agents</h4>
-<p><em>Practical guidance for teams navigating AI hype</em></p>
-<aside class="notes">
-<p>Disclaimer on title slide</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-<div style="font-size: 0.5em; color: #666; margin-top: 2em;">
-<p><em>The views expressed are the author’s own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce.</em></p>
-</div>
-</section>
 <section id="the-problem" class="slide level2">
 <h2>The Problem</h2>
 <p><strong>Everyone is talking about AI agents. Few agree on what the terms mean.</strong></p>
@@ -278,10 +256,10 @@ Brock Webb
 </table>
 <p>The loop repeats until done — or until it needs to stop and ask.</p>
 </section>
-<section id="live-demo-recipe-workflow" class="slide level2">
+<section id="live-demo-recipe-workflow" class="slide level2 plain">
 <h2>Live Demo: Recipe Workflow</h2>
-<p><img data-src="img/recipe_workflow.png" height="500"></p>
-</section>
+
+<img data-src="img/recipe_workflow.png" style="width:100.0%" class="r-stretch"></section>
 <section id="what-makes-it-agentic" class="slide level2">
 <h2>What Makes It Agentic?</h2>
 <ul>
@@ -294,9 +272,9 @@ Brock Webb
 </section>
 <section id="case-study-multi-survey-concept-mapper" class="slide level2">
 <h2>Case Study: Multi-Survey Concept Mapper</h2>
-<p>6,987 questions across 46 surveys → mapped to official taxonomy</p>
-<p><img data-src="img/fscm_architecture.png" height="420"></p>
-</section>
+<p>6,987 questions across 46 surveys → mapped to Census topic and subtopic lists</p>
+
+<img data-src="img/fscm_architecture.png" style="width:90.0%" class="r-stretch"></section>
 <section id="why-bounded-agency" class="slide level2">
 <h2>Why Bounded Agency?</h2>
 <table class="caption-top">
@@ -325,7 +303,10 @@ Brock Webb
 </tr>
 </tbody>
 </table>
-<p><strong>Result:</strong> 99.5% success rate, ~$15 total cost, complete audit trail.</p>
+<p><strong>Result:</strong> 99.5% success rate, ~$15 total cost*, complete audit trail.</p>
+<div style="font-size: 0.7em">
+<p><em>*Reality check: That was the working version. Getting there took ~8 hours of setup, testing, failures, and restarts. Always start with a small sample run. It’s a do-loop until done right.</em></p>
+</div>
 </section>
 <section id="design-principles" class="slide level2">
 <h2>Design Principles</h2>
@@ -378,7 +359,7 @@ Brock Webb
 </section>
 <section id="the-stakes-what-ignoring-these-causes" class="slide level2">
 <h2>The Stakes: What Ignoring These Causes</h2>
-<p>Microsoft’s AI Red Team documented failure modes in agentic systems.</p>
+<p>Microsoft’s AI Red Team documented failure modes in agentic systems.<sup>1</sup></p>
 <p>Nearly every one traces back to violating these principles:</p>
 <table class="caption-top">
 <colgroup>
@@ -415,10 +396,10 @@ Brock Webb
 </tbody>
 </table>
 <p><strong>These principles aren’t caution. They’re how you build systems that work.</strong></p>
-</section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Microsoft AI Red Team, <em>Taxonomy of Failure Modes in Agentic AI Systems</em> (2025)</p></li></ol></aside></section>
 <section id="the-meta-principle" class="slide level2">
 <h2>The Meta-Principle</h2>
-<p><img data-src="img/design_quality.png" height="400"></p>
+<p><img data-src="img/design_quality.png" height="250"></p>
 <p><strong>AI amplifies your process.</strong> Good process + AI = faster good outcomes.</p>
 </section>
 <section id="the-skill-is-specification" class="slide level2">
@@ -445,7 +426,7 @@ Brock Webb
 <section id="resources" class="slide level2">
 <h2>Resources</h2>
 <p><strong>Student Handout:</strong> Vocabulary, templates, copy-paste recipe prompt</p>
-<p><strong>Course Notes:</strong> Full speaker notes and reference material</p>
+<p><strong>Course Companion:</strong> Full speaker notes and reference material</p>
 <p><strong>Code:</strong> <a href="https://github.com/brockwebb/federal-survey-concept-mapper">github.com/brockwebb/federal-survey-concept-mapper</a> <em>(case study source)</em></p>
 <p><strong>Further Reading:</strong></p>
 <ul>
@@ -458,6 +439,7 @@ Brock Webb
 <h2>Questions?</h2>
 
 </section>
+
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">

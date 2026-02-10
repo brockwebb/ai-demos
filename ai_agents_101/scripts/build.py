@@ -97,8 +97,10 @@ def build_diagrams():
     for mmd in mmd_files:
         png = IMG_DIR / f"{mmd.stem}.png"
         print(f"  {mmd.name} → {png.name}")
+        # Render wide for slide diagrams, standard for others
+        w, h = ("2400", "800") if "workflow" in mmd.stem or "architecture" in mmd.stem else ("1200", "800")
         run(["mmdc", "-i", str(mmd), "-o", str(png),
-             "-b", "transparent", "-w", "1200", "-H", "800"])
+             "-b", "transparent", "-w", w, "-H", h])
     print(f"  Done — {len(mmd_files)} diagrams")
 
 

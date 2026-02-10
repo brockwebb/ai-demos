@@ -1,0 +1,10 @@
+flowchart LR
+    A[User Request] --> B[Search Recipes]
+    B --> C{Meets\nCriteria?}
+    C -->|No| B
+    C -->|Yes| D[Select Recipe]
+    D --> E[Extract\nIngredients]
+    E --> F{Allergen\nConflict?}
+    F -->|No| G[Generate\nGrocery List]
+    G --> H[Present\nto User]
+    H --> I[Final List]

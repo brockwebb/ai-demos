@@ -1,0 +1,12 @@
+flowchart LR
+    F{Allergen\nConflict?} -->|Yes| G[STOP:\nAsk User]
+    G -->|Substitute| E[Back to\nIngredients]
+    G -->|New Recipe| B[Back to\nSearch]
+
+    H[Present\nto User] --> K{Has items\nalready?}
+    K -->|Yes| L[Remove &\nRegenerate]
+    L --> H
+    K -->|Done| M[Final List]
+
+    style F fill:#fff3cd
+    style G fill:#ffcccc

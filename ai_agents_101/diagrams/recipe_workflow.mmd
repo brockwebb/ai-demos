@@ -1,17 +1,19 @@
-flowchart TD
-    A[User Request<br/>I want to make chicken cacciatore] --> B[Search Recipes]
-    B --> C{Meets Criteria?<br/>4+ stars, reputable source}
+flowchart LR
+    A[User Request] --> B[Search Recipes]
+    B --> C{Meets Criteria?}
     C -->|No| B
-    C -->|Yes| D[Select Recipe<br/>Explain reasoning]
+    C -->|Yes| D[Select Recipe]
     D --> E[Extract Ingredients]
-    E --> F{Allergen/Diet<br/>Conflict?}
-    F -->|Yes| G[STOP<br/>Ask user about<br/>substitution or<br/>different recipe]
-    G --> H{User Decision}
-    H -->|Substitute| E
-    H -->|New Recipe| B
-    F -->|No| I[Generate Grocery List<br/>Organized by store section]
-    I --> J[Present List<br/>Anything you already have?]
-    J --> K{User has items?}
-    K -->|Yes| L[Remove items<br/>Regenerate list]
-    L --> J
-    K -->|No/Done| M[Final List]
+    E --> F{Allergen Conflict?}
+    F -->|No| G[Generate Grocery List]
+    G --> H[Present to User]
+    H --> I{Has items already?}
+    I -->|Yes| J[Remove and Regenerate]
+    J --> H
+    I -->|Done| K[Final List]
+    F -->|Yes| L[STOP Ask User]
+    L -->|Substitute| E
+    L -->|New Recipe| B
+    style L fill:#ffcccc,stroke:#cc0000
+    style F fill:#fff3cd,stroke:#cc9900
+    style K fill:#d4edda,stroke:#28a745

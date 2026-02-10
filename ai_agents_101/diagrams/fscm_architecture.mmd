@@ -1,39 +1,39 @@
-flowchart TB
-    Input[(6,987 Survey Questions)]
-    
+flowchart LR
+    Input[(6,987 Survey\nQuestions)]
+
     subgraph Stage1[Stage 1: Independent Classification]
         Claude[Claude Haiku]
         GPT[GPT-4o-mini]
     end
-    
-    Compare{Models Agree?}
-    
-    Agree[Use agreed categorization<br/>~89% of questions]
-    
+
+    Compare{Models\nAgree?}
+
+    Agree[Agreed\n~89%]
+
     subgraph Stage2[Stage 2: Disagreement Handling]
-        Arbitrate[Arbitrator<br/>Claude Sonnet]
+        Arbitrate[Arbitrator\nClaude Sonnet]
     end
-    
+
     subgraph Decisions[Bounded Decisions]
-        Pick[Pick Model A or B]
+        Pick[Pick A or B]
         Dual[Dual-modal]
-        Flag[Flag for human review]
+        Flag[Flag for\nhuman review]
     end
-    
-    Output[(Final Dataset<br/>with confidence tiers)]
-    
+
+    Output[(Final Dataset\nw/ confidence tiers)]
+
     Input --> Stage1
     Claude --> Compare
     GPT --> Compare
-    Compare -->|Yes ~89%| Agree
+    Compare -->|Yes| Agree
     Compare -->|No ~11%| Arbitrate
     Arbitrate --> Decisions
-    
+
     Agree --> Output
     Pick --> Output
     Dual --> Output
     Flag --> Output
-    
+
     style Input fill:#e1f5e1
     style Output fill:#e1f5e1
     style Flag fill:#fff3cd
