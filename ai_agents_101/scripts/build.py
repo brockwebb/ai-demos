@@ -55,7 +55,8 @@ def render_standalone(src: Path, fmt: str, output_dir: Path, output_name: str | 
     Copies source + img/ to a temp dir so _quarto.yml doesn't interfere.
     """
     name = output_name or src.stem
-    ext = "html" if fmt == "revealjs" else fmt
+    ext_map = {"revealjs": "html", "beamer": "pdf"}
+    ext = ext_map.get(fmt, fmt)
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmp = Path(tmpdir)
