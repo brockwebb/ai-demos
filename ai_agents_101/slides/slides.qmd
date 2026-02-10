@@ -65,6 +65,20 @@ Usually not.
 
 ---
 
+## The Bottom Line
+
+You don't need expensive tools or deep technical skills to work with AI agents effectively. You need:
+
+- Clear thinking
+- Well-structured prompts
+- Appropriate skepticism about what automation can and should do
+
+**Start simple. Add complexity only when justified. Design for uncertainty. Keep humans in the loop where it matters.**
+
+*That's it. The rest is practice.*
+
+---
+
 ## Core Vocabulary
 
 | Term | What It Is | Key Question |

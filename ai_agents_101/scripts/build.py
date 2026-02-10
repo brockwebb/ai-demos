@@ -120,18 +120,11 @@ def build_slides():
         print(f"  ✗ {slides_qmd} not found")
         return
 
-    # Beamer PDF for download
+    # Beamer PDF only — portable, works everywhere
     print("  slides.qmd → Beamer PDF")
     render_standalone(slides_qmd, "beamer", PDF_DIR, output_name="slides")
 
-    # Revealjs HTML for presenting (local use only, not linked from README)
-    print("  slides.qmd → revealjs HTML")
-    render_standalone(slides_qmd, "revealjs", SLIDES_DIR, output_name="slides")
-
-    # Copy support files for revealjs if they exist
-    # (render_standalone handles the main file; _files dir stays in temp)
-
-    print("  Done → pdf/slides.pdf + slides/slides.html")
+    print("  Done → pdf/slides.pdf")
 
 
 def build_handouts():
