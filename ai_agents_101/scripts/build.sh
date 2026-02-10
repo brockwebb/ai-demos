@@ -75,7 +75,7 @@ build_book() {
     echo "=== Building course notes PDF (Quarto book) ==="
     # This uses _quarto.yml book project — renders to pdf/ (output-dir)
     quarto render --to pdf
-    echo "  Done → pdf/AI-Agents-101.pdf"
+    echo "  Done → pdf/AI-Agents-101_course-companion.pdf"
 }
 
 build_slides() {
@@ -111,7 +111,9 @@ clean_artifacts() {
     rm -f exercises.pdf facilitator_guide.pdf student_handout.pdf
     # Quarto scatter in docs
     rm -rf docs/*_files
-    rm -f docs/*.html docs/course_notes/*.html
+    rm -f docs/*.html docs/course_companion/*.html
+    # Legacy PDF name
+    rm -f pdf/AI-Agents-101.pdf
     echo "  Done"
 }
 

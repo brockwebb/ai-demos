@@ -7,22 +7,23 @@ book:
   subtitle: "Bounded Agency Over Autonomous Agents"
   author: "Brock Webb"
   date: today
+  output-file: "AI-Agents-101_course-companion"
   chapters:
     - index.qmd
-    - docs/course_notes/01_exec_summary.md
-    - docs/course_notes/02_introduction.md
-    - docs/course_notes/03_vocabulary.md
-    - docs/course_notes/04_pipeline_basics.md
-    - docs/course_notes/05_simple_script.md
-    - docs/course_notes/06_case_study.md
-    - docs/course_notes/07_design_principles.md
-    - docs/course_notes/08_tools_landscape.md
-    - docs/course_notes/09_resources.md
+    - docs/course_companion/01_exec_summary.md
+    - docs/course_companion/02_introduction.md
+    - docs/course_companion/03_vocabulary.md
+    - docs/course_companion/04_pipeline_basics.md
+    - docs/course_companion/05_simple_script.md
+    - docs/course_companion/06_case_study.md
+    - docs/course_companion/07_design_principles.md
+    - docs/course_companion/08_tools_landscape.md
+    - docs/course_companion/09_resources.md
     - part: "Appendices"
       chapters:
-        - docs/course_notes/10_appendix_research.md
-        - docs/course_notes/11_appendix_templates.md
-        - docs/course_notes/12_extended_glossary.md
+        - docs/course_companion/10_appendix_research.md
+        - docs/course_companion/11_appendix_templates.md
+        - docs/course_companion/12_extended_glossary.md
 
 format:
   pdf:
