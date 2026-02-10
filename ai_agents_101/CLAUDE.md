@@ -35,15 +35,15 @@ notes/                           # Development notes, drafts (gitignored)
 ## Build System
 
 ```bash
-./scripts/build.sh all        # Everything
-./scripts/build.sh book       # Course companion PDF via Quarto book
-./scripts/build.sh slides     # Slides via Quarto revealjs
-./scripts/build.sh handouts   # Handout PDFs
-./scripts/build.sh diagrams   # Mermaid → PNG
-./scripts/build.sh clean      # Remove scattered artifacts
+python scripts/build.py all        # Everything
+python scripts/build.py book       # Course companion PDF via Quarto book
+python scripts/build.py slides     # Slides PDF (Beamer) + revealjs HTML
+python scripts/build.py handouts   # Handout PDFs
+python scripts/build.py diagrams   # Mermaid → PNG
+python scripts/build.py clean      # Remove scattered artifacts
 ```
 
-Dependencies: quarto, @mermaid-js/mermaid-cli (npm global)
+Dependencies: Python 3, quarto, @mermaid-js/mermaid-cli (npm global), LaTeX with Beamer
 
 ## Key Files at Root (build infrastructure — not user-facing)
 - `_quarto.yml` — Quarto book config, points to docs/course_companion/ chapters

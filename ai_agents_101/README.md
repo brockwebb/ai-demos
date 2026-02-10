@@ -24,20 +24,21 @@ Practical guidance for teams navigating AI agent hype. This course establishes c
 | Student Handout | [student_handout.pdf](pdf/student_handout.pdf) |
 | Exercises | [exercises.pdf](pdf/exercises.pdf) |
 | Facilitator Guide | [facilitator_guide.pdf](pdf/facilitator_guide.pdf) |
-| Slides | [slides.html](slides/slides.html) *(revealjs, open in browser)* |
+| Slides | [slides.pdf](pdf/slides.pdf) |
 
 ---
 
 ## Building from Source
 
-Requires [Quarto](https://quarto.org) and [mermaid-cli](https://github.com/mermaid-js/mermaid-cli) (`npm install -g @mermaid-js/mermaid-cli`).
+Requires [Quarto](https://quarto.org), [mermaid-cli](https://github.com/mermaid-js/mermaid-cli) (`npm install -g @mermaid-js/mermaid-cli`), and LaTeX with Beamer (for slides PDF).
 
 ```bash
-./scripts/build.sh all      # Build everything
-./scripts/build.sh diagrams # Just render diagrams
-./scripts/build.sh book     # Course companion PDF
-./scripts/build.sh slides   # Revealjs HTML
-./scripts/build.sh handouts # Handout PDFs
+python scripts/build.py all      # Build everything
+python scripts/build.py diagrams # Render Mermaid diagrams
+python scripts/build.py book     # Course companion PDF
+python scripts/build.py slides   # Slides PDF (Beamer) + revealjs HTML
+python scripts/build.py handouts # Handout PDFs
+python scripts/build.py clean    # Remove scattered artifacts
 ```
 
 ## Repository Structure
@@ -59,6 +60,7 @@ pdf/                            # Download (committed)
   student_handout.pdf
   exercises.pdf
   facilitator_guide.pdf
+  slides.pdf
 
 diagrams/                       # Mermaid sources (.mmd)
 img/                            # Rendered diagram PNGs
