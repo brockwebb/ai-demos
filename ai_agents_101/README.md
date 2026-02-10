@@ -24,7 +24,7 @@ Practical guidance for teams navigating AI agent hype. This course establishes c
 | Student Handout | [student_handout.pdf](pdf/student_handout.pdf) |
 | Exercises | [exercises.pdf](pdf/exercises.pdf) |
 | Facilitator Guide | [facilitator_guide.pdf](pdf/facilitator_guide.pdf) |
-| Slides | [slides.pdf](pdf/slides.pdf) |
+| Slides | [slides.html](slides/slides.html) *(revealjs, open in browser)* |
 
 ---
 
@@ -59,7 +59,6 @@ pdf/                            # Download (committed)
   student_handout.pdf
   exercises.pdf
   facilitator_guide.pdf
-  slides.pdf
 
 diagrams/                       # Mermaid sources (.mmd)
 img/                            # Rendered diagram PNGs
