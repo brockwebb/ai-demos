@@ -5,7 +5,7 @@
 # Quarto scattered artifacts (build.sh cleans these)
 slides/slides_files/
 docs/*_files/
-docs/course_notes/*.html
+docs/course_companion/*.html
 docs/*.html
 
 # Notes
