@@ -187,7 +187,7 @@ Nearly every one traces back to violating these principles:
 
 ## The Meta-Principle
 
-![](../img/design_quality.png){height=250}
+![](../img/design_quality.png){height=200}
 
 **AI amplifies your process.** Good process + AI = faster good outcomes.
 

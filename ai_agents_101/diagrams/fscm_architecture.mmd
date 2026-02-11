@@ -1,26 +1,28 @@
 flowchart LR
-    Input[(6,987 Survey\nQuestions)]
+    Input[(6,987 Survey<br/>Questions)]
 
-    subgraph Stage1[Stage 1: Independent Classification]
+    subgraph Stage1[Stage 1: Classify Independently]
+        S1spacer[ ]
         Claude[Claude Haiku 4]
         GPT[GPT-5-mini]
     end
 
-    Compare{Models\nAgree?}
+    Compare{Models<br/>Agree?}
 
-    Agree[Agreed\n~89%]
+    Agree[Agreed<br/>~89%]
 
-    subgraph Stage2[Stage 2: Disagreement Handling]
-        Arbitrate[Arbitrator\nClaude Sonnet 4.5]
+    subgraph Stage2[Stage 2: Resolve Disagreements]
+        S2spacer[ ]
+        Arbitrate[Arbitrator<br/>Claude Sonnet 4.5]
     end
 
     subgraph Decisions[Bounded Decisions]
         Pick[Pick A or B]
         Dual[Dual-modal]
-        Flag[Flag for\nhuman review]
+        Flag[Flag for<br/>human review]
     end
 
-    Output[(Final Dataset\nw/ confidence tiers)]
+    Output[(Final Dataset<br/>w/ confidence tiers)]
 
     Input --> Stage1
     Claude --> Compare
@@ -37,3 +39,5 @@ flowchart LR
     style Input fill:#e1f5e1
     style Output fill:#e1f5e1
     style Flag fill:#fff3cd
+    style S1spacer fill:transparent,stroke:none,color:transparent
+    style S2spacer fill:transparent,stroke:none,color:transparent
