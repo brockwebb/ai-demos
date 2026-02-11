@@ -184,4 +184,35 @@ That skill transfers. Whether you're writing prompts, reviewing vendor proposals
 
 ---
 
+## A Note on Model Capability
+
+The recipe prompt above was tested across model tiers with dramatically different results:
+
+| Behavior | Frontier (Sonnet 4) | Small (Haiku 3.5) |
+|---|---|---|
+| No user input → wait? | ✅ Asked what to cook | ❌ Built a React app |
+| Tool selection | ✅ Used web search | ❌ Searched ML papers for meatballs |
+| Followed step sequence | ✅ Correct order | ❌ Skipped/hallucinated |
+| Stayed in role | ✅ Recipe assistant | ❌ Became a software engineer |
+
+**Why this matters:** Modern frontier models are reasoning agents — they have built-in capabilities for intent inference, tool routing, and conditional logic. Smaller or older models lack this. The same prompt, the same framework, wildly different results.
+
+The "agent" lives in the interaction between prompt design and model capability — not in either one alone. This is why staying current matters more than clinging to what worked six months ago. The capability floor is rising fast.
+
+---
+
+## Bonus: The Teacher Salary Demo
+
+For an extended example of bounded agency in practice, see the teacher salary analysis materials included with this course:
+
+- **`agentic_workflow_reflection.md`** — A reflection on what worked, what broke, and why human validation mattered
+- **`teacher_salary_analysis_guide.md`** — The optimized prompt and validation checklist
+- **`teacher_salary_conversation.md`** — The full conversation showing 3 iterations from naive → flawed → correct
+
+**The key moment:** The AI confidently reported California teachers earning $16k adjusted salary. The human said "That's fishy." That one sentence triggered a complete methodology overhaul. Without it, the analysis would have been published nonsense.
+
+**The lesson:** Execution speed without validation is just faster failure. The human's job isn't to do the work — it's to know when something doesn't smell right.
+
+---
+
 *Course: AI Agents 101 — Bounded Agency Over Autonomous Agents*
