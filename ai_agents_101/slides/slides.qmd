@@ -65,20 +65,6 @@ Usually not.
 
 ---
 
-## The Bottom Line
-
-You don't need expensive tools or deep technical skills to work with AI agents effectively. You need:
-
-- Clear thinking
-- Well-structured prompts
-- Appropriate skepticism about what automation can and should do
-
-**Start simple. Add complexity only when justified. Design for uncertainty. Keep humans in the loop where it matters.**
-
-*That's it. The rest is practice.*
-
----
-
 ## Core Vocabulary
 
 | Term | What It Is | Key Question |
@@ -173,7 +159,7 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 | # | Principle | One-Liner |
 |---|-----------|-----------|
 | 1 | Good judgment upfront | Design quality bounds output quality |
-| 2 | Autonomy is governance | Less autonomy is often better |
+| 2 | Agency requires governance | Less agency is often better |
 | 3 | Most problems don't need agents | Simple solutions beat complex ones |
 | 4 | Specification is the skill | Clarity beats capability |
 | 5 | Design for uncertainty | Plan for failure, not just success |
@@ -190,7 +176,7 @@ Nearly every one traces back to violating these principles:
 | Ignore This... | ...And Get This |
 |----------------|----------------|
 | Good judgment upfront | Misalignment, hallucinations, misinterpretation |
-| Autonomy as governance | Actions outside scope, user harm |
+| Agency requires governance | Actions outside scope, user harm |
 | Simple solutions first | Attack surface, knowledge loss |
 | Clear specifications | Wrong permissions, accountability gaps |
 | Designing for uncertainty | Cascading failures, denial of service |
@@ -205,30 +191,21 @@ Nearly every one traces back to violating these principles:
 
 **AI amplifies your process.** Good process + AI = faster good outcomes.
 
----
-
-## The Skill Is Specification
-
-When reviewing agent behavior, ask:
-
-1. Did it stay within its job description and data boundaries?
-2. Is the action correct in context?
-3. Is the rationale understandable?
-4. **Would I sign my name under this action?**
+The test: **Would I sign my name under this action?**
 
 ---
 
 ## The Bottom Line
 
-You don't need expensive tools or deep technical skills.
-
-You need:
+You don't need expensive tools or deep technical skills to work with AI agents effectively. You need:
 
 - Clear thinking
 - Well-structured prompts
-- Appropriate skepticism
+- Appropriate skepticism about what automation can and should do
 
 **Start simple. Add complexity only when justified. Design for uncertainty. Keep humans in the loop where it matters.**
+
+*That's it. The rest is practice.*
 
 ---
 

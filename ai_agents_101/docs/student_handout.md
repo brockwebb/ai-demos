@@ -44,7 +44,7 @@ Observe → Decide → Act → Check → (repeat)
 | # | Principle | One-Liner |
 |---|-----------|-----------|
 | 1 | Good judgment upfront | Design quality bounds output quality |
-| 2 | Autonomy is governance | Less autonomy is often better |
+| 2 | Agency requires governance | Less agency is often better |
 | 3 | Most problems don't need agents | Simple solutions beat complex ones |
 | 4 | Specification is the skill | Clarity beats capability |
 | 5 | Design for uncertainty | Plan for failure, not just success |

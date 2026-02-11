@@ -16,21 +16,21 @@ The quality of agent output is bounded by the quality of agent design. No amount
 
 > **What ignoring this causes:** Misinterpretation of instructions, agent misalignment, hallucinations, and incorrect decision-making. Microsoft's AI Red Team documents these as the most common failure modes in deployed agents—nearly all trace back to insufficient upfront design.
 
-## 2. Autonomy Is a Governance Choice, Not a Technical Upgrade
+## 2. Agency Requires Governance
 
-Giving an agent more autonomy is not an improvement. It's a tradeoff.
+Giving an agent more agency is not an improvement. It's a tradeoff.
 
-More autonomy means more flexibility. It also means less predictability. The question isn't "how autonomous can we make this?" but "how much autonomy does this task actually require?"
+More agency means more flexibility. It also means less predictability. The question isn't "how much can we let it do?" but "how much agency does this task actually require?"
 
 Most tasks don't require much. A well-structured workflow with minimal agency often outperforms a loosely-defined agent with maximum flexibility.
 
 **The dial, not the switch:**
 
-![Autonomy Dial](../../img/autonomy_dial.png)
+![Agency Dial](../../img/autonomy_dial.png)
 
 Move right only when you have to. Stay left when you can.
 
-**Practical implication:** Start with the least autonomy that accomplishes the goal. Add agency only when you've identified specific decisions that require it.
+**Practical implication:** Start with the least agency that accomplishes the goal. Add more only when you've identified specific decisions that require it.
 
 > **What ignoring this causes:** Excessive agency, impact outside intended environment, and prioritization failures that harm users. Autonomous agents given latitude without governance make decisions their designers never anticipated—sometimes catastrophically.
 
@@ -156,7 +156,7 @@ AI is a multiplier. What it multiplies is up to you.
 | Principle | One-Line Version |
 |-----------|------------------|
 | 1. Good judgment upfront | Design quality bounds output quality |
-| 2. Autonomy is governance | Less autonomy is often better |
+| 2. Agency requires governance | Less agency is often better |
 | 3. Most problems don't need agents | Simple solutions beat complex ones |
 | 4. Specification is the skill | Clarity beats capability |
 | 5. Design for uncertainty | Plan for failure, not just success |
@@ -167,7 +167,7 @@ AI is a multiplier. What it multiplies is up to you.
 These aren't abstract best practices. Microsoft's AI Red Team has documented a taxonomy of failure modes in agentic AI systems—security breaches, safety failures, cascading errors, unintended actions. Nearly every failure mode they identify traces back to violating one of these principles:
 
 - **Insufficient upfront design** → misinterpretation, misalignment, hallucinations
-- **Excessive autonomy** → actions outside intended scope, user harm
+- **Excessive agency** → actions outside intended scope, user harm
 - **Unnecessary complexity** → attack surface, organizational knowledge loss
 - **Vague specifications** → incorrect permissions, accountability gaps
 - **No failure planning** → cascading failures, denial of service

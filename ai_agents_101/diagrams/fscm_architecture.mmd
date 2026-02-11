@@ -2,8 +2,8 @@ flowchart LR
     Input[(6,987 Survey\nQuestions)]
 
     subgraph Stage1[Stage 1: Independent Classification]
-        Claude[Claude Haiku]
-        GPT[GPT-4o-mini]
+        Claude[Claude Haiku 4]
+        GPT[GPT-5-mini]
     end
 
     Compare{Models\nAgree?}
@@ -11,7 +11,7 @@ flowchart LR
     Agree[Agreed\n~89%]
 
     subgraph Stage2[Stage 2: Disagreement Handling]
-        Arbitrate[Arbitrator\nClaude Sonnet]
+        Arbitrate[Arbitrator\nClaude Sonnet 4.5]
     end
 
     subgraph Decisions[Bounded Decisions]

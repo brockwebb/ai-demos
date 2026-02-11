@@ -22,7 +22,7 @@ This document teaches that approach.
 
 **Design Principles (Chapter 7):** Six principles that should stay with you:
 1. Without good judgment in upfront design, junk probability skyrockets
-2. Autonomy is a governance choice, not a technical upgrade
+2. Agency requires governance, not just capability
 3. Most problems don't need agents (and that's fine)
 4. The skill is describing what you want and spotting bad design
 5. Design for uncertainty

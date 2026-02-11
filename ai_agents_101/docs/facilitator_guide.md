@@ -124,7 +124,7 @@ This guide helps you deliver the course or adapt it for your team. The materials
 
 **Leadership/governance audience:**
 - Lead with the Salesforce story
-- Emphasize "autonomy is a governance choice"
+- Emphasize "agency requires governance"
 - Focus on the evaluation questions: "Would I sign my name under this?"
 
 **Skeptical audience:**

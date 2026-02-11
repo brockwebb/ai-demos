@@ -138,7 +138,7 @@ This is a **workflow with bounded agency**, not an autonomous agent.
 | # | Principle | One-Liner |
 |---|-----------|-----------|
 | 1 | Good judgment upfront | Design quality bounds output quality |
-| 2 | Autonomy is governance | Less autonomy is often better |
+| 2 | Agency requires governance | Less agency is often better |
 | 3 | Most problems don't need agents | Simple solutions beat complex ones |
 | 4 | Specification is the skill | Clarity beats capability |
 | 5 | Design for uncertainty | Plan for failure, not just success |
@@ -155,7 +155,7 @@ Nearly every one traces back to violating these principles:
 | Ignore This... | ...And Get This |
 |----------------|----------------|
 | Good judgment upfront | Misalignment, hallucinations, misinterpretation |
-| Autonomy as governance | Actions outside scope, user harm |
+| Agency requires governance | Actions outside scope, user harm |
 | Simple solutions first | Attack surface, knowledge loss |
 | Clear specifications | Wrong permissions, accountability gaps |
 | Designing for uncertainty | Cascading failures, denial of service |
