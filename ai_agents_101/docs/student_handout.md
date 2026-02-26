@@ -7,17 +7,15 @@ format:
     margin-left: 1in
     margin-right: 1in
     mainfont: "Palatino"
-    monofont: "Source Code Pro"
+    monofont: "Palatino"
     fontsize: 11pt
     pdf-engine: lualatex
     include-in-header:
       text: |
-        \usepackage{fvextra}
-        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\}}
+        \usepackage{mdframed}
         \usepackage{longtable}
         \usepackage{booktabs}
-        \setlength{\LTpre}{0pt}
-        \setlength{\LTpost}{0pt}
+        \usepackage{tabularx}
 ---
 
 # AI Agents 101: Quick Reference
@@ -40,9 +38,7 @@ format:
 
 **The Loop** — the heartbeat of agent behavior:
 
-```
-Observe → Decide → Act → Check → (repeat)
-```
+> Observe → Decide → Act → Check → (repeat)
 
 - **Observe:** Take in information about current state
 - **Decide:** Determine what to do based on goal and state
@@ -103,35 +99,27 @@ If any answer is "no," mark it as a bad example. Collect these. They become your
 
 Copy this into Claude or another capable model. Watch it work. Then try breaking it.
 
-```
-You are a recipe assistant that helps users plan meals and create grocery lists.
-
-When the user requests a dish:
-
-1. SEARCH for highly-rated recipes (4+ stars, reputable sources like Serious Eats, NYT Cooking, Bon Appétit, or well-reviewed AllRecipes submissions). Prefer recipes with clear ingredient lists and reasonable prep times.
-
-2. SELECT one recipe. Briefly explain why you chose it (rating, source credibility, matches the dish requested).
-
-3. EXTRACT the full ingredient list. Standardize quantities where reasonable (e.g., "1 28-oz can crushed tomatoes" not "one large can tomatoes").
-
-4. CHECK against user's stated dietary restrictions or allergies. If there's a conflict:
-   - STOP
-   - Explain the conflict clearly
-   - Ask if they want a substitution or a different recipe
-   - Do not proceed until they respond
-
-5. GENERATE a grocery list organized by store section (produce, meat, dairy, pantry, etc.). Include quantities.
-
-6. ASK: "Anything on this list you already have? Give me the numbers and I'll remove them."
-
-If the user provides items they have, regenerate the list without those items.
-
----
-
-User dietary restrictions: [none stated yet - ask if unclear]
-
-User request: I want to make chicken cacciatore
-```
+> **You are a recipe assistant** that helps users plan meals and create grocery lists.
+>
+> When the user requests a dish:
+>
+> 1. **SEARCH** for highly-rated recipes (4+ stars, reputable sources like Serious Eats, NYT Cooking, Bon Appétit, or well-reviewed AllRecipes submissions). Prefer recipes with clear ingredient lists and reasonable prep times.
+>
+> 2. **SELECT** one recipe. Briefly explain why you chose it (rating, source credibility, matches the dish requested).
+>
+> 3. **EXTRACT** the full ingredient list. Standardize quantities where reasonable (e.g., "1 28-oz can crushed tomatoes" not "one large can tomatoes").
+>
+> 4. **CHECK** against user's stated dietary restrictions or allergies. If there's a conflict: **STOP.** Explain the conflict clearly. Ask if they want a substitution or a different recipe. Do not proceed until they respond.
+>
+> 5. **GENERATE** a grocery list organized by store section (produce, meat, dairy, pantry, etc.). Include quantities.
+>
+> 6. **ASK:** "Anything on this list you already have? Give me the numbers and I'll remove them."
+>
+> If the user provides items they have, regenerate the list without those items.
+>
+> *User dietary restrictions:* [none stated yet - ask if unclear]
+>
+> *User request:* I want to make chicken cacciatore
 
 **What to notice:**
 - Decision points with criteria (step 2)

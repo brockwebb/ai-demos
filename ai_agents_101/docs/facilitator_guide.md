@@ -7,17 +7,15 @@ format:
     margin-left: 1in
     margin-right: 1in
     mainfont: "Palatino"
-    monofont: "Source Code Pro"
+    monofont: "Palatino"
     fontsize: 11pt
     pdf-engine: lualatex
     include-in-header:
       text: |
-        \usepackage{fvextra}
-        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\}}
+        \usepackage{mdframed}
         \usepackage{longtable}
         \usepackage{booktabs}
-        \setlength{\LTpre}{0pt}
-        \setlength{\LTpost}{0pt}
+        \usepackage{tabularx}
 ---
 
 # AI Agents 101: Facilitator Guide
