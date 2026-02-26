@@ -6,26 +6,18 @@ format:
     colorlinks: true
     margin-left: 1in
     margin-right: 1in
-    mainfont: "Source Sans 3"
-    sansfont: "Source Sans 3"
+    mainfont: "Palatino"
     monofont: "Source Code Pro"
+    fontsize: 11pt
     pdf-engine: lualatex
     include-in-header:
       text: |
-        \usepackage{listings}
-        \lstset{
-          breaklines=true,
-          breakatwhitespace=true,
-          basicstyle=\ttfamily\small,
-          columns=fullflexible,
-          keepspaces=true,
-          frame=single,
-          framerule=0.5pt,
-          rulecolor=\color{gray!40},
-          backgroundcolor=\color{gray!5},
-          xleftmargin=0.5em,
-          xrightmargin=0.5em
-        }
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,commandchars=\\\{\}}
+        \usepackage{longtable}
+        \usepackage{booktabs}
+        \setlength{\LTpre}{0pt}
+        \setlength{\LTpost}{0pt}
 ---
 
 # AI Agents 101: Exercises
