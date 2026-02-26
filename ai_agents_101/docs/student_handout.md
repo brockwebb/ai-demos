@@ -6,6 +6,26 @@ format:
     colorlinks: true
     margin-left: 1in
     margin-right: 1in
+    mainfont: "Source Sans 3"
+    sansfont: "Source Sans 3"
+    monofont: "Source Code Pro"
+    pdf-engine: lualatex
+    include-in-header:
+      text: |
+        \usepackage{listings}
+        \lstset{
+          breaklines=true,
+          breakatwhitespace=true,
+          basicstyle=\ttfamily\small,
+          columns=fullflexible,
+          keepspaces=true,
+          frame=single,
+          framerule=0.5pt,
+          rulecolor=\color{gray!40},
+          backgroundcolor=\color{gray!5},
+          xleftmargin=0.5em,
+          xrightmargin=0.5em
+        }
 ---
 
 # AI Agents 101: Quick Reference
