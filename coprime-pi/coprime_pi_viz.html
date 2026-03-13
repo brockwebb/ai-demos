@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coprime Pi — Monte Carlo π via Number Theory</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Spectral:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #0d1117;
+  --bg-2:      #161b22;
+  --bg-3:      #21262d;
+  --bg-4:      #2d333b;
+  --text:      #e6edf3;
+  --muted:     #8b949e;
+  --border:    #30363d;
+  --teal:      #00c9a7;
+  --teal-dim:  rgba(0, 201, 167, 0.18);
+  --coral:     #ff6b6b;
+  --coral-dim: rgba(255, 107, 107, 0.18);
+  --gold:      #e3b341;
+  --blue:      #58a6ff;
+  --cell-empty:#12171e;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 11px 22px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+header h1 {
+  font-family: 'Spectral', serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: var(--teal);
+  letter-spacing: -0.01em;
+}
+
+header .subtitle {
+  font-size: 0.80rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* ── Main ────────────────────────────────────────────────────────────── */
+.main {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+  padding: 14px;
+  gap: 14px;
+}
+
+/* ── Grid panel ──────────────────────────────────────────────────────── */
+.grid-panel {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.grid-wrap {
+  position: relative;
+}
+
+#grid {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--cell-empty);
+}
+
+.axis-label {
+  position: absolute;
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+
+.x-label {
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.y-label {
+  left: -18px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+.grid-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 0.70rem;
+  color: var(--muted);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Stats panel ─────────────────────────────────────────────────────── */
+.stats-panel {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.stats-row {
+  display: flex;
+  gap: 10px;
+}
+
+.stat-card {
+  flex: 1;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.stat-label {
+  font-size: 0.66rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+.stat-value {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+/* π estimate card — larger */
+.pi-card {
+  background: var(--bg-2);
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--bg-2) 0%, rgba(227,179,65,0.06) 100%);
+}
+
+.pi-estimate {
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.pi-meta {
+  display: flex;
+  gap: 18px;
+  margin-top: 4px;
+}
+
+.pi-meta-item {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.pi-meta-item span {
+  color: var(--text);
+}
+
+/* Coprime / non-coprime count bar */
+.fraction-bar-wrap {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 14px;
+}
+
+.fraction-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.fraction-bar-track {
+  height: 6px;
+  background: var(--coral-dim);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.fraction-bar-fill {
+  height: 100%;
+  background: var(--teal);
+  border-radius: 3px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.fraction-theory {
+  font-size: 0.65rem;
+  color: var(--muted);
+  margin-top: 5px;
+  text-align: right;
+}
+
+/* Sparkline */
+.sparkline-card {
+  flex: 1 1 auto;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+.spark-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.spark-title {
+  font-size: 0.66rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
+
+.spark-legend {
+  display: flex;
+  gap: 12px;
+  font-size: 0.64rem;
+  color: var(--muted);
+}
+
+.spark-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.spark-line-sample {
+  width: 14px;
+  height: 2px;
+  border-radius: 1px;
+}
+
+#sparkline {
+  flex: 1 1 auto;
+  width: 100%;
+  display: block;
+  min-height: 0;
+}
+
+/* ── Controls ─────────────────────────────────────────────────────────── */
+.controls {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 22px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-2);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.80rem;
+  transition: background 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+
+.btn:hover { background: var(--bg-4); }
+
+#btn-start.running {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.ctrl-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ctrl-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+input[type="range"] {
+  width: 90px;
+  accent-color: var(--teal);
+  cursor: pointer;
+}
+
+select {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.ctrl-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--border);
+}
+
+.status-text {
+  font-size: 0.70rem;
+  color: var(--muted);
+  margin-left: auto;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Coprime Pi</h1>
+  <span class="subtitle">Pr(gcd(m, n) = 1) = 6/π²&nbsp;&nbsp;→&nbsp;&nbsp;π = √(6/p̂)</span>
+</header>
+
+<div class="main">
+
+  <!-- Left: animated grid -->
+  <div class="grid-panel">
+    <div class="grid-wrap">
+      <canvas id="grid" width="450" height="450"></canvas>
+      <span class="axis-label x-label">m</span>
+      <span class="axis-label y-label">n</span>
+    </div>
+    <div class="grid-legend">
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--teal)"></div>
+        <span>gcd = 1 (coprime)</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background:var(--coral)"></div>
+        <span>gcd &gt; 1</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: stats + sparkline -->
+  <div class="stats-panel">
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Pairs sampled</div>
+        <div class="stat-value" id="count">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Coprime fraction p̂</div>
+        <div class="stat-value" id="phat">—</div>
+      </div>
+    </div>
+
+    <!-- π estimate — hero card -->
+    <div class="pi-card">
+      <div class="stat-label">π estimate</div>
+      <div class="pi-estimate" id="pi-est">—</div>
+      <div class="pi-meta">
+        <div class="pi-meta-item">true π = <span>3.14159265…</span></div>
+        <div class="pi-meta-item">error |π̂ − π| = <span id="pi-error">—</span></div>
+      </div>
+    </div>
+
+    <!-- Coprime fraction bar -->
+    <div class="fraction-bar-wrap">
+      <div class="fraction-bar-label">
+        <span>Coprime fraction</span>
+        <span id="bar-pct">—</span>
+      </div>
+      <div class="fraction-bar-track">
+        <div class="fraction-bar-fill" id="frac-fill"></div>
+      </div>
+      <div class="fraction-theory">theory: 6/π² ≈ 0.60793</div>
+    </div>
+
+    <!-- Convergence sparkline -->
+    <div class="sparkline-card">
+      <div class="spark-header">
+        <span class="spark-title">π̂ convergence over time</span>
+        <div class="spark-legend">
+          <div class="spark-legend-item">
+            <div class="spark-line-sample" style="background:var(--teal)"></div>
+            <span>π̂</span>
+          </div>
+          <div class="spark-legend-item">
+            <div class="spark-line-sample" style="background:var(--coral);opacity:0.7"></div>
+            <span>true π</span>
+          </div>
+        </div>
+      </div>
+      <canvas id="sparkline"></canvas>
+    </div>
+
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <button class="btn" id="btn-start">▶&nbsp; Start</button>
+  <button class="btn" id="btn-reset">↺&nbsp; Reset</button>
+
+  <div class="ctrl-sep"></div>
+
+  <div class="ctrl-group">
+    <span class="ctrl-label">Speed</span>
+    <input type="range" id="speed" min="1" max="10" value="4">
+    <span id="speed-val" style="font-size:0.72rem;color:var(--muted);min-width:14px">4</span>
+  </div>
+
+  <div class="ctrl-group">
+    <span class="ctrl-label">Range M</span>
+    <select id="m-select">
+      <option value="50">50</option>
+      <option value="100">100</option>
+      <option value="500" selected>500</option>
+      <option value="1000">1 000</option>
+      <option value="5000">5 000</option>
+    </select>
+  </div>
+
+  <span class="status-text" id="status-text">Press Start to begin</span>
+</div>
+
+<script>
+// ── Constants ──────────────────────────────────────────────────────────────
+const TRUE_PI   = Math.PI;
+const THEORY_P  = 6 / (Math.PI * Math.PI);  // ≈ 0.60793
+const GRID_N    = 50;                         // 50×50 visual grid
+
+// ── State ──────────────────────────────────────────────────────────────────
+let M          = 500;
+let total      = 0;
+let coprime    = 0;
+let running    = false;
+let animId     = null;
+
+// Grid: 0=empty, 1=coprime, 2=non-coprime
+const gridState = new Uint8Array(GRID_N * GRID_N);
+
+// Sparkline history: array of {n, pi} snapshots
+const history = [];
+const MAX_HISTORY = 800;
+
+// ── DOM ─────────────────────────────────────────────────────────────────────
+const gridCanvas     = document.getElementById('grid');
+const sparkCanvas    = document.getElementById('sparkline');
+const elCount        = document.getElementById('count');
+const elPhat         = document.getElementById('phat');
+const elPiEst        = document.getElementById('pi-est');
+const elPiError      = document.getElementById('pi-error');
+const elBarPct       = document.getElementById('bar-pct');
+const elFracFill     = document.getElementById('frac-fill');
+const elSpeedVal     = document.getElementById('speed-val');
+const elStatus       = document.getElementById('status-text');
+const btnStart       = document.getElementById('btn-start');
+const btnReset       = document.getElementById('btn-reset');
+const speedSlider    = document.getElementById('speed');
+const mSelect        = document.getElementById('m-select');
+
+const gridCtx  = gridCanvas.getContext('2d');
+const sparkCtx = sparkCanvas.getContext('2d');
+
+// ── GCD (Euclidean) ─────────────────────────────────────────────────────────
+function gcd(a, b) {
+  while (b) { const t = b; b = a % b; a = t; }
+  return a;
+}
+
+// ── Batch size: starts slow, accelerates with total sampled ────────────────
+function getBatchSize() {
+  const speed = parseInt(speedSlider.value);
+  // Accelerate naturally: batch grows with sqrt(total)
+  const accel = Math.max(1, Math.sqrt(total / 100));
+  // Speed multiplier: speed 1 → 0.5×, speed 5 → 2×, speed 10 → 8×
+  const mult  = Math.pow(2, (speed - 3) * 0.5);
+  return Math.max(1, Math.floor(accel * mult));
+}
+
+// ── Sample one pair and update state ───────────────────────────────────────
+function samplePair() {
+  // Draw m, n uniformly from {1..M}
+  const m  = (Math.random() * M | 0) + 1;
+  const n  = (Math.random() * M | 0) + 1;
+  const g  = gcd(m, n);
+  const cp = g === 1;
+
+  total++;
+  if (cp) coprime++;
+
+  // Map to 50×50 grid cell
+  const gi = Math.min(((m - 1) * GRID_N / M) | 0, GRID_N - 1);
+  const gj = Math.min(((n - 1) * GRID_N / M) | 0, GRID_N - 1);
+  gridState[gi * GRID_N + gj] = cp ? 1 : 2;
+}
+
+// ── Grid renderer ───────────────────────────────────────────────────────────
+const CELL = gridCanvas.width / GRID_N;  // pixels per cell
+
+function renderGrid() {
+  const ctx = gridCtx;
+  const W   = gridCanvas.width;
+
+  // Background
+  ctx.fillStyle = '#0d1117';
+  ctx.fillRect(0, 0, W, W);
+
+  for (let i = 0; i < GRID_N; i++) {
+    for (let j = 0; j < GRID_N; j++) {
+      const v = gridState[i * GRID_N + j];
+      if (v === 0) continue;
+      ctx.fillStyle = v === 1 ? '#00c9a7' : '#ff6b6b';
+      ctx.fillRect(
+        i * CELL + 1,
+        j * CELL + 1,
+        CELL - 2,
+        CELL - 2
+      );
+    }
+  }
+}
+
+// ── Sparkline renderer ──────────────────────────────────────────────────────
+function resizeSparkline() {
+  const rect = sparkCanvas.parentElement.getBoundingClientRect();
+  const h    = Math.max(60, sparkCanvas.parentElement.clientHeight - 50);
+  sparkCanvas.width  = Math.floor(sparkCanvas.offsetWidth  || 200);
+  sparkCanvas.height = Math.floor(h);
+}
+
+function renderSparkline() {
+  const ctx = sparkCtx;
+  const W   = sparkCanvas.width;
+  const H   = sparkCanvas.height;
+  if (W < 4 || H < 4) return;
+
+  ctx.fillStyle = '#0d1117';
+  ctx.fillRect(0, 0, W, H);
+
+  if (history.length < 2) return;
+
+  const piVals = history.map(h => h.pi);
+  const margin = 0.3;
+
+  // Dynamic y range: center on true π with room for early wobble
+  const spread  = Math.max(...piVals) - Math.min(...piVals);
+  const yCenter = TRUE_PI;
+  const yRange  = Math.max(0.4, spread * 1.4);
+  const yMin    = yCenter - yRange / 2;
+  const yMax    = yCenter + yRange / 2;
+
+  const PAD = 10;
+  const toX = i  => PAD + (i / (history.length - 1)) * (W - PAD * 2);
+  const toY = v  => H - PAD - ((v - yMin) / (yMax - yMin)) * (H - PAD * 2);
+
+  // True π dashed line
+  const piY = toY(TRUE_PI);
+  ctx.strokeStyle = 'rgba(255,107,107,0.65)';
+  ctx.lineWidth   = 1;
+  ctx.setLineDash([5, 4]);
+  ctx.beginPath();
+  ctx.moveTo(0, piY);
+  ctx.lineTo(W, piY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Label
+  ctx.fillStyle = 'rgba(255,107,107,0.55)';
+  ctx.font      = '9px JetBrains Mono, monospace';
+  ctx.fillText('π', W - 12, piY - 3);
+
+  // π estimate line
+  ctx.strokeStyle = '#00c9a7';
+  ctx.lineWidth   = 1.8;
+  ctx.lineJoin    = 'round';
+  ctx.beginPath();
+  history.forEach((h, i) => {
+    const x = toX(i);
+    const y = toY(h.pi);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Latest dot
+  const last = history[history.length - 1];
+  ctx.fillStyle = '#00c9a7';
+  ctx.beginPath();
+  ctx.arc(toX(history.length - 1), toY(last.pi), 3, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// ── Stats DOM update ────────────────────────────────────────────────────────
+function updateStats() {
+  if (total === 0) return;
+
+  const phat  = coprime / total;
+  const piEst = Math.sqrt(6 / phat);
+  const err   = Math.abs(piEst - TRUE_PI);
+
+  elCount.textContent    = total.toLocaleString();
+  elPhat.textContent     = phat.toFixed(6);
+  elPiEst.textContent    = piEst.toFixed(8);
+  elPiError.textContent  = err.toFixed(6);
+  elBarPct.textContent   = (phat * 100).toFixed(2) + '%';
+  elFracFill.style.width = Math.min(100, phat * 100) + '%';
+
+  // Error color: red → yellow → green
+  if (err < 0.001)       elPiEst.style.color = '#5bbf8a';
+  else if (err < 0.01)   elPiEst.style.color = '#e3b341';
+  else                   elPiEst.style.color = '#e3b341';
+
+  // Record history for sparkline (sample rate decreases as total grows)
+  const recordEvery = total < 200   ? 1
+                    : total < 2000  ? 10
+                    : total < 20000 ? 50
+                    : 200;
+  if (total % recordEvery === 0) {
+    history.push({ n: total, pi: piEst });
+    if (history.length > MAX_HISTORY) history.shift();
+  }
+}
+
+// ── Animation loop ──────────────────────────────────────────────────────────
+function animate() {
+  if (!running) return;
+
+  const batch = getBatchSize();
+  for (let i = 0; i < batch; i++) samplePair();
+
+  updateStats();
+  renderGrid();
+  renderSparkline();
+
+  elStatus.textContent = `${total.toLocaleString()} pairs  ·  batch ${batch}`;
+
+  animId = requestAnimationFrame(animate);
+}
+
+// ── Controls ─────────────────────────────────────────────────────────────────
+function startPause() {
+  if (running) {
+    running = false;
+    if (animId) { cancelAnimationFrame(animId); animId = null; }
+    btnStart.textContent = '▶\u00a0 Resume';
+    btnStart.classList.remove('running');
+    elStatus.textContent = 'Paused';
+  } else {
+    running = true;
+    btnStart.innerHTML = '⏸\u00a0 Pause';
+    btnStart.classList.add('running');
+    animate();
+  }
+}
+
+function reset() {
+  running = false;
+  if (animId) { cancelAnimationFrame(animId); animId = null; }
+  total   = 0;
+  coprime = 0;
+  gridState.fill(0);
+  history.length = 0;
+
+  elCount.textContent   = '0';
+  elPhat.textContent    = '—';
+  elPiEst.textContent   = '—';
+  elPiEst.style.color   = 'var(--gold)';
+  elPiError.textContent = '—';
+  elBarPct.textContent  = '—';
+  elFracFill.style.width = '0%';
+  elStatus.textContent  = 'Press Start to begin';
+  btnStart.innerHTML    = '▶\u00a0 Start';
+  btnStart.classList.remove('running');
+
+  // Clear canvases
+  gridCtx.fillStyle = '#0d1117';
+  gridCtx.fillRect(0, 0, gridCanvas.width, gridCanvas.height);
+  sparkCtx.fillStyle = '#0d1117';
+  sparkCtx.fillRect(0, 0, sparkCanvas.width, sparkCanvas.height);
+}
+
+btnStart.addEventListener('click', startPause);
+btnReset.addEventListener('click', reset);
+
+speedSlider.addEventListener('input', () => {
+  elSpeedVal.textContent = speedSlider.value;
+});
+
+mSelect.addEventListener('change', () => {
+  M = parseInt(mSelect.value);
+  reset();
+});
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  resizeSparkline();
+  // Clear grid to dark background
+  gridCtx.fillStyle = '#0d1117';
+  gridCtx.fillRect(0, 0, gridCanvas.width, gridCanvas.height);
+  // Draw faint grid lines
+  gridCtx.strokeStyle = 'rgba(48,54,61,0.7)';
+  gridCtx.lineWidth   = 0.5;
+  for (let i = 0; i <= GRID_N; i++) {
+    const pos = i * CELL;
+    gridCtx.beginPath();
+    gridCtx.moveTo(pos, 0);
+    gridCtx.lineTo(pos, gridCanvas.height);
+    gridCtx.stroke();
+    gridCtx.beginPath();
+    gridCtx.moveTo(0, pos);
+    gridCtx.lineTo(gridCanvas.width, pos);
+    gridCtx.stroke();
+  }
+});
+
+window.addEventListener('resize', () => {
+  resizeSparkline();
+  if (!running && history.length > 0) renderSparkline();
+});
+</script>
+</body>
+</html>
