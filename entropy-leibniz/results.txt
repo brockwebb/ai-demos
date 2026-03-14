@@ -1,0 +1,323 @@
+========================================================================
+ENTROPY-LEIBNIZ: TEVV REPORT
+Information-theoretic fitness for series discovery
+========================================================================
+
+Configuration:
+  pop_size=1000, max_depth=6, max_nodes=30
+  tournament_k=7, n_elite=5
+  W1=0.02 (total_info), W2=0.04 (monotonicity), W3=0.03 (rate)
+  lambda_p=0.005 (parsimony), INFO_CAP=50.0 bits
+  T_checkpoints=[5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
+  n_seeds=5, max_total=290.0s
+
+Fitness: W1*(total_info/50) + W2*monotonicity + W3*(mean_rate/5) - lambda_p*nodes
+  Leibniz (9 nodes): ti≈14.3 mo=1.0 mr≈3.32 → fitness≈+0.020
+  GP v1 best (6 nodes): ti≈11.4 mo≈0.0 mr≈0.0 → fitness≈-0.025
+========================================================================
+T — UNIT TESTS (Entropy)
+========================================================================
+
+  ── Info Bits Computation ──
+  [PASS] -log2(0.025) ≈ 5.32
+  [PASS] -log2(0.00005) ≈ 14.29
+  [PASS] error=0 → info=50 (capped)
+  [PASS] error=1e-15 → info=50 (capped)
+  [PASS] error=1.0 → info=0.0
+  [PASS] error=2.0 → info=-1.0 (valid negative)
+
+  ── Tree Primitives ──
+  [PASS] div(1,0) → 1.0
+  [PASS] pow(-1,k) = [1,-1,1,-1,1]
+  [PASS] Leibniz tree k=0..9 correct
+  [PASS] GP v1 best tree evaluates OK
+
+  ── Info Profiles ──
+  [PASS] Leibniz T=5000 error < 1e-4
+  [PASS] Leibniz T=5000 info ≥ 13 bits
+  [PASS] Leibniz info profile not None
+  [PASS] Leibniz info monotonically increasing
+  [PASS] Leibniz monotonicity = 1.0
+  [PASS] GP v1 info profile not None
+  [PASS] GP v1 monotonicity < 0.25 (flatlines)
+
+  ── Theoretical Rate (Leibniz endpoint rate ~ 3.27 bits/decade) ──
+  [PASS] Leibniz endpoint rate ≈ 3.27 bits/decade (got 3.318)
+
+  ── Fitness Calibration (CRITICAL) ──
+  Leibniz fitness  : 0.021021
+  GP v1 best fitness: -0.025223
+  Constant (0.07854) fitness: 0.015888
+    Leibniz : ti=15.288 mo=1.00 mr=3.318 ps=0.0450
+    GP v1   : ti=11.440 mo=0.00 mr=0.034 ps=0.0300
+  [PASS] Leibniz (0.0210) beats GP v1 (-0.0252)
+  [PASS] Leibniz (0.0210) beats constant (0.0159)
+  [PASS] Leibniz monotonicity = 1.0
+  [PASS] GP v1 monotonicity < 0.25
+  [PASS] Leibniz parsimony = 0.005×9 = 0.0450
+  [PASS] Longer Leibniz-equiv (0.0010) < 9-node (0.0210)
+  [PASS] 50 random trees within constraints
+  [PASS] Crossover valid sizes
+  [PASS] Mutation valid size
+  [PASS] Leibniz (0.0210) in top 10% of random pop (≥-0.0309)
+
+  Results: 28 passed, 0 failed
+
+========================================================================
+E — EVALUATION (per seed)
+========================================================================
+
+Seed 0 (val=42):
+  Gens: 100  Elapsed: 3.5s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : 0.02102149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.045000 = 0.021021
+  Total info : 15.2877 bits at T=5000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone info profile  : True
+
+Seed 1 (val=7):
+  Gens: 100  Elapsed: 3.6s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : 0.02102149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.045000 = 0.021021
+  Total info : 15.2877 bits at T=5000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone info profile  : True
+
+Seed 2 (val=137):
+  Gens: 100  Elapsed: 2.6s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : 0.02102149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.045000 = 0.021021
+  Total info : 15.2877 bits at T=5000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone info profile  : True
+
+Seed 3 (val=2718):
+  Gens: 100  Elapsed: 3.2s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : 0.02102149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.045000 = 0.021021
+  Total info : 15.2877 bits at T=5000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone info profile  : True
+
+Seed 4 (val=31415):
+  Gens: 100  Elapsed: 3.1s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : 0.02102149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.045000 = 0.021021
+  Total info : 15.2877 bits at T=5000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone info profile  : True
+
+────────────────────────────────────────────────────────────────────────
+Aggregate:
+  Mean best fitness  : 0.02102149
+  Best (any seed)    : 0.02102149
+  Any equiv Leibniz  : True
+  Any structural     : True
+  Any monotone info  : True
+
+========================================================================
+V — VERIFICATION
+========================================================================
+
+Fitness under entropy function:
+  Leibniz : 0.021021
+  GP v1   : -0.025223
+  Margin  : 0.046244
+
+Theoretical check (Leibniz info ≈ 1 + log2(T)):
+       T   actual bits    theoretical     delta
+  ────────────────────────────────────────────
+       5        4.3358         3.3219    1.0138
+      10        5.3255         4.3219    1.0036
+      20        6.3228         5.3219    1.0009
+      50        7.6440         6.6439    1.0001
+     100        8.6439         7.6439    1.0000
+     200        9.6439         8.6439    1.0000
+     500       10.9658         9.9658    1.0000
+    1000       11.9658        10.9658    1.0000
+    2000       12.9658        11.9658    1.0000
+    5000       14.2877        13.2877    1.0000
+   10000       15.2877        14.2877    1.0000
+
+Leibniz rank vs random-100: 0.0210 ≥ p90=-0.0309: True
+
+========================================================================
+V — VALIDATION
+========================================================================
+
+Best seed: 0  Gens: 100
+  Expression: ((-1 ^ k) / ((2 * k) + 1))
+  T=5000 error: 5e-05
+  T=5000 info : 14.2877 bits
+  T=10000 error: 0.00002500  info: 15.2877 bits
+  T=20000 error: 0.00001250  (still converging: 1)
+  Monotone info profile: True
+
+────────────────────────────────────────────────────────────────────────
+Cross-experiment comparison — information profiles:
+  Method      info@T=10  info@T=1k  info@T=5k   mono?   rate  Notes
+  ──────────────────────────────────────────────────────────────────────
+  RL v1            4.30   diverged   diverged   False   ~0.0  Diverges T>10
+  RL v2            4.30   diverged   diverged   False   ~0.0  Diverges T>20
+  ACO             14.10   diverged   diverged   False   ~0.0  Collapses T>40
+  GP v1           11.44      11.44      11.44   False   ~0.0  Flatlines (wrong limit)
+  GP v2            4.40      10.97      14.29    True  ~3.32  ✓ Leibniz found
+  Entropy          5.33      11.97      14.29    True   3.32  ✓ Leibniz found!
+
+========================================================================
+V — VERDICT
+========================================================================
+  Found Leibniz equivalent : True
+  Found monotone info profile: True
+  Seeds finding Leibniz: 5/5
+================================================================================
+DISCUSSION — Information Theory and Confabulation
+================================================================================
+
+The six experiments in this series tell a unified story about optimization,
+convergence, and the difference between fitting a target and understanding a truth.
+
+The information profile — bits of precision gained per decade of terms — is
+the central diagnostic. A well-calibrated series shows constant rate (~3.32
+bits/decade for Leibniz). A degenerate one shows one of three failure modes:
+
+  ACO = CONFABULATION
+  The ACO solution achieves extraordinary precision at small T (~14 bits at T=10),
+  then catastrophically diverges. Like an LLM that produces a confident, detailed
+  answer that happens to match the training distribution but breaks completely on
+  out-of-distribution inputs. The information gain is ILLUSORY: high confidence
+  paired with zero generalization. The info profile rises sharply then goes to -∞.
+
+  GP v1 = MISCALIBRATION
+  The GP v1 solution converges confidently to a nearby but incorrect limit
+  (π/4 + 0.000360). Its info profile flatlines at 11.44 bits: the series
+  "thinks" it knows the answer to 11 significant bits, but it's systematically
+  wrong. Like an LLM that is consistently overconfident about a subtle factual
+  error — the uncertainty estimate looks fine, but the answer is wrong.
+  Perversely, it scores BETTER on accuracy at T=200 than Leibniz does.
+  This is why convergence-rate reward (GP v2) and information-rate reward
+  (Entropy) were needed: raw accuracy at finite T cannot distinguish true
+  convergence from a fast wrong-limit series.
+
+  Leibniz / GP v2 / Entropy = CALIBRATED
+  The Leibniz series gains ~3.32 bits of precision per decade of terms, forever.
+  There is no ceiling. The information gain is REAL: each additional term
+  genuinely reduces uncertainty about π/4. The info profile is a straight line
+  on a log-T axis, with slope ≈ log2(10) ≈ 3.32.
+
+LLM CALIBRATION ANALOGY
+  An LLM that confabulates produces tokens that APPEAR to resolve uncertainty
+  (high token confidence, low perplexity on the output) but don't reduce error
+  relative to ground truth. The output entropy looks low (confident) but the
+  error entropy stays high (wrong). This maps exactly to the ACO profile:
+  high apparent precision at the scale tested, zero calibration beyond it.
+
+  The information-entropy fitness function operationalizes this distinction:
+  it rewards series whose uncertainty reduction is SUSTAINED across scales,
+  not just accurate at the training horizon. In LLM terms: a model that
+  scores well on this fitness genuinely reduces uncertainty as it reasons
+  further, not just as it generates more tokens.
+
+  Measuring bits-of-precision-gain-per-thinking-step could be a diagnostic
+  for distinguishing true reasoning from pattern-matched confabulation.
+================================================================================
