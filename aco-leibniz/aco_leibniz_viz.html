@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ACO-Leibniz: Ant Colony Optimization Discovers π/4</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── Header ─────────────────────────────── */
+  header {
+    background: linear-gradient(135deg, #1a2332 0%, #0d1117 100%);
+    border-bottom: 1px solid #21262d;
+    padding: 20px 32px 16px;
+  }
+  header h1 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #58a6ff, #bc8cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: #8b949e;
+    font-size: 0.9rem;
+    margin-top: 4px;
+  }
+
+  /* ── Controls bar ────────────────────────── */
+  #controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 32px;
+    background: #161b22;
+    border-bottom: 1px solid #21262d;
+    flex-wrap: wrap;
+  }
+  .ctrl-group { display: flex; align-items: center; gap: 8px; }
+  .ctrl-label { color: #8b949e; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .btn {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .btn:hover { background: #30363d; border-color: #58a6ff; }
+  .btn.active { background: #1f6feb; border-color: #58a6ff; color: #fff; }
+  #gen-display {
+    color: #58a6ff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    min-width: 90px;
+  }
+  #status-pill {
+    margin-left: auto;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: #1a3a1a;
+    color: #3fb950;
+    border: 1px solid #238636;
+  }
+  #gen-slider {
+    width: 220px;
+    accent-color: #58a6ff;
+  }
+
+  /* ── Main grid ───────────────────────────── */
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 16px;
+    padding: 16px 32px 32px;
+  }
+
+  .panel {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 12px 18px 8px;
+    border-bottom: 1px solid #21262d;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: #c9d1d9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-body { padding: 16px 18px; }
+
+  /* ── Heatmap ─────────────────────────────── */
+  #heatmap-panel { grid-column: 1 / 3; }
+  #heatmap-canvas {
+    display: block;
+    width: 100%;
+    height: 280px;
+    image-rendering: pixelated;
+  }
+  #heatmap-axis {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    color: #8b949e;
+    font-size: 0.72rem;
+  }
+  .heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: #8b949e;
+    margin-top: 8px;
+  }
+  .legend-bar {
+    width: 120px;
+    height: 10px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #0d1117 0%, #1e6a9e 40%, #58a6ff 70%, #e8f4ff 100%);
+    border: 1px solid #30363d;
+  }
+
+  /* ── Sign strip ──────────────────────────── */
+  #sign-strip {
+    display: flex;
+    gap: 3px;
+    padding: 8px 0 4px;
+    flex-wrap: wrap;
+  }
+  .sign-cell {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+    transition: background 0.2s;
+  }
+  .sign-plus  { background: #0d3a22; color: #3fb950; border-color: #238636; }
+  .sign-minus { background: #3a0d0d; color: #f85149; border-color: #da3633; }
+  .sign-neutral { background: #21262d; color: #8b949e; border-color: #30363d; }
+  .sign-label { color: #8b949e; font-size: 0.72rem; margin-top: 2px; }
+
+  /* ── Convergence chart ───────────────────── */
+  #conv-canvas {
+    width: 100%;
+    height: 220px;
+    display: block;
+  }
+
+  /* ── Comparison panel ────────────────────── */
+  #comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+  }
+  #comparison-table th {
+    color: #8b949e;
+    font-weight: 600;
+    text-align: left;
+    padding: 6px 10px;
+    border-bottom: 1px solid #21262d;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  #comparison-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid #161b22;
+    vertical-align: middle;
+  }
+  #comparison-table tr:last-child td { border-bottom: none; }
+  .good  { color: #3fb950; }
+  .bad   { color: #f85149; }
+  .neutral { color: #8b949e; }
+  .match-badge {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+  .match-yes { background: #0d3a22; color: #3fb950; border: 1px solid #238636; }
+  .match-no  { background: #3a0d0d; color: #f85149; border: 1px solid #da3633; }
+
+  /* ── Series comparison strips ────────────── */
+  #series-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  .series-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #8b949e;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 6px;
+  }
+  .term-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .term-chip {
+    padding: 3px 7px;
+    border-radius: 5px;
+    font-size: 0.72rem;
+    font-family: 'Courier New', monospace;
+    border: 1px solid transparent;
+  }
+  .term-match    { background: #0d3a22; color: #3fb950; border-color: #238636; }
+  .term-nomatch  { background: #3a0d0d; color: #f85149; border-color: #da3633; }
+
+  /* ── Error indicator ─────────────────────── */
+  .error-box {
+    background: #3a0d0d;
+    border: 1px solid #da3633;
+    border-radius: 8px;
+    padding: 16px;
+    color: #f85149;
+    font-size: 0.88rem;
+    text-align: center;
+  }
+
+  /* ── Tooltip ─────────────────────────────── */
+  #tooltip {
+    position: fixed;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.78rem;
+    color: #c9d1d9;
+    pointer-events: none;
+    display: none;
+    z-index: 1000;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  }
+
+  /* ── Loading overlay ─────────────────────── */
+  #loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 64px;
+    color: #8b949e;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid #21262d;
+    border-top-color: #58a6ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>ACO-Leibniz: Ant Colony Optimization Discovers π/4</h1>
+  <p>300 ants learn the Leibniz series π/4 = 1 − 1/3 + 1/5 − 1/7 + … through pheromone deposition</p>
+</header>
+
+<div id="controls">
+  <div class="ctrl-group">
+    <span class="ctrl-label">Snapshot</span>
+    <input type="range" id="gen-slider" min="0" max="0" value="0">
+    <span id="gen-display">Gen 0</span>
+  </div>
+  <div class="ctrl-group">
+    <button class="btn" id="btn-prev">◀ Prev</button>
+    <button class="btn active" id="btn-play">▶ Play</button>
+    <button class="btn" id="btn-next">Next ▶</button>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Show positions</span>
+    <button class="btn active" data-pos="10" onclick="setPosLimit(10,this)">1–10</button>
+    <button class="btn" data-pos="20" onclick="setPosLimit(20,this)">1–20</button>
+    <button class="btn" data-pos="50" onclick="setPosLimit(50,this)">1–50</button>
+  </div>
+  <div id="status-pill" id="status-pill">Loading…</div>
+</div>
+
+<main id="main-content">
+  <div id="loading">
+    <div class="spinner"></div>
+    <div>Loading pheromone_data.json…</div>
+  </div>
+</main>
+
+<div id="tooltip"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let data = null;
+let snapIdx = 0;
+let posLimit = 10;
+let playTimer = null;
+let isPlaying = false;
+
+// ── Load data ──────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const resp = await fetch('pheromone_data.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}: ${resp.statusText}`);
+    data = await resp.json();
+    init();
+  } catch (e) {
+    document.getElementById('main-content').innerHTML =
+      `<div class="error-box" style="grid-column:1/3;margin:32px">
+        <strong>Could not load pheromone_data.json</strong><br>
+        Run <code>python3 aco_leibniz.py</code> first to generate the data file.<br><br>
+        <small>${e.message}</small>
+      </div>`;
+  }
+}
+
+function init() {
+  document.getElementById('main-content').innerHTML = buildLayout();
+  const slider = document.getElementById('gen-slider');
+  const snaps = data.snapshots;
+  slider.max = snaps.length - 1;
+  slider.value = 0;
+  slider.addEventListener('input', () => {
+    snapIdx = +slider.value;
+    renderSnapshot(snapIdx);
+  });
+  document.getElementById('btn-prev').addEventListener('click', prevSnap);
+  document.getElementById('btn-next').addEventListener('click', nextSnap);
+  document.getElementById('btn-play').addEventListener('click', togglePlay);
+
+  setupHeatmapHover();
+  setupConvCanvas();
+  renderSnapshot(0);
+  updateStatus();
+
+  // Auto-start playback
+  togglePlay();
+}
+
+function buildLayout() {
+  return `
+  <div class="panel" id="heatmap-panel" style="grid-column:1/3">
+    <div class="panel-header">
+      🐜 Pheromone Heatmap — Denominator choices learned by colony
+      <span style="color:#8b949e;font-size:0.78rem;margin-left:auto">Position (x) × Denominator index (y)</span>
+    </div>
+    <div class="panel-body">
+      <canvas id="heatmap-canvas" height="220"></canvas>
+      <div id="heatmap-axis"></div>
+      <div class="heatmap-legend">
+        <span>Low pheromone</span>
+        <div class="legend-bar"></div>
+        <span>High pheromone</span>
+        &nbsp;·&nbsp;
+        <span style="color:#bc8cff">◆ = Leibniz expected denominator</span>
+      </div>
+      <div style="margin-top:12px">
+        <div class="panel-header" style="border:none;padding:0 0 6px">Sign pheromone at each position</div>
+        <div id="sign-strip"></div>
+        <div class="sign-label">Position 0–${posLimit-1}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="conv-panel">
+    <div class="panel-header">📈 Convergence</div>
+    <div class="panel-body">
+      <canvas id="conv-canvas"></canvas>
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:0.75rem;color:#8b949e">
+        <span><span style="color:#58a6ff">●</span> Best ever</span>
+        <span><span style="color:#3fb950">●</span> Greedy</span>
+        <span><span style="color:#8b949e">●</span> Mean</span>
+        <span><span style="color:#bc8cff;font-weight:700">│</span> Current snapshot</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="compare-panel">
+    <div class="panel-header">🔍 Series Comparison</div>
+    <div class="panel-body">
+      <table id="comparison-table">
+        <thead>
+          <tr>
+            <th>T</th>
+            <th>ACO greedy sum</th>
+            <th>Error</th>
+            <th>Leibniz error</th>
+            <th>Verdict</th>
+          </tr>
+        </thead>
+        <tbody id="compare-tbody"></tbody>
+      </table>
+      <div id="series-compare" style="margin-top:16px"></div>
+    </div>
+  </div>
+  `;
+}
+
+// ── Snapshot rendering ────────────────────────────────────────────────────
+function renderSnapshot(idx) {
+  if (!data) return;
+  snapIdx = idx;
+  document.getElementById('gen-slider').value = idx;
+  const snap = data.snapshots[idx];
+  document.getElementById('gen-display').textContent = `Gen ${snap.gen}`;
+
+  drawHeatmap(snap);
+  drawSignStrip(snap);
+  drawConvCanvas(idx);
+  drawComparison(snap);
+}
+
+// ── Heatmap drawing ───────────────────────────────────────────────────────
+let heatmapCanvas = null;
+let heatmapCtx = null;
+
+function setupHeatmapHover() {
+  heatmapCanvas = document.getElementById('heatmap-canvas');
+  heatmapCtx = heatmapCanvas.getContext('2d');
+  heatmapCanvas.addEventListener('mousemove', onHeatmapHover);
+  heatmapCanvas.addEventListener('mouseleave', () => {
+    document.getElementById('tooltip').style.display = 'none';
+  });
+}
+
+function drawHeatmap(snap) {
+  if (!heatmapCanvas) return;
+  const W = heatmapCanvas.clientWidth || 800;
+  const H = heatmapCanvas.clientHeight || 220;
+  heatmapCanvas.width = W;
+  heatmapCanvas.height = H;
+  const ctx = heatmapCtx;
+
+  const denom_data = snap.snapshot.denom; // T_MAX × D_MAX probabilities
+  const nPos = posLimit;
+  const nD = data.config.d_max;
+
+  // Show top 20 denominator slots (indices 0..19 → denom 1,3,...,39)
+  const showD = Math.min(20, nD);
+
+  const cellW = W / nPos;
+  const cellH = H / showD;
+
+  // Find max for color scaling
+  let maxVal = 0;
+  for (let k = 0; k < nPos; k++) {
+    for (let d = 0; d < showD; d++) {
+      if (denom_data[k][d] > maxVal) maxVal = denom_data[k][d];
+    }
+  }
+  if (maxVal === 0) maxVal = 1;
+
+  for (let k = 0; k < nPos; k++) {
+    for (let d = 0; d < showD; d++) {
+      const v = denom_data[k][d] / maxVal;
+      const [r, g, b] = heatColor(v);
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(k * cellW, (showD - 1 - d) * cellH, cellW, cellH);
+    }
+  }
+
+  // Draw Leibniz expected denominator markers
+  ctx.strokeStyle = '#bc8cff';
+  ctx.lineWidth = 1.5;
+  for (let k = 0; k < nPos; k++) {
+    const leibnizD = k;  // denom index = k (denom = 2k+1)
+    if (leibnizD < showD) {
+      const x = k * cellW + cellW / 2;
+      const y = (showD - 1 - leibnizD) * cellH + cellH / 2;
+      ctx.beginPath();
+      ctx.arc(x, y, Math.min(cellW, cellH) * 0.25, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+  }
+
+  // Axis labels
+  const axisDiv = document.getElementById('heatmap-axis');
+  let axHtml = `<span style="color:#8b949e;font-size:0.7rem">denom→ 1</span>`;
+  const step = Math.ceil(nPos / 10);
+  for (let k = 0; k < nPos; k += step) {
+    axHtml += `<span style="color:#8b949e;font-size:0.7rem">pos ${k}</span>`;
+  }
+  axHtml += `<span style="color:#8b949e;font-size:0.7rem">pos ${nPos-1}</span>`;
+  axisDiv.innerHTML = axHtml;
+}
+
+function heatColor(v) {
+  // Dark blue → blue → cyan → white
+  if (v < 0.33) {
+    const t = v / 0.33;
+    return [Math.round(13 + t * 30), Math.round(17 + t * 90), Math.round(30 + t * 130)];
+  } else if (v < 0.66) {
+    const t = (v - 0.33) / 0.33;
+    return [Math.round(43 + t * 45), Math.round(107 + t * 58), Math.round(160 + t * 55)];
+  } else {
+    const t = (v - 0.66) / 0.34;
+    return [Math.round(88 + t * 167), Math.round(165 + t * 90), Math.round(215 + t * 40)];
+  }
+}
+
+function onHeatmapHover(e) {
+  if (!data || !heatmapCanvas) return;
+  const rect = heatmapCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const nPos = posLimit;
+  const showD = Math.min(20, data.config.d_max);
+  const cellW = rect.width / nPos;
+  const cellH = rect.height / showD;
+  const k = Math.floor(x / cellW);
+  const dRev = Math.floor(y / cellH);
+  const d = showD - 1 - dRev;
+  if (k < 0 || k >= nPos || d < 0 || d >= showD) return;
+
+  const snap = data.snapshots[snapIdx];
+  const prob = snap.snapshot.denom[k][d];
+  const denom = 2 * d + 1;
+  const leibnizDenom = 2 * k + 1;
+  const isLeib = denom === leibnizDenom;
+  const tip = document.getElementById('tooltip');
+  tip.style.display = 'block';
+  tip.style.left = (e.clientX + 14) + 'px';
+  tip.style.top = (e.clientY - 10) + 'px';
+  tip.innerHTML = `
+    <strong>Position ${k}</strong> · Denominator ${denom}<br>
+    Probability: <span style="color:#58a6ff">${(prob * 100).toFixed(2)}%</span><br>
+    Leibniz target: <span style="color:${isLeib?'#3fb950':'#f85149'}">${leibnizDenom} ${isLeib?'✓':'✗'}</span>
+  `;
+}
+
+// ── Sign strip ────────────────────────────────────────────────────────────
+function drawSignStrip(snap) {
+  const strip = document.getElementById('sign-strip');
+  if (!strip) return;
+  const sign_data = snap.snapshot.sign;
+  let html = '';
+  for (let k = 0; k < posLimit; k++) {
+    const pPlus = sign_data[k][0];
+    const pMinus = sign_data[k][1];
+    const prefPlus = pPlus >= pMinus;
+    const conf = Math.abs(pPlus - pMinus);
+    const leibnizPlus = (k % 2 === 0);
+    const correct = prefPlus === leibnizPlus;
+    const cls = conf < 0.05 ? 'sign-neutral' : (prefPlus ? 'sign-plus' : 'sign-minus');
+    const sym = conf < 0.05 ? '?' : (prefPlus ? '+' : '−');
+    const title = `pos ${k}: P(+)=${(pPlus*100).toFixed(1)}% P(-)=${(pMinus*100).toFixed(1)}% Leibniz:${leibnizPlus?'+':'-'}`;
+    html += `<div class="sign-cell ${cls}" title="${title}" style="opacity:${0.5 + 0.5*conf}">${sym}</div>`;
+  }
+  strip.innerHTML = html;
+}
+
+// ── Convergence canvas ────────────────────────────────────────────────────
+function setupConvCanvas() {
+  // nothing needed, drawn on render
+}
+
+function drawConvCanvas(currentSnapIdx) {
+  const canvas = document.getElementById('conv-canvas');
+  if (!canvas || !data.convergence || data.convergence.length === 0) return;
+  const W = canvas.clientWidth || 400;
+  const H = canvas.clientHeight || 220;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const conv = data.convergence;
+  const PAD = { top: 12, right: 16, bottom: 36, left: 52 };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top - PAD.bottom;
+
+  // Value range
+  const allVals = conv.flatMap(r => [r.best_ever, r.greedy_fitness, r.mean_fitness]);
+  let minV = Math.min(...allVals);
+  let maxV = Math.max(...allVals);
+  if (minV === maxV) { minV -= 0.1; maxV += 0.1; }
+  const margin = (maxV - minV) * 0.05;
+  minV -= margin; maxV += margin;
+
+  const toX = (i) => PAD.left + (i / (conv.length - 1)) * plotW;
+  const toY = (v) => PAD.top + plotH - ((v - minV) / (maxV - minV)) * plotH;
+
+  // Background
+  ctx.fillStyle = '#161b22';
+  ctx.fillRect(0, 0, W, H);
+
+  // Curriculum phase bands
+  const phases = [
+    { end: 500, color: 'rgba(31,111,235,0.07)', label: 'Phase 1' },
+    { end: 1500, color: 'rgba(188,140,255,0.07)', label: 'Phase 2' },
+    { end: Infinity, color: 'rgba(63,185,80,0.07)', label: 'Phase 3' },
+  ];
+  let phaseStart = 0;
+  for (const ph of phases) {
+    const endGen = Math.min(ph.end, conv[conv.length - 1]?.generation ?? 0);
+    if (phaseStart >= endGen) break;
+    const x0 = toX(conv.findIndex(r => r.generation >= phaseStart) || 0);
+    const x1 = toX(Math.min(conv.findIndex(r => r.generation >= endGen), conv.length - 1));
+    ctx.fillStyle = ph.color;
+    ctx.fillRect(x0, PAD.top, x1 - x0, plotH);
+    phaseStart = ph.end;
+  }
+
+  // Grid lines
+  ctx.strokeStyle = '#21262d';
+  ctx.lineWidth = 1;
+  const nTicks = 5;
+  for (let i = 0; i <= nTicks; i++) {
+    const v = minV + (i / nTicks) * (maxV - minV);
+    const y = toY(v);
+    ctx.beginPath();
+    ctx.moveTo(PAD.left, y);
+    ctx.lineTo(PAD.left + plotW, y);
+    ctx.stroke();
+    ctx.fillStyle = '#8b949e';
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'right';
+    ctx.fillText(v.toFixed(4), PAD.left - 4, y + 4);
+  }
+
+  // Draw lines
+  function drawLine(key, color, lw) {
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lw;
+    ctx.lineJoin = 'round';
+    for (let i = 0; i < conv.length; i++) {
+      const x = toX(i);
+      const y = toY(conv[i][key]);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  drawLine('mean_fitness', '#8b949e', 1);
+  drawLine('greedy_fitness', '#3fb950', 1.5);
+  drawLine('best_ever', '#58a6ff', 2);
+
+  // Current snapshot generation line
+  const snapGen = data.snapshots[currentSnapIdx]?.gen;
+  if (snapGen !== undefined) {
+    const snapConvIdx = conv.findIndex(r => r.generation >= snapGen);
+    if (snapConvIdx >= 0) {
+      const sx = toX(snapConvIdx);
+      ctx.strokeStyle = '#bc8cff';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(sx, PAD.top);
+      ctx.lineTo(sx, PAD.top + plotH);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+  }
+
+  // X-axis labels
+  ctx.fillStyle = '#8b949e';
+  ctx.font = '10px sans-serif';
+  ctx.textAlign = 'center';
+  const xTickCount = 6;
+  for (let i = 0; i <= xTickCount; i++) {
+    const idx = Math.round((i / xTickCount) * (conv.length - 1));
+    const gen = conv[idx]?.generation ?? 0;
+    ctx.fillText(`Gen ${gen}`, toX(idx), H - 8);
+  }
+
+  // Axis labels
+  ctx.save();
+  ctx.translate(12, H / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillStyle = '#8b949e';
+  ctx.font = '10px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Fitness (neg error)', 0, 0);
+  ctx.restore();
+}
+
+// ── Comparison table ──────────────────────────────────────────────────────
+function drawComparison(snap) {
+  const tbody = document.getElementById('compare-tbody');
+  if (!tbody) return;
+
+  const greedy_s = data.greedy_series.signs;
+  const greedy_d = data.greedy_series.dens;
+  const pi4 = data.pi_over_4;
+
+  function partialSum(signs, dens, T) {
+    let s = 0;
+    for (let k = 0; k < Math.min(T, signs.length); k++) s += signs[k] / dens[k];
+    return s;
+  }
+
+  let html = '';
+  for (const T of [10, 20, 30, 40, 50]) {
+    const ps = partialSum(greedy_s, greedy_d, T);
+    const err = Math.abs(ps - pi4);
+    const leibErr = Math.abs((data.leibniz_refs[T] ?? 0) - pi4);
+    let verdict, vClass;
+    if (err < leibErr - 1e-10) { verdict = '▲ BETTER'; vClass = 'good'; }
+    else if (err > leibErr + 1e-10) { verdict = '▼ WORSE'; vClass = 'bad'; }
+    else { verdict = '≈ EQUAL'; vClass = 'neutral'; }
+    html += `<tr>
+      <td><strong>T=${T}</strong></td>
+      <td>${ps.toFixed(8)}</td>
+      <td class="${vClass}">${err.toFixed(8)}</td>
+      <td class="neutral">${leibErr.toFixed(8)}</td>
+      <td class="${vClass}">${verdict}</td>
+    </tr>`;
+  }
+  tbody.innerHTML = html;
+
+  // Series term comparison
+  const compareDiv = document.getElementById('series-compare');
+  if (!compareDiv) return;
+
+  function termStr(s, d) { return `${s>0?'+':''}${s}/${d}`; }
+  const T_show = 10;
+
+  let acoHtml = '<div class="series-label">ACO Greedy</div><div class="term-strip">';
+  let leibHtml = '<div class="series-label">Leibniz</div><div class="term-strip">';
+
+  for (let k = 0; k < T_show; k++) {
+    const acoS = greedy_s[k]; const acoD = greedy_d[k];
+    const leibS = (k % 2 === 0 ? 1 : -1);
+    const leibD = 2 * k + 1;
+    const match = acoS === leibS && acoD === leibD;
+    const cls = match ? 'term-match' : 'term-nomatch';
+    acoHtml += `<span class="term-chip ${cls}" title="pos ${k}">${termStr(acoS, acoD)}</span>`;
+    leibHtml += `<span class="term-chip term-match">${termStr(leibS, leibD)}</span>`;
+  }
+  acoHtml += '</div>';
+  leibHtml += '</div>';
+
+  // Pattern badges
+  const pat = data.greedy_series.pattern;
+  const badges = [
+    ['Alt signs', pat.signs_alternate],
+    ['Odd denoms', pat.denoms_odd],
+    ['Consec denoms', pat.denoms_consecutive],
+    ['IS LEIBNIZ', pat.is_leibniz],
+  ].map(([label, val]) =>
+    `<span class="match-badge ${val?'match-yes':'match-no'}">${label}: ${val?'YES':'NO'}</span>`
+  ).join(' ');
+
+  compareDiv.innerHTML = `
+    <div>${acoHtml}</div>
+    <div>${leibHtml}</div>
+    <div style="grid-column:1/3;margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">${badges}</div>
+  `;
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────
+function prevSnap() {
+  if (snapIdx > 0) renderSnapshot(snapIdx - 1);
+}
+function nextSnap() {
+  if (data && snapIdx < data.snapshots.length - 1) renderSnapshot(snapIdx + 1);
+}
+function togglePlay() {
+  isPlaying = !isPlaying;
+  const btn = document.getElementById('btn-play');
+  if (isPlaying) {
+    btn.textContent = '⏸ Pause';
+    btn.classList.add('active');
+    playTick();
+  } else {
+    btn.textContent = '▶ Play';
+    btn.classList.remove('active');
+    if (playTimer) clearTimeout(playTimer);
+  }
+}
+function playTick() {
+  if (!isPlaying || !data) return;
+  if (snapIdx >= data.snapshots.length - 1) {
+    snapIdx = 0;
+  } else {
+    snapIdx++;
+  }
+  renderSnapshot(snapIdx);
+  playTimer = setTimeout(playTick, 800);
+}
+
+function setPosLimit(n, btn) {
+  posLimit = n;
+  document.querySelectorAll('[data-pos]').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (data) renderSnapshot(snapIdx);
+}
+
+function updateStatus() {
+  if (!data) return;
+  const pill = document.getElementById('status-pill');
+  const gPat = data.greedy_series.pattern;
+  if (gPat.is_leibniz) {
+    pill.style.background = '#0d3a22';
+    pill.style.color = '#3fb950';
+    pill.style.borderColor = '#238636';
+    pill.textContent = '✓ LEIBNIZ FOUND';
+  } else {
+    pill.style.background = '#1a2a3a';
+    pill.style.color = '#58a6ff';
+    pill.style.borderColor = '#1f6feb';
+    const gens = data.run?.generations ?? '?';
+    const elapsed = data.run?.elapsed?.toFixed(1) ?? '?';
+    pill.textContent = `${gens} gens · ${elapsed}s`;
+  }
+}
+
+// ── Boot ───────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>
