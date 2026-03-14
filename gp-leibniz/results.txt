@@ -1,0 +1,171 @@
+========================================================================
+GP-LEIBNIZ: TEVV REPORT
+Genetic Programming discovers the Leibniz series for pi/4
+========================================================================
+
+Configuration:
+  pop_size=500, max_depth=6, max_nodes=30
+  p_cross=0.7, p_mut=0.2, n_elite=3
+  lambda_parsimony=0.0001, patience=100, threshold=0.001
+  T_eval=[10, 20, 50, 100, 200], n_seeds=5, max_total=290.0s
+========================================================================
+T — UNIT TESTS
+========================================================================
+  [PASS] div(1,0) → 1.0
+  [PASS] pow(-1,k) = [1,-1,1,-1,1]
+  [PASS] Leibniz tree k=0..9 correct
+  [PASS] Leibniz fitness > -0.02 (got -0.010136)
+  [PASS] Leibniz T=10 error ≈ 0.02494
+  [PASS] Leibniz T=20 error ≈ 0.01249
+  [PASS] Leibniz T=50 error ≈ 0.00500
+  [PASS] Leibniz T=100 error ≈ 0.00250
+  [PASS] Leibniz T=200 error ≈ 0.00125
+  [PASS] Parsimony: 9-node (-0.010136) > 12-node (-0.010336)
+  [PASS] 50 random trees within constraints
+  [PASS] Crossover valid sizes
+  [PASS] Mutation valid size
+  [PASS] Overflow clamped (safe_eval returns finite)
+  [PASS] Leibniz in top 10% of random pop (-0.0101 >= -3.6384)
+
+  Results: 15 passed, 0 failed
+
+========================================================================
+E — EVALUATION (per seed)
+========================================================================
+
+Seed 0 (val=42):
+  Generations : 126  |  Elapsed: 4.5s
+  Expression  : ((-1 / (k + 3)) ^ k)
+  Nodes       : 7
+  Best fitness: -0.00105997
+
+  Accuracy vs Leibniz:
+      T     Agent error   Leibniz error   Verdict
+  ──────────────────────────────────────────────────────
+     10      0.00035997      0.02493826    BETTER
+     20      0.00035997      0.01249221    BETTER
+     50      0.00035997      0.00499950    BETTER
+    100      0.00035997      0.00249994    BETTER
+    200      0.00035997      0.00124999    BETTER
+   1000      0.00035997      0.00025000     WORSE
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+
+Seed 1 (val=7):
+  Generations : 211  |  Elapsed: 6.7s
+  Expression  : ((-3 - k) ^ (-k))
+  Nodes       : 6
+  Best fitness: -0.00095997
+
+  Accuracy vs Leibniz:
+      T     Agent error   Leibniz error   Verdict
+  ──────────────────────────────────────────────────────
+     10      0.00035997      0.02493826    BETTER
+     20      0.00035997      0.01249221    BETTER
+     50      0.00035997      0.00499950    BETTER
+    100      0.00035997      0.00249994    BETTER
+    200      0.00035997      0.00124999    BETTER
+   1000      0.00035997      0.00025000     WORSE
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+
+Seed 2 (val=137):
+  Generations : 176  |  Elapsed: 5.3s
+  Expression  : ((-3 - k) ^ (-k))
+  Nodes       : 6
+  Best fitness: -0.00095997
+
+  Accuracy vs Leibniz:
+      T     Agent error   Leibniz error   Verdict
+  ──────────────────────────────────────────────────────
+     10      0.00035997      0.02493826    BETTER
+     20      0.00035997      0.01249221    BETTER
+     50      0.00035997      0.00499950    BETTER
+    100      0.00035997      0.00249994    BETTER
+    200      0.00035997      0.00124999    BETTER
+   1000      0.00035997      0.00025000     WORSE
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+
+Seed 3 (val=2718):
+  Generations : 123  |  Elapsed: 4.6s
+  Expression  : ((k ^ -3) / (((-5 - 1) * k) + 1))
+  Nodes       : 11
+  Best fitness: -0.00131711
+
+  Accuracy vs Leibniz:
+      T     Agent error   Leibniz error   Verdict
+  ──────────────────────────────────────────────────────
+     10      0.00016648      0.02493826    BETTER
+     20      0.00022425      0.01249221    BETTER
+     50      0.00023132      0.00499950    BETTER
+    100      0.00023172      0.00249994    BETTER
+    200      0.00023177      0.00124999    BETTER
+   1000      0.00023178      0.00025000    BETTER
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+
+Seed 4 (val=31415):
+  Generations : 143  |  Elapsed: 5.8s
+  Expression  : ((0 ^ k) / ((3 / (3 + (3 + 5))) + 1))
+  Nodes       : 13
+  Best fitness: -0.00161612
+
+  Accuracy vs Leibniz:
+      T     Agent error   Leibniz error   Verdict
+  ──────────────────────────────────────────────────────
+     10      0.00031612      0.02493826    BETTER
+     20      0.00031612      0.01249221    BETTER
+     50      0.00031612      0.00499950    BETTER
+    100      0.00031612      0.00249994    BETTER
+    200      0.00031612      0.00124999    BETTER
+   1000      0.00031612      0.00025000     WORSE
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+
+────────────────────────────────────────────────────────────────────────
+Aggregate:
+  Mean best fitness : -0.00118263
+  Best (any seed)   : -0.00095997
+  Equivalent found  : False
+  Structural found  : False
+
+========================================================================
+V — VERIFICATION
+========================================================================
+
+Leibniz tree injected into gen 0 of every seed.
+  Leibniz node count : 9
+  Leibniz fitness    : -0.01013598
+  90th-pct random pop: -3.63839816
+  Leibniz top 10%    : True
+
+========================================================================
+V — VALIDATION
+========================================================================
+
+Best seed: 1  |  Gens: 211
+  Expression : ((-3 - k) ^ (-k))
+  T=200 error: 0.0003599687
+  T=1000 err : 0.00035997  (Leibniz: 0.00025000)
+  Converging : False
+
+Comparison vs prior methods:
+  Method         T=10 err    T=200 err  Structure  Converges
+  ────────────────────────────────────────────────────────
+  RL v1          0.036000     diverges      False      False
+  RL v2          0.025000     diverges      False      False
+  ACO            0.000057     diverges      False      False
+  GP             0.000360     0.000360      False       True
+
+========================================================================
+VERDICT
+========================================================================
+  Found Leibniz (equiv) in any seed: False
+  Found structural form in any seed : False
+  Best T=200 error: 0.000360  (Leibniz: 0.001250)

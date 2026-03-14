@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GP-Leibniz: Genetic Programming Discovers π/4</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0d1117;
+    color: #e6edf3;
+    font-family: 'Inter', system-ui, sans-serif;
+    min-height: 100vh;
+  }
+
+  code, .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Header ───────────────────── */
+  header {
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    border-bottom: 1px solid #21262d;
+    padding: 20px 32px 14px;
+  }
+  header h1 {
+    font-size: 1.65rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, #3fb950, #58a6ff, #bc8cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p { color: #8b949e; font-size: 0.88rem; margin-top: 4px; }
+
+  /* ── Controls ─────────────────── */
+  #controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 32px;
+    background: #161b22;
+    border-bottom: 1px solid #21262d;
+    flex-wrap: wrap;
+  }
+  .ctrl-group { display: flex; align-items: center; gap: 8px; }
+  .ctrl-label { color: #8b949e; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .btn {
+    background: #21262d; border: 1px solid #30363d; color: #c9d1d9;
+    padding: 5px 12px; border-radius: 6px; cursor: pointer;
+    font-size: 0.8rem; font-family: inherit;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .btn:hover { background: #30363d; border-color: #58a6ff; }
+  .btn.active { background: #1f6feb; border-color: #58a6ff; color: #fff; }
+  #gen-slider { width: 200px; accent-color: #3fb950; }
+  #gen-display { color: #3fb950; font-size: 0.85rem; font-weight: 600; min-width: 80px; mono: true; font-family: 'JetBrains Mono', monospace; }
+  #status-pill {
+    margin-left: auto; padding: 4px 14px; border-radius: 20px;
+    font-size: 0.75rem; font-weight: 600;
+    background: #1a3a1a; color: #3fb950; border: 1px solid #238636;
+  }
+  .seed-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; }
+
+  /* ── Layout ───────────────────── */
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 14px;
+    padding: 14px 32px 32px;
+  }
+
+  .panel {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .panel-hdr {
+    padding: 11px 16px 8px;
+    border-bottom: 1px solid #21262d;
+    font-weight: 600; font-size: 0.85rem; color: #c9d1d9;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .panel-body { padding: 14px 16px; }
+
+  /* ── Expression panel ─────────── */
+  #expr-panel { grid-column: 1 / 3; }
+  #expr-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    padding: 14px 16px;
+    background: #0d1117;
+    border-radius: 8px;
+    border: 1px solid #21262d;
+    word-break: break-all;
+    min-height: 56px;
+    transition: color 0.3s;
+  }
+  .expr-found { color: #3fb950 !important; border-color: #238636 !important; }
+  .expr-close { color: #f0e030; }
+  .expr-evolving { color: #58a6ff; }
+
+  .expr-meta {
+    display: flex; gap: 20px; margin-top: 10px; flex-wrap: wrap;
+  }
+  .expr-stat { font-size: 0.78rem; }
+  .expr-stat span { color: #58a6ff; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Fitness chart ────────────── */
+  #fitness-canvas { display: block; width: 100%; height: 220px; }
+
+  /* ── Series comparison ────────── */
+  #series-panel { }
+  .term-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr;
+    gap: 6px;
+    align-items: center;
+    padding: 3px 0;
+    border-bottom: 1px solid #21262d22;
+    font-size: 0.78rem;
+  }
+  .term-row:last-child { border-bottom: none; }
+  .term-k { color: #8b949e; font-family: 'JetBrains Mono', monospace; }
+  .term-chip {
+    padding: 2px 8px; border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    text-align: right;
+  }
+  .term-match    { background: #0d3a22; color: #3fb950; border: 1px solid #238636; }
+  .term-close    { background: #2a2a0a; color: #f0e030; border: 1px solid #8a8a10; }
+  .term-nomatch  { background: #3a0d0d; color: #f85149; border: 1px solid #da3633; }
+
+  /* ── Generalization chart ─────── */
+  #gen-chart-panel { grid-column: 1 / 3; }
+  #gen-canvas { display: block; width: 100%; height: 260px; }
+
+  /* ── Comparison table ─────────── */
+  #compare-panel { grid-column: 1 / 3; }
+  #compare-table {
+    width: 100%; border-collapse: collapse; font-size: 0.82rem;
+  }
+  #compare-table th {
+    color: #8b949e; font-weight: 600; text-align: left;
+    padding: 7px 12px; border-bottom: 1px solid #21262d;
+    font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  #compare-table td {
+    padding: 7px 12px; border-bottom: 1px solid #21262d22; vertical-align: middle;
+  }
+  #compare-table tr:last-child td { border-bottom: none; }
+  #compare-table tr.gp-row td { background: #1a2a1a; }
+  .good  { color: #3fb950; font-weight: 600; }
+  .bad   { color: #f85149; }
+  .neu   { color: #8b949e; }
+  .badge {
+    display: inline-block; padding: 1px 8px; border-radius: 10px;
+    font-size: 0.72rem; font-weight: 600;
+  }
+  .badge-yes { background: #0d3a22; color: #3fb950; border: 1px solid #238636; }
+  .badge-no  { background: #3a0d0d; color: #f85149; border: 1px solid #da3633; }
+
+  /* ── Misc ─────────────────────── */
+  #loading {
+    grid-column: 1/3; display: flex; flex-direction: column;
+    align-items: center; gap: 16px; padding: 64px; color: #8b949e;
+  }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid #21262d;
+    border-top-color: #3fb950; border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .error-box {
+    background: #3a0d0d; border: 1px solid #da3633; border-radius: 8px;
+    padding: 20px; color: #f85149; font-size: 0.88rem;
+  }
+  #tooltip {
+    position: fixed; background: #0d1117; border: 1px solid #30363d;
+    border-radius: 8px; padding: 8px 12px; font-size: 0.76rem; color: #c9d1d9;
+    pointer-events: none; display: none; z-index: 1000;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>GP-Leibniz: Genetic Programming Discovers π/4</h1>
+  <p>Population of symbolic expression trees evolves f(k) such that Σ f(k) → π/4 = 1 − 1/3 + 1/5 − 1/7 + …</p>
+</header>
+
+<div id="controls">
+  <div class="ctrl-group">
+    <span class="ctrl-label">Seed</span>
+    <div id="seed-btns"></div>
+  </div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Generation</span>
+    <input type="range" id="gen-slider" min="0" max="0" value="0">
+    <span id="gen-display">Gen 0</span>
+  </div>
+  <div class="ctrl-group">
+    <button class="btn active" id="btn-play">▶ Play</button>
+    <button class="btn" id="btn-prev">◀</button>
+    <button class="btn" id="btn-next">▶</button>
+  </div>
+  <div id="status-pill">Loading…</div>
+</div>
+
+<main id="main-content">
+  <div id="loading"><div class="spinner"></div><div>Loading evolution_data.json…</div></div>
+</main>
+
+<div id="tooltip"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let data = null;
+let activeSeed = 0;
+let histIdx = 0;
+let playTimer = null;
+let isPlaying = false;
+
+// ── Load ───────────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const resp = await fetch('evolution_data.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    data = await resp.json();
+    init();
+  } catch (e) {
+    document.getElementById('main-content').innerHTML =
+      `<div class="error-box" style="grid-column:1/3;margin:32px">
+        <strong>Could not load evolution_data.json</strong><br>
+        Run <code>python3 gp_leibniz.py</code> first to generate the data.<br><br>
+        <small>${e.message}</small>
+      </div>`;
+  }
+}
+
+function init() {
+  buildLayout();
+  buildSeedButtons();
+  setupSlider();
+  setupButtons();
+  selectSeed(0);
+  updateStatus();
+  togglePlay(); // auto-start
+}
+
+function buildLayout() {
+  document.getElementById('main-content').innerHTML = `
+  <div class="panel" id="expr-panel" style="grid-column:1/3">
+    <div class="panel-hdr">🧬 Best Expression (f(k) = this function)</div>
+    <div class="panel-body">
+      <div id="expr-display" class="expr-evolving">Loading…</div>
+      <div class="expr-meta">
+        <div class="expr-stat">Nodes: <span id="expr-nc">–</span></div>
+        <div class="expr-stat">Fitness: <span id="expr-fit">–</span></div>
+        <div class="expr-stat">Generation: <span id="expr-gen">–</span></div>
+        <div class="expr-stat">Equivalent to Leibniz: <span id="expr-equiv">–</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="fitness-panel">
+    <div class="panel-hdr">📈 Fitness Convergence</div>
+    <div class="panel-body" style="padding:10px 12px">
+      <canvas id="fitness-canvas"></canvas>
+      <div style="display:flex;gap:16px;margin-top:6px;font-size:0.73rem;color:#8b949e">
+        <span><span style="color:#58a6ff">●</span> Best ever</span>
+        <span><span style="color:#3fb950">●</span> Mean</span>
+        <span><span style="color:#bc8cff;font-weight:700">│</span> Current</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="series-panel">
+    <div class="panel-hdr">🔢 Series Terms (T=10) vs Leibniz</div>
+    <div class="panel-body">
+      <div id="series-rows"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="gen-chart-panel" style="grid-column:1/3">
+    <div class="panel-hdr">📉 Generalization — Partial Sums to T=200</div>
+    <div class="panel-body" style="padding:10px 12px">
+      <canvas id="gen-canvas"></canvas>
+      <div style="display:flex;gap:20px;margin-top:6px;font-size:0.73rem;color:#8b949e">
+        <span><span style="color:#3fb950">●</span> GP best</span>
+        <span><span style="color:#58a6ff">●</span> Leibniz</span>
+        <span><span style="color:#f85149">─ ─</span> π/4 target</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="compare-panel" style="grid-column:1/3">
+    <div class="panel-hdr">🏆 Method Comparison</div>
+    <div class="panel-body">
+      <table id="compare-table">
+        <thead><tr>
+          <th>Method</th><th>T=10 error</th><th>T=200 error</th>
+          <th>Found structure</th><th>Converges</th><th>Notes</th>
+        </tr></thead>
+        <tbody id="compare-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+  `;
+}
+
+function buildSeedButtons() {
+  const container = document.getElementById('seed-btns');
+  container.innerHTML = '';
+  data.seeds.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'btn seed-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = `S${s.seed}`;
+    btn.title = `Seed val=${s.seed}, ${s.generations} gens`;
+    btn.onclick = () => selectSeed(i);
+    container.appendChild(btn);
+  });
+}
+
+function setupSlider() {
+  const slider = document.getElementById('gen-slider');
+  slider.addEventListener('input', () => {
+    histIdx = +slider.value;
+    renderFrame(histIdx);
+  });
+}
+
+function setupButtons() {
+  document.getElementById('btn-play').addEventListener('click', togglePlay);
+  document.getElementById('btn-prev').addEventListener('click', () => { stepFrame(-1); });
+  document.getElementById('btn-next').addEventListener('click', () => { stepFrame(1); });
+}
+
+function selectSeed(idx) {
+  activeSeed = idx;
+  histIdx = 0;
+  document.querySelectorAll('.seed-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  const hist = data.seeds[idx].history;
+  const slider = document.getElementById('gen-slider');
+  slider.max = hist.length - 1;
+  slider.value = 0;
+  renderFrame(0);
+  drawGenChart();
+  drawCompareTable();
+}
+
+// ── Frame rendering ────────────────────────────────────────────────────────
+function renderFrame(idx) {
+  if (!data) return;
+  histIdx = idx;
+  document.getElementById('gen-slider').value = idx;
+  const hist = data.seeds[activeSeed].history;
+  if (!hist || hist.length === 0) return;
+  const frame = hist[Math.min(idx, hist.length - 1)];
+  document.getElementById('gen-display').textContent = `Gen ${frame.gen}`;
+
+  renderExpression(frame);
+  drawFitnessChart(idx);
+  renderSeriesTerms(frame);
+}
+
+function renderExpression(frame) {
+  const el = document.getElementById('expr-display');
+  const seed = data.seeds[activeSeed];
+  const expr = frame.best_expr;
+  const isEquiv = seed.is_equivalent;
+
+  // Colorize: mark if it contains Leibniz-like subexpressions
+  const hasAlt = expr.includes('^') && expr.includes('-1');
+  const has2k1 = (expr.includes('2 *') || expr.includes('* 2')) && expr.includes('+ 1');
+
+  el.className = isEquiv ? 'expr-found' : (hasAlt && has2k1 ? 'expr-close' : 'expr-evolving');
+
+  // Highlight key subexpressions
+  let html = escHtml(expr);
+  if (!isEquiv) {
+    // Highlight alternating-sign subexpressions
+    html = html.replace(/\(-1\s*\^[^)]*\)/g, s => `<span style="color:#bc8cff;font-weight:600">${s}</span>`);
+    // Highlight 2k+1 denominator pattern
+    html = html.replace(/\(2\s*\*\s*k[^)]*\+\s*1\)/g, s => `<span style="color:#f0a030;font-weight:600">${s}</span>`);
+  } else {
+    html = `<span style="color:#3fb950;font-weight:700">✓ LEIBNIZ FOUND: </span>` + html;
+  }
+  el.innerHTML = html;
+
+  document.getElementById('expr-nc').textContent = frame.node_count;
+  document.getElementById('expr-fit').textContent = frame.best_fitness.toFixed(6);
+  document.getElementById('expr-gen').textContent = frame.gen;
+  document.getElementById('expr-equiv').innerHTML = isEquiv
+    ? '<span style="color:#3fb950;font-weight:700">YES ✓</span>'
+    : '<span style="color:#8b949e">No</span>';
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderSeriesTerms(frame) {
+  const terms = frame.terms_t10;
+  const leibnizTerms = Array.from({length: 10}, (_, k) => Math.pow(-1, k) / (2 * k + 1));
+  const container = document.getElementById('series-rows');
+  if (!terms) { container.innerHTML = ''; return; }
+
+  let html = `<div class="term-row" style="font-size:0.72rem;color:#8b949e;font-weight:600">
+    <div>k</div><div>GP f(k)</div><div>Leibniz</div></div>`;
+  for (let k = 0; k < Math.min(10, terms.length); k++) {
+    const gp = terms[k];
+    const lei = leibnizTerms[k];
+    const err = Math.abs(gp - lei);
+    const cls = err < 1e-6 ? 'term-match' : (err < 0.01 ? 'term-close' : 'term-nomatch');
+    html += `<div class="term-row">
+      <div class="term-k">${k}</div>
+      <div><span class="term-chip ${cls}">${gp.toFixed(6)}</span></div>
+      <div><span class="term-chip term-match">${lei.toFixed(6)}</span></div>
+    </div>`;
+  }
+  container.innerHTML = html;
+}
+
+// ── Fitness chart ──────────────────────────────────────────────────────────
+function drawFitnessChart(currentIdx) {
+  const canvas = document.getElementById('fitness-canvas');
+  if (!canvas) return;
+  const hist = data.seeds[activeSeed].history;
+  if (!hist || hist.length < 2) return;
+
+  const W = canvas.clientWidth || 400;
+  const H = canvas.clientHeight || 220;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  const PAD = { top: 10, right: 12, bottom: 36, left: 56 };
+  const pw = W - PAD.left - PAD.right;
+  const ph = H - PAD.top - PAD.bottom;
+
+  const allVals = hist.flatMap(h => [h.best_fitness, h.mean_fitness]);
+  let minV = Math.min(...allVals);
+  let maxV = Math.max(...allVals);
+  if (minV === maxV) { minV -= 0.01; maxV += 0.01; }
+  const m = (maxV - minV) * 0.05;
+  minV -= m; maxV += m;
+
+  const toX = i => PAD.left + (i / (hist.length - 1)) * pw;
+  const toY = v => PAD.top + ph - ((v - minV) / (maxV - minV)) * ph;
+
+  ctx.fillStyle = '#161b22';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const v = minV + (i / 5) * (maxV - minV);
+    const y = toY(v);
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + pw, y); ctx.stroke();
+    ctx.fillStyle = '#8b949e'; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+    ctx.fillText(v.toFixed(4), PAD.left - 4, y + 3);
+  }
+
+  const drawLine = (key, color, lw) => {
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.lineJoin = 'round';
+    hist.forEach((h, i) => {
+      const x = toX(i), y = toY(h[key]);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  };
+
+  drawLine('mean_fitness', '#3fb950', 1.2);
+  drawLine('best_fitness', '#58a6ff', 2);
+
+  // Current position
+  const sx = toX(Math.min(currentIdx, hist.length - 1));
+  ctx.strokeStyle = '#bc8cff'; ctx.lineWidth = 2; ctx.setLineDash([4, 3]);
+  ctx.beginPath(); ctx.moveTo(sx, PAD.top); ctx.lineTo(sx, PAD.top + ph); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // X labels
+  ctx.fillStyle = '#8b949e'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+  const xTicks = 6;
+  for (let i = 0; i <= xTicks; i++) {
+    const idx = Math.round((i / xTicks) * (hist.length - 1));
+    ctx.fillText(`Gen ${hist[idx].gen}`, toX(idx), H - 8);
+  }
+}
+
+// ── Generalization chart ───────────────────────────────────────────────────
+function drawGenChart() {
+  const canvas = document.getElementById('gen-canvas');
+  if (!canvas) return;
+  const gen = data.generalization;
+  if (!gen || !gen.gp_partial_sums.length) return;
+
+  const W = canvas.clientWidth || 800;
+  const H = canvas.clientHeight || 260;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  const PAD = { top: 12, right: 20, bottom: 38, left: 64 };
+  const pw = W - PAD.left - PAD.right;
+  const ph = H - PAD.top - PAD.bottom;
+  const n = Math.min(gen.gp_partial_sums.length, gen.leibniz_partial_sums.length, 200);
+
+  const allVals = [
+    ...gen.gp_partial_sums.slice(0, n),
+    ...gen.leibniz_partial_sums.slice(0, n),
+    data.pi_over_4,
+  ];
+  let minV = Math.min(...allVals.filter(isFinite));
+  let maxV = Math.max(...allVals.filter(isFinite));
+  if (minV === maxV) { minV -= 0.1; maxV += 0.1; }
+  const m = (maxV - minV) * 0.06;
+  minV -= m; maxV += m;
+
+  const toX = i => PAD.left + (i / (n - 1)) * pw;
+  const toY = v => PAD.top + ph - ((v - minV) / (maxV - minV)) * ph;
+
+  ctx.fillStyle = '#161b22'; ctx.fillRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 6; i++) {
+    const v = minV + (i / 6) * (maxV - minV);
+    const y = toY(v);
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + pw, y); ctx.stroke();
+    ctx.fillStyle = '#8b949e'; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+    ctx.fillText(v.toFixed(4), PAD.left - 4, y + 3);
+  }
+
+  // π/4 reference line
+  const py4 = toY(data.pi_over_4);
+  ctx.strokeStyle = '#f85149'; ctx.lineWidth = 1.5; ctx.setLineDash([6, 4]);
+  ctx.beginPath(); ctx.moveTo(PAD.left, py4); ctx.lineTo(PAD.left + pw, py4); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = '#f85149'; ctx.font = '10px monospace'; ctx.textAlign = 'left';
+  ctx.fillText('π/4', PAD.left + 2, py4 - 4);
+
+  // Leibniz
+  ctx.beginPath(); ctx.strokeStyle = '#58a6ff'; ctx.lineWidth = 1.5; ctx.lineJoin = 'round';
+  gen.leibniz_partial_sums.slice(0, n).forEach((v, i) => {
+    const x = toX(i), y = isFinite(v) ? toY(v) : PAD.top;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // GP best
+  ctx.beginPath(); ctx.strokeStyle = '#3fb950'; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+  gen.gp_partial_sums.slice(0, n).forEach((v, i) => {
+    const x = toX(i), y = isFinite(v) && Math.abs(v) < 1e4 ? toY(Math.max(minV, Math.min(maxV, v))) : null;
+    if (y === null) { ctx.stroke(); ctx.beginPath(); return; }
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // X labels
+  ctx.fillStyle = '#8b949e'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+  [1, 25, 50, 75, 100, 150, 200].forEach(T => {
+    if (T <= n) {
+      ctx.fillText(`T=${T}`, toX(T - 1), H - 8);
+      ctx.strokeStyle = '#21262d22'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(toX(T-1), PAD.top); ctx.lineTo(toX(T-1), PAD.top+ph); ctx.stroke();
+    }
+  });
+}
+
+// ── Comparison table ───────────────────────────────────────────────────────
+function drawCompareTable() {
+  const tbody = document.getElementById('compare-tbody');
+  if (!tbody || !data.comparison) return;
+  const c = data.comparison;
+  const best = data.seeds[activeSeed];
+  const ana_errors = best.errors || {};
+
+  const methods = [
+    { name: 'RL v1',  t10: 0.036,    t200: null,   struct: false, conv: false, note: 'No structure; diverges at T>10' },
+    { name: 'RL v2',  t10: 0.025,    t200: null,   struct: false, conv: false, note: 'Matched Leibniz at T=10 only' },
+    { name: 'ACO',    t10: 5.74e-5,  t200: null,   struct: false, conv: false, note: '440× better at T=10; collapses T>40' },
+    { name: 'GP',     t10: ana_errors['10'] ?? null, t200: ana_errors['200'] ?? null,
+      struct: best.is_equivalent, conv: (ana_errors['200'] ?? 1) < 0.005,
+      note: best.is_equivalent ? '✓ Leibniz found!' : 'See results.txt', isGP: true },
+  ];
+
+  tbody.innerHTML = methods.map(m => {
+    const t10s = m.t10 != null ? m.t10.toFixed(6) : '—';
+    const t200s = m.t200 != null ? m.t200.toFixed(6) : 'diverges';
+    const t10c = m.t10 != null && m.t10 < 0.001 ? 'good' : (m.t10 != null && m.t10 < 0.01 ? '' : 'bad');
+    const t200c = m.t200 != null && m.t200 < 0.005 ? 'good' : 'bad';
+    const structBadge = `<span class="badge ${m.struct ? 'badge-yes' : 'badge-no'}">${m.struct ? 'YES' : 'NO'}</span>`;
+    const convBadge = `<span class="badge ${m.conv ? 'badge-yes' : 'badge-no'}">${m.conv ? 'YES' : 'NO'}</span>`;
+    const nameStyle = m.isGP ? ' style="color:#3fb950;font-weight:700"' : '';
+    return `<tr${m.isGP ? ' class="gp-row"' : ''}>
+      <td><strong${nameStyle}>${m.name}</strong></td>
+      <td class="${t10c}">${t10s}</td>
+      <td class="${t200c}">${t200s}</td>
+      <td>${structBadge}</td>
+      <td>${convBadge}</td>
+      <td class="neu" style="font-size:0.76rem">${m.note}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Playback ───────────────────────────────────────────────────────────────
+function stepFrame(dir) {
+  const hist = data.seeds[activeSeed].history;
+  histIdx = Math.max(0, Math.min(hist.length - 1, histIdx + dir));
+  renderFrame(histIdx);
+}
+
+function togglePlay() {
+  isPlaying = !isPlaying;
+  const btn = document.getElementById('btn-play');
+  if (isPlaying) {
+    btn.textContent = '⏸ Pause'; btn.classList.add('active');
+    playTick();
+  } else {
+    btn.textContent = '▶ Play'; btn.classList.remove('active');
+    if (playTimer) clearTimeout(playTimer);
+  }
+}
+
+function playTick() {
+  if (!isPlaying || !data) return;
+  const hist = data.seeds[activeSeed].history;
+  if (histIdx >= hist.length - 1) histIdx = 0;
+  else histIdx++;
+  renderFrame(histIdx);
+  playTimer = setTimeout(playTick, 600);
+}
+
+function updateStatus() {
+  const pill = document.getElementById('status-pill');
+  const anyEquiv = data.seeds.some(s => s.is_equivalent);
+  const best = data.seeds.reduce((a, b) => a.best_fitness > b.best_fitness ? a : b);
+  if (anyEquiv) {
+    pill.style.background = '#0d3a22'; pill.style.color = '#3fb950'; pill.style.borderColor = '#238636';
+    pill.textContent = '✓ LEIBNIZ FOUND';
+  } else {
+    pill.style.background = '#1a2a3a'; pill.style.color = '#58a6ff'; pill.style.borderColor = '#1f6feb';
+    const totalGens = data.seeds.reduce((s, r) => s + r.generations, 0);
+    pill.textContent = `${data.seeds.length} seeds · ${totalGens} gens`;
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>
