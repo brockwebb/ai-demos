@@ -1,0 +1,205 @@
+========================================================================
+GP-LEIBNIZ v2: TEVV REPORT
+Convergence-aware fitness discovers the Leibniz series for π/4
+========================================================================
+
+Configuration (v2 changes starred):
+  pop_size=1000*, max_depth=6, max_nodes=30
+  tournament_k=7*, n_elite=5*
+  alpha=0.05* (convergence weight), lambda_p=0.005* (heavy parsimony)
+  T_eval=[10, 50, 200, 1000, 5000]* (includes T=5000)
+  n_seeds=5, max_total=290.0s
+
+Fitness: accuracy + alpha*conv_bonus - lambda*nodes
+  alpha=0.05, lambda=0.005
+  Leibniz (9 nodes) estimated fitness: ~0.000
+  GP v1 best (6 nodes) estimated fitness: ~-0.030
+========================================================================
+T — UNIT TESTS (v2)
+========================================================================
+  [PASS] div(1,0) → 1.0
+  [PASS] pow(-1,k) = [1,-1,1,-1,1]
+  [PASS] Leibniz tree k=0..9 correct
+  [PASS] GP v1 best tree evaluates OK
+  [PASS] Leibniz T=5000 error ≈ 0.000050
+  [PASS] GP v1 best T=5000 error flatlines (got 0.000360)
+
+  ── Fitness Calibration (CRITICAL) ──
+  Leibniz fitness  : -0.001298
+  GP v1 best fitness: -0.030360
+    Leibniz : acc=-0.00630 cb=1.00 ps=0.0450
+    GP v1   : acc=-0.00036 cb=0.00 ps=0.0300
+  [PASS] Leibniz (-0.0013) beats GP v1 (-0.0304)
+  [PASS] Leibniz convergence_bonus = 1.0
+  [PASS] GP v1 convergence_bonus = 0.0
+  [PASS] Leibniz parsimony = 0.005*9 = 0.0450
+  [PASS] 6-node tree parsimony = 0.0300
+  [PASS] 50 random trees within constraints
+  [PASS] Crossover valid sizes
+  [PASS] Mutation valid size
+  [PASS] Leibniz (-0.0013) in top 10% of random pop (≥-9.9724)
+
+  Results: 15 passed, 0 failed
+
+========================================================================
+E — EVALUATION (per seed)
+========================================================================
+
+Seed 0 (val=42):
+  Gens: 1292  Elapsed: 55.0s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : -0.00129755
+  Components : acc=-0.006298 + 0.05×cb=0.050000 - ps=0.045000 = -0.001298
+  Conv bonus : 1.0000 (1.0=perfect)
+
+  Errors vs Leibniz:
+       T           Agent         Leibniz   Verdict
+  ────────────────────────────────────────────────
+      10      0.02493826      0.02493826     EQUAL
+      50      0.00499950      0.00499950     EQUAL
+     200      0.00124999      0.00124999     EQUAL
+    1000      0.00025000      0.00025000     EQUAL
+    5000      0.00005000      0.00005000     EQUAL
+   10000      0.00002500      0.00002500     EQUAL
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone convergence   : True
+
+Seed 1 (val=7):
+  Gens: 1422  Elapsed: 55.0s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : -0.00129755
+  Components : acc=-0.006298 + 0.05×cb=0.050000 - ps=0.045000 = -0.001298
+  Conv bonus : 1.0000 (1.0=perfect)
+
+  Errors vs Leibniz:
+       T           Agent         Leibniz   Verdict
+  ────────────────────────────────────────────────
+      10      0.02493826      0.02493826     EQUAL
+      50      0.00499950      0.00499950     EQUAL
+     200      0.00124999      0.00124999     EQUAL
+    1000      0.00025000      0.00025000     EQUAL
+    5000      0.00005000      0.00005000     EQUAL
+   10000      0.00002500      0.00002500     EQUAL
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone convergence   : True
+
+Seed 2 (val=137):
+  Gens: 1419  Elapsed: 55.0s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : -0.00129755
+  Components : acc=-0.006298 + 0.05×cb=0.050000 - ps=0.045000 = -0.001298
+  Conv bonus : 1.0000 (1.0=perfect)
+
+  Errors vs Leibniz:
+       T           Agent         Leibniz   Verdict
+  ────────────────────────────────────────────────
+      10      0.02493826      0.02493826     EQUAL
+      50      0.00499950      0.00499950     EQUAL
+     200      0.00124999      0.00124999     EQUAL
+    1000      0.00025000      0.00025000     EQUAL
+    5000      0.00005000      0.00005000     EQUAL
+   10000      0.00002500      0.00002500     EQUAL
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone convergence   : True
+
+Seed 3 (val=2718):
+  Gens: 1443  Elapsed: 55.0s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : -0.00129755
+  Components : acc=-0.006298 + 0.05×cb=0.050000 - ps=0.045000 = -0.001298
+  Conv bonus : 1.0000 (1.0=perfect)
+
+  Errors vs Leibniz:
+       T           Agent         Leibniz   Verdict
+  ────────────────────────────────────────────────
+      10      0.02493826      0.02493826     EQUAL
+      50      0.00499950      0.00499950     EQUAL
+     200      0.00124999      0.00124999     EQUAL
+    1000      0.00025000      0.00025000     EQUAL
+    5000      0.00005000      0.00005000     EQUAL
+   10000      0.00002500      0.00002500     EQUAL
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone convergence   : True
+
+Seed 4 (val=31415):
+  Gens: 1333  Elapsed: 55.0s
+  Expression : ((-1 ^ k) / ((2 * k) + 1))
+  Nodes      : 9
+  Fitness    : -0.00129755
+  Components : acc=-0.006298 + 0.05×cb=0.050000 - ps=0.045000 = -0.001298
+  Conv bonus : 1.0000 (1.0=perfect)
+
+  Errors vs Leibniz:
+       T           Agent         Leibniz   Verdict
+  ────────────────────────────────────────────────
+      10      0.02493826      0.02493826     EQUAL
+      50      0.00499950      0.00499950     EQUAL
+     200      0.00124999      0.00124999     EQUAL
+    1000      0.00025000      0.00025000     EQUAL
+    5000      0.00005000      0.00005000     EQUAL
+   10000      0.00002500      0.00002500     EQUAL
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone convergence   : True
+
+────────────────────────────────────────────────────────────────────────
+Aggregate:
+  Mean best fitness  : -0.00129755
+  Best (any seed)    : -0.00129755
+  Any equiv Leibniz  : True
+  Any structural     : True
+  Any monotone conv  : True
+
+========================================================================
+V — VERIFICATION
+========================================================================
+
+Fitness under v2 function:
+  Leibniz : -0.001298
+  GP v1   : -0.030360
+  Margin  : 0.029062
+
+Leibniz rank vs random-100: -0.0013 ≥ p90=-9.9724: True
+
+========================================================================
+V — VALIDATION
+========================================================================
+
+Best seed: 0  Gens: 1292
+  Expression: ((-1 ^ k) / ((2 * k) + 1))
+  T=5000 err: 5e-05
+  T=10000 err: 0.00002500  (Leibniz: 0.00002500)
+  Converging to T=10000: True
+
+  Error at T_EVAL: ['0.024938', '0.005000', '0.001250', '0.000250', '0.000050']
+  Monotone decreasing: True
+
+────────────────────────────────────────────────────────────────────────
+Comparison — all 5 experiments:
+  Method        T=200 err   T=5000 err   Equiv  Monotone Notes
+  ─────────────────────────────────────────────────────────────────
+  RL v1          diverges     diverges   False     False  No structure
+  RL v2          diverges     diverges   False     False  Matched Leibniz at T=10 only
+  ACO            diverges     diverges   False     False  Collapses T>40
+  GP v1          0.000360     0.000360   False     False  Converges to wrong limit
+  GP v2          0.001250     0.000050    True      True  ✓ Leibniz found!
+
+========================================================================
+VERDICT
+========================================================================
+  Found Leibniz equivalent : True
+  Found monotone-convergent: True
+  Best T=5000 error: 0.000050  (Leibniz: 0.000050)

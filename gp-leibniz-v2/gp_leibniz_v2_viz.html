@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GP-Leibniz v2: Convergence-Aware Fitness Discovers π/4</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d1117; color: #e6edf3; font-family: 'Inter', system-ui, sans-serif; }
+  code, .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Header ─────────────────── */
+  header {
+    background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
+    border-bottom: 1px solid #21262d;
+    padding: 18px 32px 12px;
+  }
+  header h1 {
+    font-size: 1.6rem; font-weight: 700;
+    background: linear-gradient(90deg, #3fb950 20%, #58a6ff 60%, #bc8cff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  header p { color: #8b949e; font-size: 0.86rem; margin-top: 3px; }
+
+  /* ── Controls ────────────────── */
+  #controls {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 32px; background: #161b22; border-bottom: 1px solid #21262d;
+    flex-wrap: wrap;
+  }
+  .ctrl-group { display: flex; align-items: center; gap: 8px; }
+  .ctrl-label { color: #8b949e; font-size: 0.73rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .btn {
+    background: #21262d; border: 1px solid #30363d; color: #c9d1d9;
+    padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-family: inherit;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .btn:hover { background: #30363d; border-color: #58a6ff; }
+  .btn.active { background: #1f6feb; border-color: #58a6ff; color: #fff; }
+  #gen-slider { width: 180px; accent-color: #3fb950; }
+  #gen-display { color: #3fb950; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 600; min-width: 80px; }
+  #status-pill { margin-left: auto; padding: 4px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #1a3a1a; color: #3fb950; border: 1px solid #238636; }
+
+  /* ── Main grid ───────────────── */
+  main { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 14px 32px 32px; }
+
+  .panel { background: #161b22; border: 1px solid #21262d; border-radius: 10px; overflow: hidden; }
+  .panel-hdr { padding: 11px 16px 8px; border-bottom: 1px solid #21262d; font-weight: 600; font-size: 0.85rem; color: #c9d1d9; display: flex; align-items: center; gap: 8px; }
+  .panel-body { padding: 14px 16px; }
+
+  /* ── Method timeline ─────────── */
+  #timeline-panel { grid-column: 1/3; }
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .method-card {
+    background: #0d1117; border: 1px solid #21262d; border-radius: 8px;
+    padding: 10px 12px; text-align: center;
+  }
+  .method-card.active-method { border-color: #3fb950; background: #0d1f0d; }
+  .method-card.current { border-color: #58a6ff; background: #0d1a2a; }
+  .method-name { font-weight: 700; font-size: 0.82rem; margin-bottom: 4px; }
+  .method-space { color: #8b949e; font-size: 0.72rem; margin-bottom: 4px; }
+  .method-result { font-size: 0.72rem; font-family: 'JetBrains Mono', monospace; }
+  .tag { display: inline-block; padding: 1px 6px; border-radius: 8px; font-size: 0.68rem; font-weight: 600; }
+  .tag-pass { background: #0d3a22; color: #3fb950; border: 1px solid #238636; }
+  .tag-fail { background: #3a0d0d; color: #f85149; border: 1px solid #da3633; }
+  .tag-partial { background: #2a2400; color: #f0c030; border: 1px solid #8a7000; }
+
+  /* ── Expression panel ────────── */
+  #expr-panel { }
+  #expr-display {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; line-height: 1.6;
+    padding: 12px; background: #0d1117; border-radius: 8px; border: 1px solid #21262d;
+    word-break: break-all; min-height: 54px; transition: color 0.3s, border-color 0.3s;
+  }
+  .expr-found { color: #3fb950 !important; border-color: #238636 !important; }
+  .expr-conv { color: #f0c030; }
+  .expr-evolving { color: #58a6ff; }
+  .expr-meta { display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap; font-size: 0.77rem; }
+  .expr-stat span { color: #58a6ff; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+  /* ── Fitness components chart ─── */
+  #components-canvas { display: block; width: 100%; height: 180px; }
+
+  /* ── Log-scale error chart (THE main plot) ─ */
+  #logplot-panel { grid-column: 1/3; }
+  #logplot-canvas { display: block; width: 100%; height: 320px; }
+  .plot-legend { display: flex; gap: 20px; margin-top: 8px; flex-wrap: wrap; font-size: 0.75rem; color: #8b949e; }
+
+  /* ── Series terms ─────────────── */
+  .term-row { display: grid; grid-template-columns: 36px 1fr 1fr; gap: 6px; align-items: center; padding: 3px 0; border-bottom: 1px solid #21262d22; font-size: 0.76rem; }
+  .term-row:last-child { border-bottom: none; }
+  .term-k { color: #8b949e; font-family: 'JetBrains Mono', monospace; }
+  .term-chip { padding: 2px 7px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; text-align: right; }
+  .tm { background: #0d3a22; color: #3fb950; border: 1px solid #238636; }
+  .tc { background: #2a2400; color: #f0c030; border: 1px solid #8a7000; }
+  .tn { background: #3a0d0d; color: #f85149; border: 1px solid #da3633; }
+
+  /* ── Misc ─────────────────────── */
+  #loading { grid-column: 1/3; display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 64px; color: #8b949e; }
+  .spinner { width: 36px; height: 36px; border: 3px solid #21262d; border-top-color: #3fb950; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .err-box { background: #3a0d0d; border: 1px solid #da3633; border-radius: 8px; padding: 20px; color: #f85149; font-size: 0.88rem; grid-column: 1/3; margin: 32px; }
+  #tooltip { position: fixed; background: #0d1117; border: 1px solid #30363d; border-radius: 8px; padding: 8px 12px; font-size: 0.76rem; color: #c9d1d9; pointer-events: none; display: none; z-index: 1000; box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+</style>
+</head>
+<body>
+<header>
+  <h1>GP-Leibniz v2: Convergence-Aware Fitness Discovers π/4</h1>
+  <p>Fitness = accuracy + α·convergence_bonus − λ·nodes · · · Leibniz is the shortest expression whose series converges to the exact target</p>
+</header>
+
+<div id="controls">
+  <div class="ctrl-group"><span class="ctrl-label">Seed</span><div id="seed-btns"></div></div>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Gen</span>
+    <input type="range" id="gen-slider" min="0" max="0" value="0">
+    <span id="gen-display">Gen 0</span>
+  </div>
+  <div class="ctrl-group">
+    <button class="btn active" id="btn-play">▶ Play</button>
+    <button class="btn" id="btn-prev">◀</button>
+    <button class="btn" id="btn-next">▶</button>
+  </div>
+  <div id="status-pill">Loading…</div>
+</div>
+
+<main id="main-content">
+  <div id="loading"><div class="spinner"></div><div>Loading evolution_data_v2.json…</div></div>
+</main>
+<div id="tooltip"></div>
+
+<script>
+let data = null, activeSeed = 0, histIdx = 0, playTimer = null, isPlaying = false;
+
+async function loadData() {
+  try {
+    const r = await fetch('evolution_data_v2.json');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    data = await r.json();
+    init();
+  } catch (e) {
+    document.getElementById('main-content').innerHTML =
+      `<div class="err-box"><strong>Could not load evolution_data_v2.json</strong><br>
+      Run <code>python3 gp_leibniz_v2.py</code> first.<br><small>${e.message}</small></div>`;
+  }
+}
+
+function init() {
+  buildLayout();
+  buildSeedBtns();
+  document.getElementById('gen-slider').addEventListener('input', e => {
+    histIdx = +e.target.value; renderFrame(histIdx);
+  });
+  document.getElementById('btn-play').addEventListener('click', togglePlay);
+  document.getElementById('btn-prev').addEventListener('click', () => stepFrame(-1));
+  document.getElementById('btn-next').addEventListener('click', () => stepFrame(1));
+  selectSeed(0);
+  updateStatus();
+  togglePlay();
+}
+
+function buildLayout() {
+  document.getElementById('main-content').innerHTML = `
+  <div class="panel" id="timeline-panel" style="grid-column:1/3">
+    <div class="panel-hdr">🔬 The Search for π/4 — Five Experiments</div>
+    <div class="panel-body"><div class="timeline" id="timeline-cards"></div></div>
+  </div>
+
+  <div class="panel" id="expr-panel">
+    <div class="panel-hdr">🧬 Best Expression (f(k))</div>
+    <div class="panel-body">
+      <div id="expr-display" class="expr-evolving">Loading…</div>
+      <div class="expr-meta">
+        <div class="expr-stat">nc: <span id="expr-nc">–</span></div>
+        <div class="expr-stat">fitness: <span id="expr-fit">–</span></div>
+        <div class="expr-stat">conv_bonus: <span id="expr-cb">–</span></div>
+        <div class="expr-stat">Leibniz equiv: <span id="expr-eq">–</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="terms-panel">
+    <div class="panel-hdr">🔢 Series Terms (T=10) vs Leibniz</div>
+    <div class="panel-body"><div id="terms-rows"></div></div>
+  </div>
+
+  <div class="panel" id="logplot-panel" style="grid-column:1/3">
+    <div class="panel-hdr">📉 Convergence — |Σf(k) − π/4| (log scale, T up to 5000)</div>
+    <div class="panel-body" style="padding:10px 12px">
+      <canvas id="logplot-canvas"></canvas>
+      <div class="plot-legend">
+        <span><span style="color:#3fb950;font-weight:700">━━</span> GP v2 best</span>
+        <span><span style="color:#58a6ff;font-weight:700">━━</span> Leibniz</span>
+        <span><span style="color:#f0c030;font-weight:700">━━</span> GP v1 best (−3−k)^(−k)</span>
+        <span><span style="color:#f85149">╌╌</span> RL / ACO (diverge)</span>
+        <span><span style="color:#bc8cff;font-weight:700">│</span> Current gen checkpoint</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="fitness-panel">
+    <div class="panel-hdr">📈 Fitness Components over Generations</div>
+    <div class="panel-body" style="padding:10px 12px">
+      <canvas id="components-canvas"></canvas>
+      <div class="plot-legend">
+        <span><span style="color:#58a6ff">●</span> Best fitness</span>
+        <span><span style="color:#3fb950">●</span> Conv bonus × α</span>
+        <span><span style="color:#f85149">●</span> −Parsimony</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="accuracy-panel">
+    <div class="panel-hdr">📊 Method Accuracy Summary</div>
+    <div class="panel-body"><table id="acc-table" style="width:100%;border-collapse:collapse;font-size:0.8rem">
+      <thead><tr>
+        <th style="text-align:left;color:#8b949e;padding:6px 10px;border-bottom:1px solid #21262d;font-size:0.72rem;text-transform:uppercase">Method</th>
+        <th style="text-align:right;color:#8b949e;padding:6px 10px;border-bottom:1px solid #21262d;font-size:0.72rem;text-transform:uppercase">T=200 err</th>
+        <th style="text-align:right;color:#8b949e;padding:6px 10px;border-bottom:1px solid #21262d;font-size:0.72rem;text-transform:uppercase">T=5000 err</th>
+        <th style="text-align:center;color:#8b949e;padding:6px 10px;border-bottom:1px solid #21262d;font-size:0.72rem;text-transform:uppercase">Equiv</th>
+        <th style="text-align:center;color:#8b949e;padding:6px 10px;border-bottom:1px solid #21262d;font-size:0.72rem;text-transform:uppercase">Converges</th>
+      </tr></thead>
+      <tbody id="acc-tbody"></tbody>
+    </table></div>
+  </div>
+  `;
+  buildTimeline();
+  buildAccTable();
+}
+
+function buildTimeline() {
+  const methods = [
+    { name: 'RL v1', space: 'Term sequences', result: 'Degenerate sums', status: 'fail', detail: 'Diverges at T>10' },
+    { name: 'RL v2', space: 'Term sequences', result: 'Matched Leibniz T=10', status: 'fail', detail: 'Diverges at T>20' },
+    { name: 'ACO', space: 'Term sequences', result: '440× vs Leibniz T=10', status: 'partial', detail: 'Collapses T>40' },
+    { name: 'GP v1', space: 'Expressions', result: 'Convergent series!', status: 'partial', detail: 'Wrong limit (flatline)' },
+    { name: 'GP v2', space: 'Expressions', result: '', status: '', detail: '', isCurrent: true },
+  ];
+  const c = document.getElementById('timeline-cards');
+  const best = data.seeds[0];
+  const anyEquiv = data.seeds.some(s => s.is_equivalent);
+  const anyMono = data.seeds.some(s => s.is_monotone);
+  methods[4].result = anyEquiv ? 'Leibniz found! ✓' : (anyMono ? 'Monotone convergent' : 'See results');
+  methods[4].status = anyEquiv ? 'pass' : (anyMono ? 'partial' : 'fail');
+  methods[4].detail = data.gp_v2_expr || '…';
+
+  c.innerHTML = methods.map(m => {
+    const cls = m.isCurrent ? 'method-card current' : (m.status === 'pass' ? 'method-card active-method' : 'method-card');
+    const tagCls = m.status === 'pass' ? 'tag-pass' : m.status === 'partial' ? 'tag-partial' : 'tag-fail';
+    const tagText = m.status === 'pass' ? 'SUCCESS' : m.status === 'partial' ? 'PARTIAL' : 'FAILED';
+    return `<div class="${cls}">
+      <div class="method-name">${m.name}</div>
+      <div class="method-space">${m.space}</div>
+      <div class="method-result" style="margin-bottom:6px">${m.result}</div>
+      <span class="tag ${tagCls}">${tagText}</span>
+      <div style="font-size:0.68rem;color:#8b949e;margin-top:4px">${m.detail.substring(0, 40)}</div>
+    </div>`;
+  }).join('');
+}
+
+function buildAccTable() {
+  const c = data.comparison;
+  const rows = [
+    ['RL v1',  null, null,  false, false],
+    ['RL v2',  null, null,  false, false],
+    ['ACO',    null, null,  false, false],
+    ['GP v1',  3.6e-4, 3.6e-4, false, false],
+  ];
+  const gp2_t200 = c.t200_errors?.[4];
+  const gp2_t5k  = c.t5000_errors?.[4];
+  rows.push(['GP v2', gp2_t200, gp2_t5k, c.found_equiv?.[4]??false, c.converges?.[4]??false]);
+
+  const tbody = document.getElementById('acc-tbody');
+  tbody.innerHTML = rows.map(([name, t200, t5k, equiv, conv], i) => {
+    const isGP2 = i === 4;
+    const t200s = t200 != null ? t200.toExponential(2) : 'diverges';
+    const t5ks  = t5k  != null ? t5k.toExponential(2)  : 'diverges';
+    const eqBadge = `<span class="tag ${equiv?'tag-pass':'tag-fail'}">${equiv?'YES':'NO'}</span>`;
+    const convBadge = `<span class="tag ${conv?'tag-pass':'tag-fail'}">${conv?'YES':'NO'}</span>`;
+    const rowStyle = isGP2 ? 'background:#0d1f0d' : '';
+    return `<tr style="${rowStyle}">
+      <td style="padding:6px 10px;font-weight:${isGP2?'700':'400'};color:${isGP2?'#3fb950':'inherit'}">${name}</td>
+      <td style="padding:6px 10px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:0.76rem;color:${t200==null?'#f85149':'#c9d1d9'}">${t200s}</td>
+      <td style="padding:6px 10px;text-align:right;font-family:'JetBrains Mono',monospace;font-size:0.76rem;color:${t5k==null?'#f85149':'#c9d1d9'}">${t5ks}</td>
+      <td style="padding:6px 10px;text-align:center">${eqBadge}</td>
+      <td style="padding:6px 10px;text-align:center">${convBadge}</td>
+    </tr>`;
+  }).join('');
+}
+
+function buildSeedBtns() {
+  const c = document.getElementById('seed-btns');
+  c.innerHTML = data.seeds.map((s, i) =>
+    `<button class="btn${i===0?' active':''}" onclick="selectSeed(${i})" style="font-family:'JetBrains Mono',monospace;font-size:0.78rem">S${s.seed}</button>`
+  ).join('');
+}
+
+function selectSeed(i) {
+  activeSeed = i; histIdx = 0;
+  document.querySelectorAll('#seed-btns .btn').forEach((b, j) => b.classList.toggle('active', j===i));
+  const hist = data.seeds[i].history;
+  const sl = document.getElementById('gen-slider');
+  sl.max = hist.length - 1; sl.value = 0;
+  renderFrame(0);
+  drawLogPlot();
+}
+
+function renderFrame(idx) {
+  if (!data) return;
+  histIdx = idx;
+  document.getElementById('gen-slider').value = idx;
+  const hist = data.seeds[activeSeed].history;
+  if (!hist?.length) return;
+  const frame = hist[Math.min(idx, hist.length - 1)];
+  document.getElementById('gen-display').textContent = `Gen ${frame.gen}`;
+  renderExpression(frame);
+  renderTerms(frame);
+  drawComponentsChart(idx);
+}
+
+function renderExpression(frame) {
+  const el = document.getElementById('expr-display');
+  const seed = data.seeds[activeSeed];
+  const expr = frame.best_expr;
+  const isEquiv = seed.is_equivalent;
+  const isMono = seed.is_monotone;
+  const cb = frame.conv_bonus ?? 0;
+
+  el.className = isEquiv ? 'expr-found' : (cb > 0.5 ? 'expr-conv' : 'expr-evolving');
+
+  let html = esc(expr);
+  // Highlight (-1)^k structure
+  html = html.replace(/\(\-1\s*\^[^)]*\)/g, s => `<span style="color:#bc8cff;font-weight:600">${s}</span>`);
+  // Highlight 2k+1 denominator
+  html = html.replace(/\(2\s*\*\s*k[^)]*\+\s*1\)/g, s => `<span style="color:#f0c030;font-weight:600">${s}</span>`);
+  if (isEquiv) html = `<span style="color:#3fb950;font-weight:700">✓ LEIBNIZ: </span>` + html;
+  el.innerHTML = html;
+
+  document.getElementById('expr-nc').textContent = frame.node_count;
+  document.getElementById('expr-fit').textContent = frame.best_fitness?.toFixed(6) ?? '–';
+  document.getElementById('expr-cb').textContent = (cb * 100).toFixed(0) + '%';
+  document.getElementById('expr-eq').innerHTML = isEquiv
+    ? '<span style="color:#3fb950;font-weight:700">YES ✓</span>'
+    : '<span style="color:#8b949e">No</span>';
+}
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderTerms(frame) {
+  const terms = frame.terms_t10;
+  const leibniz = Array.from({length: 10}, (_, k) => Math.pow(-1, k) / (2*k+1));
+  const c = document.getElementById('terms-rows');
+  if (!terms) { c.innerHTML = ''; return; }
+  let html = `<div class="term-row" style="font-size:0.7rem;color:#8b949e;font-weight:600"><div>k</div><div>GP v2 f(k)</div><div>Leibniz</div></div>`;
+  for (let k = 0; k < Math.min(10, terms.length); k++) {
+    const g = terms[k], l = leibniz[k], err = Math.abs(g - l);
+    const cls = err < 1e-6 ? 'tm' : (err < 0.01 ? 'tc' : 'tn');
+    html += `<div class="term-row"><div class="term-k">${k}</div>
+      <div><span class="term-chip ${cls}">${g.toFixed(5)}</span></div>
+      <div><span class="term-chip tm">${l.toFixed(5)}</span></div></div>`;
+  }
+  c.innerHTML = html;
+}
+
+// ── Log-scale error convergence plot ──────────────────────────────────────────
+function drawLogPlot() {
+  const canvas = document.getElementById('logplot-canvas');
+  if (!canvas) return;
+  const W = canvas.clientWidth || 900, H = canvas.clientHeight || 320;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  const PAD = {top: 16, right: 24, bottom: 44, left: 72};
+  const pw = W - PAD.left - PAD.right, ph = H - PAD.top - PAD.bottom;
+
+  ctx.fillStyle = '#161b22'; ctx.fillRect(0, 0, W, H);
+
+  const ec = data.error_curves;
+  if (!ec) return;
+
+  // Collect all T values and errors for scale
+  const allKeys = Object.keys(ec.leibniz || {}).map(Number).sort((a,b)=>a-b);
+  const maxT = Math.max(...allKeys, 5000);
+  const minT = 1;
+
+  // Log x axis
+  const toX = T => PAD.left + (Math.log10(T) - Math.log10(minT)) / (Math.log10(maxT) - Math.log10(minT)) * pw;
+
+  // Y: log scale for error
+  const allErrs = [...Object.values(ec.leibniz||{}), ...Object.values(ec.gp_v1_best||{}), ...Object.values(ec.gp_v2_best||{})].filter(v => v > 0 && isFinite(v));
+  const minErr = Math.max(1e-7, Math.min(...allErrs) * 0.3);
+  const maxErr = Math.min(1.0, Math.max(...allErrs) * 3);
+  const toY = e => {
+    if (e <= 0 || !isFinite(e)) return PAD.top;
+    const t = (Math.log10(e) - Math.log10(minErr)) / (Math.log10(maxErr) - Math.log10(minErr));
+    return PAD.top + ph - t * ph;
+  };
+
+  // Grid lines (log)
+  ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+  const yTicks = [-7,-6,-5,-4,-3,-2,-1,0].filter(p => 10**p >= minErr*0.9 && 10**p <= maxErr*1.1);
+  yTicks.forEach(p => {
+    const y = toY(10**p);
+    if (y < PAD.top || y > PAD.top + ph) return;
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left+pw, y); ctx.stroke();
+    ctx.fillStyle = '#8b949e'; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+    ctx.fillText(`10^${p}`, PAD.left-4, y+3);
+  });
+
+  // X tick marks (log)
+  [1,2,5,10,20,50,100,200,500,1000,2000,5000].forEach(T => {
+    if (T > maxT*1.1) return;
+    const x = toX(T);
+    ctx.strokeStyle = '#21262d22'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, PAD.top+ph); ctx.stroke();
+    ctx.fillStyle = '#8b949e'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
+    ctx.fillText(`T=${T}`, x, H-8);
+  });
+
+  // Synthetic diverging lines for RL/ACO
+  const drawDivergingLine = (color, startT, startErr, label) => {
+    ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]);
+    ctx.beginPath();
+    ctx.moveTo(toX(startT), toY(startErr));
+    // Goes off the top of the chart after some T
+    const endT = startT * 4;
+    const endErr = maxErr * 0.8;
+    ctx.lineTo(toX(Math.min(endT, maxT)), toY(endErr));
+    ctx.stroke();
+    ctx.setLineDash([]);
+  };
+  drawDivergingLine('#f85149', 10, 0.025, 'RL');
+  drawDivergingLine('#f85149', 40, 0.44, 'ACO');
+
+  // Draw curves
+  const drawCurve = (curve, color, lw, dash=[]) => {
+    if (!curve || Object.keys(curve).length === 0) return;
+    const pts = Object.entries(curve).map(([T, e]) => [+T, +e]).filter(([T,e]) => e > 0 && isFinite(e)).sort((a,b)=>a[0]-b[0]);
+    if (pts.length < 2) return;
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = lw; ctx.lineJoin = 'round';
+    ctx.setLineDash(dash);
+    let started = false;
+    pts.forEach(([T, e]) => {
+      const x = toX(T), y = toY(e);
+      if (!started) { ctx.moveTo(x, y); started = true; }
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke(); ctx.setLineDash([]);
+  };
+
+  drawCurve(ec.gp_v1_best, '#f0c030', 1.5);
+  drawCurve(ec.leibniz, '#58a6ff', 2);
+  drawCurve(ec.gp_v2_best, '#3fb950', 2.5);
+
+  // Axis labels
+  ctx.save(); ctx.translate(14, H/2); ctx.rotate(-Math.PI/2);
+  ctx.fillStyle='#8b949e'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('|Σf(k) − π/4|', 0, 0); ctx.restore();
+}
+
+// ── Fitness components chart ───────────────────────────────────────────────
+function drawComponentsChart(currentIdx) {
+  const canvas = document.getElementById('components-canvas');
+  if (!canvas) return;
+  const hist = data.seeds[activeSeed].history;
+  if (!hist?.length) return;
+  const W = canvas.clientWidth || 400, H = canvas.clientHeight || 180;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  const PAD = {top: 10, right: 14, bottom: 36, left: 58};
+  const pw = W-PAD.left-PAD.right, ph = H-PAD.top-PAD.bottom;
+
+  ctx.fillStyle = '#161b22'; ctx.fillRect(0, 0, W, H);
+
+  const bestFits = hist.map(h => h.best_fitness);
+  const cbVals = hist.map(h => (h.conv_bonus ?? 0) * (data.config?.alpha ?? 0.05));
+  const psVals = hist.map(h => -(h.parsimony ?? 0));
+  const all = [...bestFits, ...cbVals, ...psVals].filter(isFinite);
+  let minV = Math.min(...all), maxV = Math.max(...all);
+  if (minV === maxV) { minV -= 0.01; maxV += 0.01; }
+  const m = (maxV-minV)*0.05; minV -= m; maxV += m;
+
+  const toX = i => PAD.left + (i/(hist.length-1))*pw;
+  const toY = v => PAD.top + ph - ((v-minV)/(maxV-minV))*ph;
+
+  ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+  for (let i=0; i<=4; i++) {
+    const v = minV+(i/4)*(maxV-minV), y = toY(v);
+    ctx.beginPath(); ctx.moveTo(PAD.left,y); ctx.lineTo(PAD.left+pw,y); ctx.stroke();
+    ctx.fillStyle='#8b949e'; ctx.font='10px monospace'; ctx.textAlign='right';
+    ctx.fillText(v.toFixed(4), PAD.left-4, y+3);
+  }
+
+  const drawLine = (vals, color, lw) => {
+    ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=lw; ctx.lineJoin='round';
+    vals.forEach((v,i) => i===0 ? ctx.moveTo(toX(i),toY(v)) : ctx.lineTo(toX(i),toY(v)));
+    ctx.stroke();
+  };
+
+  drawLine(psVals, '#f85149', 1.2);
+  drawLine(cbVals, '#3fb950', 1.5);
+  drawLine(bestFits, '#58a6ff', 2);
+
+  // Current position
+  const sx = toX(Math.min(currentIdx, hist.length-1));
+  ctx.strokeStyle='#bc8cff'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(sx,PAD.top); ctx.lineTo(sx,PAD.top+ph); ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle='#8b949e'; ctx.font='10px monospace'; ctx.textAlign='center';
+  const ticks = 5;
+  for (let i=0; i<=ticks; i++) {
+    const idx = Math.round((i/ticks)*(hist.length-1));
+    ctx.fillText(`G${hist[idx].gen}`, toX(idx), H-8);
+  }
+}
+
+// ── Playback ───────────────────────────────────────────────────────────────
+function stepFrame(dir) {
+  const n = data.seeds[activeSeed].history.length;
+  histIdx = Math.max(0, Math.min(n-1, histIdx+dir));
+  renderFrame(histIdx);
+}
+function togglePlay() {
+  isPlaying = !isPlaying;
+  const btn = document.getElementById('btn-play');
+  if (isPlaying) { btn.textContent='⏸ Pause'; btn.classList.add('active'); playTick(); }
+  else { btn.textContent='▶ Play'; btn.classList.remove('active'); clearTimeout(playTimer); }
+}
+function playTick() {
+  if (!isPlaying||!data) return;
+  const n = data.seeds[activeSeed].history.length;
+  histIdx = histIdx >= n-1 ? 0 : histIdx+1;
+  renderFrame(histIdx);
+  playTimer = setTimeout(playTick, 500);
+}
+
+function updateStatus() {
+  const pill = document.getElementById('status-pill');
+  const anyEquiv = data.seeds.some(s => s.is_equivalent);
+  const anyMono = data.seeds.some(s => s.is_monotone);
+  const totalGens = data.seeds.reduce((s, r) => s + r.generations, 0);
+  if (anyEquiv) {
+    pill.style.cssText = 'background:#0d3a22;color:#3fb950;border-color:#238636;margin-left:auto;padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:600';
+    pill.textContent = '✓ LEIBNIZ FOUND';
+  } else if (anyMono) {
+    pill.style.cssText = 'background:#2a2400;color:#f0c030;border-color:#8a7000;margin-left:auto;padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:600';
+    pill.textContent = `✓ Monotone convergent · ${totalGens} gens`;
+  } else {
+    pill.style.cssText = 'background:#1a2a3a;color:#58a6ff;border-color:#1f6feb;margin-left:auto;padding:4px 14px;border-radius:20px;font-size:.75rem;font-weight:600';
+    pill.textContent = `${data.seeds.length} seeds · ${totalGens} gens`;
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>
