@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RL-Leibniz v2 — Agent Discovers π via Reinforcement Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Spectral:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0d1117;
+  --bg-2:    #161b22;
+  --bg-3:    #21262d;
+  --bg-4:    #2d333b;
+  --text:    #e6edf3;
+  --muted:   #8b949e;
+  --border:  #30363d;
+  --green:   #3fb950;
+  --yellow:  #e3b341;
+  --red:     #f85149;
+  --blue:    #58a6ff;
+  --teal:    #00c9a7;
+  --purple:  #bc8cff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: var(--bg); color: var(--text);
+  font-family: 'JetBrains Mono', monospace; overflow: hidden; }
+body { display: flex; flex-direction: column; }
+
+/* ── Header ── */
+header {
+  flex: 0 0 auto;
+  display: flex; align-items: baseline; gap: 16px;
+  padding: 10px 20px 9px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+}
+header h1 { font-family: 'Spectral', serif; font-size: 1.4rem; font-weight: 600; color: var(--teal); }
+header .sub { font-size: 0.78rem; color: var(--muted); }
+header .v2-badge {
+  font-size: 0.62rem; padding: 1px 6px; border-radius: 3px;
+  background: rgba(0,201,167,0.15); color: var(--teal); border: 1px solid rgba(0,201,167,0.3);
+  margin-left: -4px;
+}
+
+/* ── Main ── */
+.main { flex: 1 1 auto; display: flex; min-height: 0; padding: 10px; gap: 10px; }
+
+/* ── Left: training chart ── */
+.chart-panel {
+  flex: 1 1 auto;
+  background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;
+  display: flex; flex-direction: column; min-width: 0;
+}
+.panel-header {
+  padding: 8px 14px 7px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+}
+.panel-title { font-size: 0.70rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+.panel-stat  { font-size: 0.70rem; color: var(--muted); }
+.panel-stat span { color: var(--text); }
+
+#chart-canvas { flex: 1 1 auto; display: block; width: 100%; min-height: 0; padding: 6px; }
+
+/* ── Right: series viewer ── */
+.series-panel {
+  flex: 0 0 360px;
+  background: var(--bg-2); border: 1px solid var(--border); border-radius: 8px;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* T selector */
+.t-selector {
+  display: flex; gap: 4px; padding: 8px 12px 7px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.t-selector-label { font-size: 0.65rem; color: var(--muted); margin-right: 4px; }
+.t-btn {
+  background: var(--bg-3); border: 1px solid var(--border); color: var(--muted);
+  padding: 3px 10px; border-radius: 4px; cursor: pointer;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+  transition: all 0.12s;
+}
+.t-btn:hover { border-color: var(--teal); color: var(--text); }
+.t-btn.active { border-color: var(--teal); color: var(--teal); background: rgba(0,201,167,0.1); }
+.step-info { margin-left: auto; font-size: 0.65rem; color: var(--muted); }
+
+/* Pattern summary bar */
+.pattern-bar {
+  display: flex; gap: 10px; padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.pattern-pill {
+  font-size: 0.62rem; padding: 2px 7px; border-radius: 3px;
+  display: flex; align-items: center; gap: 4px;
+}
+.pill-green  { background: rgba(63,185,80,0.15);  color: var(--green);  border: 1px solid rgba(63,185,80,0.3); }
+.pill-yellow { background: rgba(227,179,65,0.15); color: var(--yellow); border: 1px solid rgba(227,179,65,0.3); }
+.pill-red    { background: rgba(248,81,73,0.15);  color: var(--red);    border: 1px solid rgba(248,81,73,0.3); }
+.pill-muted  { background: rgba(139,148,158,0.1); color: var(--muted);  border: 1px solid rgba(139,148,158,0.2); }
+
+/* Pattern tracks */
+.pattern-tracks {
+  padding: 6px 12px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.track-row {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 3px;
+}
+.track-label { font-size: 0.58rem; color: var(--muted); min-width: 40px; }
+.track-cells { display: flex; gap: 2px; flex-wrap: wrap; }
+.track-cell {
+  width: 20px; height: 18px; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.60rem; font-weight: 700;
+  opacity: 0; transition: opacity 0.2s;
+}
+.track-cell.visible { opacity: 1; }
+.cell-plus  { background: rgba(63,185,80,0.2);  color: var(--green); }
+.cell-minus { background: rgba(248,81,73,0.2);  color: var(--red); }
+.cell-odd   { background: rgba(0,201,167,0.18); color: var(--teal); }
+.cell-even  { background: rgba(248,81,73,0.15); color: rgba(248,81,73,0.7); }
+.cell-hidden { background: var(--bg-3); }
+
+/* Term cards */
+.series-terms {
+  flex: 1 1 auto; overflow-y: auto; padding: 6px 10px; display: flex; flex-direction: column; gap: 4px;
+}
+.term-card {
+  background: var(--bg-3); border: 1px solid var(--border); border-radius: 5px;
+  padding: 5px 10px;
+  display: grid; grid-template-columns: 28px 1fr 1px 1fr auto;
+  align-items: center; gap: 6px;
+  opacity: 0; transform: translateY(5px);
+  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.15s;
+  font-size: 0.72rem;
+}
+.term-card.visible { opacity: 1; transform: translateY(0); }
+.term-card.match-exact  { border-color: rgba(63,185,80,0.5);  background: rgba(63,185,80,0.06); }
+.term-card.match-approx { border-color: rgba(227,179,65,0.4); background: rgba(227,179,65,0.05); }
+.term-card.match-wrong  { border-color: rgba(248,81,73,0.35); background: rgba(248,81,73,0.04); }
+
+.term-step { color: var(--muted); font-size: 0.62rem; }
+.term-agent { }
+.term-agent .frac-pos { color: var(--green); font-weight: 700; }
+.term-agent .frac-neg { color: var(--red);   font-weight: 700; }
+.term-divider { width: 1px; background: var(--border); height: 14px; }
+.term-leib { color: var(--muted); font-size: 0.65rem; }
+.term-sum  { font-variant-numeric: tabular-nums; font-size: 0.65rem; color: var(--muted); text-align: right; }
+
+/* Series footer */
+.series-footer {
+  padding: 8px 12px 9px;
+  border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.result-row {
+  display: flex; justify-content: space-between; font-size: 0.68rem;
+}
+.result-label { color: var(--muted); }
+.result-value { font-variant-numeric: tabular-nums; }
+.result-value.good  { color: var(--green); }
+.result-value.ok    { color: var(--yellow); }
+.result-value.bad   { color: var(--red); }
+.result-value.muted { color: var(--muted); }
+
+.finding-box {
+  margin-top: 4px; padding: 6px 8px;
+  border: 1px solid var(--teal); border-radius: 4px;
+  background: rgba(0,201,167,0.06);
+  font-size: 0.63rem; color: var(--teal); line-height: 1.5;
+  display: none;
+}
+.finding-box.visible { display: block; }
+.finding-box.finding-warn { border-color: var(--yellow); background: rgba(227,179,65,0.06); color: var(--yellow); }
+
+/* ── Controls ── */
+.controls {
+  flex: 0 0 auto;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 7px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-2);
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--bg-3); border: 1px solid var(--border); color: var(--text);
+  padding: 4px 12px; border-radius: 5px; cursor: pointer;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  transition: background 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--bg-4); }
+.btn.active { border-color: var(--teal); color: var(--teal); background: rgba(0,201,167,0.1); }
+.btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+.ctrl-sep { width: 1px; height: 18px; background: var(--border); margin: 0 2px; }
+
+.seed-stats {
+  display: flex; gap: 10px; font-size: 0.65rem; color: var(--muted);
+  align-items: center; flex-wrap: wrap;
+}
+.seed-pill {
+  padding: 2px 7px; border-radius: 3px;
+  background: rgba(139,148,158,0.1); border: 1px solid rgba(139,148,158,0.2);
+}
+.seed-pill.hit { background: rgba(63,185,80,0.1); border-color: rgba(63,185,80,0.3); color: var(--green); }
+
+.status-text { margin-left: auto; font-size: 0.65rem; color: var(--muted); }
+
+/* ── Loading ── */
+.loading {
+  position: fixed; inset: 0; background: var(--bg);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; z-index: 100;
+}
+.loading.hidden { display: none; }
+.spinner {
+  width: 28px; height: 28px; border: 3px solid var(--border);
+  border-top-color: var(--teal); border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading p { font-size: 0.85rem; color: var(--muted); }
+
+/* Scrollbar */
+.series-terms::-webkit-scrollbar { width: 4px; }
+.series-terms::-webkit-scrollbar-track { background: transparent; }
+.series-terms::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+
+<body>
+
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p>Loading training_data_v2.json…</p>
+</div>
+
+<header>
+  <h1>RL-Leibniz</h1>
+  <span class="v2-badge">v2</span>
+  <span class="sub">
+    REINFORCE agent discovers&nbsp;&nbsp;π/4 = 1 − ⅓ + ⅕ − ⅐ + …&nbsp;&nbsp;through reward alone
+  </span>
+</header>
+
+<div class="main">
+
+  <!-- Left: training curve with curriculum bands -->
+  <div class="chart-panel">
+    <div class="panel-header">
+      <span class="panel-title">Training Progress</span>
+      <span class="panel-stat">Episodes: <span id="stat-episodes">—</span></span>
+      <span class="panel-stat">Final mean return: <span id="stat-final-return">—</span></span>
+      <span class="panel-stat">π/4 ≈ <span style="color:var(--text)">0.78540</span></span>
+    </div>
+    <canvas id="chart-canvas"></canvas>
+  </div>
+
+  <!-- Right: series explorer -->
+  <div class="series-panel">
+
+    <!-- T selector -->
+    <div class="t-selector">
+      <span class="t-selector-label">T =</span>
+      <button class="t-btn active" data-t="10">10</button>
+      <button class="t-btn" data-t="20">20</button>
+      <button class="t-btn" data-t="50">50</button>
+      <button class="t-btn" data-t="100">100 <span style="font-size:0.55rem;color:var(--purple)">OOD</span></button>
+      <span class="step-info">step <span id="step-counter">0</span>/<span id="step-total">—</span></span>
+    </div>
+
+    <!-- Pattern summary pills -->
+    <div class="pattern-bar" id="pattern-bar">
+      <span class="pattern-pill pill-muted" id="pill-altsign">— alt-sign</span>
+      <span class="pattern-pill pill-muted" id="pill-odd">— odd-denom</span>
+      <span class="pattern-pill pill-muted" id="pill-leibniz">— Leibniz</span>
+      <span class="pattern-pill pill-muted" id="pill-error">err —</span>
+    </div>
+
+    <!-- Visual pattern tracks -->
+    <div class="pattern-tracks">
+      <div class="track-row">
+        <span class="track-label">signs</span>
+        <div class="track-cells" id="track-signs"></div>
+      </div>
+      <div class="track-row">
+        <span class="track-label">denoms</span>
+        <div class="track-cells" id="track-denoms"></div>
+      </div>
+    </div>
+
+    <!-- Term list -->
+    <div class="series-terms" id="series-terms"></div>
+
+    <!-- Footer stats -->
+    <div class="series-footer">
+      <div class="result-row">
+        <span class="result-label">Partial sum (step <span id="foot-step">0</span>)</span>
+        <span class="result-value" id="res-sum">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">True π/4</span>
+        <span class="result-value muted">0.78539816…</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Error |sum − π/4|</span>
+        <span class="result-value" id="res-error">—</span>
+      </div>
+      <div class="result-row">
+        <span class="result-label">Leibniz T=<span id="foot-T">10</span> error</span>
+        <span class="result-value muted" id="res-leibniz-err">—</span>
+      </div>
+      <div class="finding-box" id="finding-box"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <button class="btn" id="btn-prev" disabled>◀ Prev</button>
+  <button class="btn active" id="btn-next">Next ▶</button>
+  <button class="btn" id="btn-auto">▶▶ Auto</button>
+  <button class="btn" id="btn-reset-view">↺ Reset</button>
+  <button class="btn" id="btn-all">Show All</button>
+
+  <div class="ctrl-sep"></div>
+
+  <div class="seed-stats" id="seed-stats">
+    <!-- Seed results injected here -->
+  </div>
+
+  <span class="status-text" id="status-text">Loading…</span>
+</div>
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+let DATA = null;
+let currentT = 10;
+let currentStep = 0;
+let autoTimer = null;
+
+// ── Load ─────────────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const res = await fetch('training_data_v2.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    DATA = await res.json();
+    document.getElementById('loading').classList.add('hidden');
+    init();
+  } catch (e) {
+    document.querySelector('.loading p').textContent =
+      `Error: ${e.message}. Make sure training_data_v2.json exists.`;
+    document.querySelector('.spinner').style.display = 'none';
+  }
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+function init() {
+  const curve = DATA.training_curve;
+  const lastEp = curve.length > 0 ? curve[curve.length - 1].episode : '—';
+  const lastRet = curve.length > 0 ? curve[curve.length - 1].mean_return.toFixed(4) : '—';
+  document.getElementById('stat-episodes').textContent =
+    typeof lastEp === 'number' ? lastEp.toLocaleString() : lastEp;
+  document.getElementById('stat-final-return').textContent = lastRet;
+
+  drawChart();
+  renderSeedStats();
+  switchT(10);
+  document.getElementById('status-text').textContent = 'Use Next ▶ to reveal terms';
+}
+
+// ── T switch ─────────────────────────────────────────────────────────────────
+function switchT(T) {
+  currentT = T;
+  currentStep = 0;
+  stopAuto();
+
+  // Update T-selector buttons
+  document.querySelectorAll('.t-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.t) === T);
+  });
+
+  const seriesKey = `T${T}`;
+  const terms = DATA.series_by_T[seriesKey] || [];
+  document.getElementById('step-total').textContent = terms.length;
+  document.getElementById('foot-T').textContent = T;
+
+  // Leibniz ref error
+  const leibnizRef = DATA.leibniz_refs[seriesKey];
+  if (leibnizRef !== undefined) {
+    document.getElementById('res-leibniz-err').textContent =
+      Math.abs(leibnizRef - DATA.pi_over_4).toFixed(5);
+  }
+
+  // Build track cells
+  buildTracks(terms);
+  buildTermCards(terms);
+  updatePatternBar(T);
+  updateView();
+}
+
+// ── Pattern bar ───────────────────────────────────────────────────────────────
+function updatePatternBar(T) {
+  const pat = DATA.pattern_analysis[`T${T}`];
+  if (!pat) {
+    ['pill-altsign','pill-odd','pill-leibniz'].forEach(id => {
+      const el = document.getElementById(id);
+      el.textContent = '—';
+      el.className = 'pattern-pill pill-muted';
+    });
+    return;
+  }
+
+  const setP = (id, val, trueLabel, falseLabel) => {
+    const el = document.getElementById(id);
+    el.textContent = val ? `✓ ${trueLabel}` : `✗ ${falseLabel}`;
+    el.className = `pattern-pill ${val ? 'pill-green' : 'pill-red'}`;
+  };
+
+  setP('pill-altsign', pat.signs_alternate, 'alt-sign', 'not alt');
+  setP('pill-odd', pat.denoms_odd, 'odd-denom', 'non-odd');
+  setP('pill-leibniz', pat.is_leibniz, 'Leibniz!', 'not Leibniz');
+
+  // Error pill
+  const terms = DATA.series_by_T[`T${T}`] || [];
+  if (terms.length > 0) {
+    const lastSum = terms[terms.length - 1].partial_sum;
+    const err = Math.abs(lastSum - DATA.pi_over_4);
+    const errEl = document.getElementById('pill-error');
+    errEl.textContent = `err ${err.toFixed(4)}`;
+    errEl.className = `pattern-pill ${err < 0.005 ? 'pill-green' : err < 0.05 ? 'pill-yellow' : 'pill-red'}`;
+  }
+}
+
+// ── Build pattern tracks ──────────────────────────────────────────────────────
+function buildTracks(terms) {
+  const signContainer  = document.getElementById('track-signs');
+  const denomContainer = document.getElementById('track-denoms');
+  signContainer.innerHTML  = '';
+  denomContainer.innerHTML = '';
+
+  const maxCells = Math.min(terms.length, 40); // cap at 40 for display
+  const cellW = terms.length > 20 ? 16 : 20;
+
+  terms.slice(0, maxCells).forEach((td, i) => {
+    // Sign cell
+    const sc = document.createElement('div');
+    sc.className = `track-cell ${td.sign > 0 ? 'cell-plus' : 'cell-minus'}`;
+    sc.style.width = sc.style.height = `${cellW}px`;
+    sc.style.fontSize = cellW < 18 ? '0.52rem' : '0.60rem';
+    sc.id = `sc-${i}`;
+    sc.textContent = td.sign > 0 ? '+' : '−';
+    signContainer.appendChild(sc);
+
+    // Denom cell
+    const dc = document.createElement('div');
+    const isOdd = td.denom % 2 === 1;
+    dc.className = `track-cell ${isOdd ? 'cell-odd' : 'cell-even'}`;
+    dc.style.width = dc.style.height = `${cellW}px`;
+    dc.style.fontSize = cellW < 18 ? '0.52rem' : '0.60rem';
+    dc.id = `dc-${i}`;
+    dc.textContent = td.denom <= 99 ? td.denom : '…';
+    denomContainer.appendChild(dc);
+  });
+}
+
+// ── Build term cards ──────────────────────────────────────────────────────────
+function buildTermCards(terms) {
+  const container = document.getElementById('series-terms');
+  container.innerHTML = '';
+
+  terms.forEach((td, i) => {
+    const card = document.createElement('div');
+    card.className = `term-card match-${td.match}`;
+    card.id = `card-${i}`;
+
+    const signChar = td.sign > 0 ? '+' : '−';
+    const fracClass = td.sign > 0 ? 'frac-pos' : 'frac-neg';
+    const leibnizStr = td.leibniz_term_str || '—';
+
+    card.innerHTML =
+      `<span class="term-step">${td.step}</span>` +
+      `<span class="term-agent"><span class="${fracClass}">${signChar}1/${td.denom}</span></span>` +
+      `<span class="term-divider"></span>` +
+      `<span class="term-leib">${leibnizStr}</span>` +
+      `<span class="term-sum">Σ=${td.partial_sum.toFixed(5)}</span>`;
+
+    container.appendChild(card);
+  });
+}
+
+// ── Update view to currentStep ────────────────────────────────────────────────
+function updateView() {
+  const seriesKey = `T${currentT}`;
+  const terms = DATA.series_by_T[seriesKey] || [];
+  const T = terms.length;
+
+  // Reveal cards and tracks up to currentStep
+  terms.forEach((_, i) => {
+    const card = document.getElementById(`card-${i}`);
+    const sc   = document.getElementById(`sc-${i}`);
+    const dc   = document.getElementById(`dc-${i}`);
+    const show = i < currentStep;
+    card?.classList.toggle('visible', show);
+    sc?.classList.toggle('visible', show);
+    dc?.classList.toggle('visible', show);
+  });
+
+  document.getElementById('step-counter').textContent = currentStep;
+  document.getElementById('foot-step').textContent = currentStep;
+
+  // Footer
+  if (currentStep === 0) {
+    document.getElementById('res-sum').textContent = '0.000000';
+    document.getElementById('res-sum').className = 'result-value muted';
+    document.getElementById('res-error').textContent = '—';
+    document.getElementById('res-error').className = 'result-value muted';
+  } else {
+    const last = terms[currentStep - 1];
+    const err  = Math.abs(last.partial_sum - DATA.pi_over_4);
+    const sumEl = document.getElementById('res-sum');
+    sumEl.textContent = last.partial_sum.toFixed(8);
+    sumEl.className = 'result-value';
+    const errEl = document.getElementById('res-error');
+    errEl.textContent = err.toFixed(8);
+    errEl.className = `result-value ${err < 0.005 ? 'good' : err < 0.05 ? 'ok' : 'bad'}`;
+  }
+
+  // Finding box at completion
+  const findingBox = document.getElementById('finding-box');
+  if (currentStep === T && T > 0) {
+    const last  = terms[T - 1];
+    const err   = Math.abs(last.partial_sum - DATA.pi_over_4);
+    const leibnizRef = DATA.leibniz_refs[seriesKey];
+    const leibnizErr = leibnizRef !== undefined ? Math.abs(leibnizRef - DATA.pi_over_4) : null;
+    const betterThanLeib = leibnizErr !== null && err < leibnizErr;
+    const pat = DATA.pattern_analysis[seriesKey];
+
+    let msg = '';
+    let cls = '';
+    if (pat && pat.is_leibniz) {
+      msg = `★ Found exact Leibniz series! Error ${err.toFixed(5)}`;
+      cls = '';
+    } else if (betterThanLeib) {
+      msg = `★ Agent found a more accurate series than Leibniz T=${currentT}!\n` +
+            `Agent error ${err.toFixed(5)}  <  Leibniz error ${leibnizErr.toFixed(5)}`;
+      cls = '';
+    } else if (pat && pat.signs_alternate && pat.denoms_odd) {
+      msg = `Leibniz-like: signs alternate, all odd denominators. Not exact match.`;
+      cls = 'finding-warn';
+    } else {
+      msg = `Different strategy. Error = ${err.toFixed(5)}. ` +
+            (pat && pat.signs_alternate ? 'Signs alternate. ' : 'Signs don\'t alternate. ') +
+            (pat && pat.denoms_odd ? 'Odd denoms.' : 'Even/mixed denoms.');
+      cls = 'finding-warn';
+    }
+    findingBox.textContent = msg;
+    findingBox.className = `finding-box visible ${cls}`;
+  } else {
+    findingBox.className = 'finding-box';
+  }
+
+  // Scroll last visible card
+  if (currentStep > 0) {
+    document.getElementById(`card-${currentStep - 1}`)
+      ?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
+
+  // Button states
+  document.getElementById('btn-prev').disabled = currentStep === 0;
+  document.getElementById('btn-next').disabled = currentStep === T;
+  document.getElementById('btn-auto').disabled = currentStep === T;
+  document.getElementById('btn-all').disabled  = currentStep === T;
+}
+
+// ── Training chart ─────────────────────────────────────────────────────────────
+function drawChart() {
+  const canvas = document.getElementById('chart-canvas');
+  const W = canvas.offsetWidth || 600;
+  const H = canvas.offsetHeight || 300;
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const curve = DATA.training_curve;
+  if (!curve || curve.length === 0) return;
+
+  const PAD = { top: 28, right: 20, bottom: 40, left: 58 };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top  - PAD.bottom;
+
+  const episodes = curve.map(d => d.episode);
+  const returns  = curve.map(d => d.mean_return);
+  const minEp = episodes[0], maxEp = episodes[episodes.length - 1];
+  const minR  = Math.min(...returns) * 1.05;
+  const maxR  = Math.max(0.02, Math.max(...returns) + 0.01);
+
+  const toX = ep => PAD.left + (ep - minEp) / (maxEp - minEp) * plotW;
+  const toY = r  => PAD.top  + (1 - (r - minR) / (maxR - minR)) * plotH;
+
+  // Background
+  ctx.fillStyle = '#0d1117';
+  ctx.fillRect(0, 0, W, H);
+
+  // ── Curriculum phase bands ──
+  const phaseColors = [
+    'rgba(58,130,246,0.06)',   // Phase 1: blue
+    'rgba(234,179,8,0.05)',    // Phase 2: yellow
+    'rgba(34,197,94,0.05)',    // Phase 3: green
+  ];
+  const phaseTextColors = ['rgba(58,130,246,0.5)', 'rgba(234,179,8,0.45)', 'rgba(34,197,94,0.45)'];
+
+  (DATA.curriculum_phases || []).forEach((ph, pi) => {
+    const x1 = toX(ph.episode_start);
+    const x2 = toX(ph.episode_end);
+    ctx.fillStyle = phaseColors[pi];
+    ctx.fillRect(x1, PAD.top, x2 - x1, plotH);
+
+    // Phase label at top
+    ctx.fillStyle = phaseTextColors[pi];
+    ctx.font = '9px JetBrains Mono, monospace';
+    ctx.textAlign = 'center';
+    const cx = (x1 + x2) / 2;
+    ctx.fillText(ph.label, cx, PAD.top + 11);
+    ctx.fillText(`T∈[${ph.T_lo},${ph.T_hi}]`, cx, PAD.top + 22);
+  });
+
+  // Phase boundary lines
+  (DATA.curriculum_phases || []).forEach((ph, pi) => {
+    if (pi === 0) return;
+    const x = toX(ph.episode_start);
+    ctx.strokeStyle = 'rgba(48,54,61,0.8)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([3, 3]);
+    ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, PAD.top + plotH); ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // Grid lines
+  ctx.strokeStyle = 'rgba(48,54,61,0.6)';
+  ctx.lineWidth = 0.5;
+  const nGridY = 5;
+  for (let i = 0; i <= nGridY; i++) {
+    const r = minR + (maxR - minR) * (i / nGridY);
+    const y = toY(r);
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + plotW, y); ctx.stroke();
+    ctx.fillStyle = '#8b949e';
+    ctx.font = '9px JetBrains Mono, monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText(r.toFixed(2), PAD.left - 5, y + 3);
+  }
+
+  // Zero line
+  if (maxR >= 0 && minR <= 0) {
+    const y0 = toY(0);
+    ctx.strokeStyle = 'rgba(248,81,73,0.4)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(PAD.left, y0); ctx.lineTo(PAD.left + plotW, y0); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(248,81,73,0.4)';
+    ctx.font = '9px JetBrains Mono, monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('return = 0', PAD.left + 4, y0 - 3);
+  }
+
+  // X axis labels
+  ctx.fillStyle = '#8b949e';
+  ctx.font = '9px JetBrains Mono, monospace';
+  ctx.textAlign = 'center';
+  const nXTicks = 6;
+  for (let i = 0; i <= nXTicks; i++) {
+    const ep = minEp + (maxEp - minEp) * (i / nXTicks);
+    ctx.fillText(Math.round(ep).toLocaleString(), toX(ep), PAD.top + plotH + 14);
+  }
+
+  // Axis labels
+  ctx.save();
+  ctx.translate(12, PAD.top + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillStyle = '#8b949e';
+  ctx.font = '9px JetBrains Mono, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('Mean return (100-ep)', 0, 0);
+  ctx.restore();
+  ctx.fillStyle = '#8b949e';
+  ctx.font = '9px JetBrains Mono, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('Episode', PAD.left + plotW / 2, H - 5);
+
+  // Best-return line (faint teal)
+  if (curve[0].best_return !== undefined) {
+    ctx.strokeStyle = 'rgba(0,201,167,0.22)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    curve.forEach((d, i) => {
+      const x = toX(d.episode), y = toY(d.best_return);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  }
+
+  // Mean-return gradient line
+  const grad = ctx.createLinearGradient(PAD.left, 0, PAD.left + plotW, 0);
+  grad.addColorStop(0,   'rgba(248,81,73,0.9)');
+  grad.addColorStop(0.4, 'rgba(227,179,65,0.9)');
+  grad.addColorStop(1,   'rgba(63,185,80,0.9)');
+
+  ctx.strokeStyle = grad;
+  ctx.lineWidth = 1.8;
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  curve.forEach((d, i) => {
+    const x = toX(d.episode), y = toY(d.mean_return);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Chart legend
+  const lx = PAD.left + 8, ly = PAD.top + plotH - 18;
+  ctx.fillStyle = 'rgba(0,201,167,0.45)';
+  ctx.fillRect(lx, ly + 2, 12, 1.5);
+  ctx.fillStyle = '#8b949e'; ctx.font = '8px JetBrains Mono'; ctx.textAlign = 'left';
+  ctx.fillText('best return', lx + 16, ly + 4);
+
+  ctx.strokeStyle = grad; ctx.lineWidth = 1.8;
+  ctx.beginPath(); ctx.moveTo(lx + 80, ly + 3); ctx.lineTo(lx + 92, ly + 3); ctx.stroke();
+  ctx.fillStyle = '#8b949e';
+  ctx.fillText('mean return (100-ep window)', lx + 96, ly + 4);
+}
+
+// ── Seed stats ────────────────────────────────────────────────────────────────
+function renderSeedStats() {
+  const container = document.getElementById('seed-stats');
+  container.innerHTML = '';
+  const seedResults = DATA.seed_results || [];
+  if (seedResults.length === 0) {
+    container.innerHTML = '<span style="font-size:0.65rem;color:var(--muted)">No seed results</span>';
+    return;
+  }
+
+  // Aggregate at T=20
+  const T_agg = 20;
+  const nSeeds = seedResults.length;
+  const nAlt   = seedResults.filter(r => r.T_results[T_agg]?.pattern?.signs_alternate).length;
+  const nLeib  = seedResults.filter(r => r.T_results[T_agg]?.pattern?.is_leibniz).length;
+
+  const label = document.createElement('span');
+  label.style.color = 'var(--muted)';
+  label.textContent = `Eval (${nSeeds} seeds, T=20): `;
+  container.appendChild(label);
+
+  const altPill = document.createElement('span');
+  altPill.className = `seed-pill ${nAlt > 0 ? 'hit' : ''}`;
+  altPill.textContent = `${nAlt}/${nSeeds} alt-sign`;
+  container.appendChild(altPill);
+
+  const leibPill = document.createElement('span');
+  leibPill.className = `seed-pill ${nLeib > 0 ? 'hit' : ''}`;
+  leibPill.textContent = `${nLeib}/${nSeeds} Leibniz`;
+  container.appendChild(leibPill);
+
+  // Seed error summary
+  const errors = seedResults.map(r => r.T_results[T_agg]?.error ?? null).filter(x => x !== null);
+  if (errors.length > 0) {
+    const meanErr = errors.reduce((a,b) => a+b, 0) / errors.length;
+    const errLabel = document.createElement('span');
+    errLabel.style.color = 'var(--muted)';
+    errLabel.textContent = `mean err ${meanErr.toFixed(4)}`;
+    container.appendChild(errLabel);
+  }
+}
+
+// ── Step controls ─────────────────────────────────────────────────────────────
+function stepNext() {
+  const T = (DATA.series_by_T[`T${currentT}`] || []).length;
+  if (currentStep < T) { currentStep++; updateView(); }
+}
+function stepPrev() {
+  if (currentStep > 0) { currentStep--; updateView(); }
+}
+function showAll() {
+  const T = (DATA.series_by_T[`T${currentT}`] || []).length;
+  currentStep = T;
+  updateView();
+}
+function resetView() {
+  stopAuto();
+  currentStep = 0;
+  document.getElementById('finding-box').className = 'finding-box';
+  updateView();
+  document.getElementById('status-text').textContent = 'Use Next ▶ to reveal terms';
+}
+
+function startAuto() {
+  if (autoTimer) return;
+  const btn = document.getElementById('btn-auto');
+  btn.textContent = '⏸ Pause';
+  btn.classList.add('active');
+  const T = (DATA.series_by_T[`T${currentT}`] || []).length;
+  const delay = T <= 10 ? 700 : T <= 20 ? 450 : 200;
+  autoTimer = setInterval(() => {
+    if (currentStep >= T) stopAuto();
+    else stepNext();
+  }, delay);
+}
+function stopAuto() {
+  if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+  const btn = document.getElementById('btn-auto');
+  btn.textContent = '▶▶ Auto';
+  btn.classList.remove('active');
+}
+
+// ── Events ────────────────────────────────────────────────────────────────────
+document.getElementById('btn-next').addEventListener('click', stepNext);
+document.getElementById('btn-prev').addEventListener('click', stepPrev);
+document.getElementById('btn-reset-view').addEventListener('click', resetView);
+document.getElementById('btn-all').addEventListener('click', showAll);
+document.getElementById('btn-auto').addEventListener('click', () => {
+  autoTimer ? stopAuto() : startAuto();
+});
+
+document.querySelectorAll('.t-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchT(parseInt(btn.dataset.t)));
+});
+
+document.addEventListener('keydown', e => {
+  if (!DATA) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); stepNext(); }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); stepPrev(); }
+  if (e.key === 'r' || e.key === 'R') resetView();
+  if (e.key === 'a' || e.key === 'A') showAll();
+  if (e.key === '1') switchT(10);
+  if (e.key === '2') switchT(20);
+  if (e.key === '3') switchT(50);
+  if (e.key === '4') switchT(100);
+});
+
+window.addEventListener('resize', () => { if (DATA) drawChart(); });
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+loadData();
+</script>
+</body>
+</html>

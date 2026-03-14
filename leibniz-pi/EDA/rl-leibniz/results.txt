@@ -1,0 +1,98 @@
+RL-Leibniz: REINFORCE discovers π/4 — TEVV Report
+======================================================================
+  π/4           = 0.785398163397
+  Leibniz T=10  = 0.760459904732  (error = 0.024938)
+  Generated     : 2026-03-14 08:07:50
+
+======================================================================
+T — TESTING
+======================================================================
+PASS  Action decoding: 0→+1/1, 1→−1/1, 2→+1/2, 3→−1/2, 4→+1/3, 5→−1/3
+PASS  Partial sum accumulation: +1/1 then −1/3 → 0.66667
+PASS  Terminal reward: R = −|sum − π/4| = -0.118731 at T=2
+PASS  Policy network: output shape (1,50), sums to 1.0
+All T-checks passed.
+
+======================================================================
+MAIN TRAINING  (D_max=25, T=10, episodes=50,000, seed=0)
+======================================================================
+
+Training complete. Final window mean: -0.0721
+
+======================================================================
+E — EVALUATION  (10 seeds × 20,000 episodes)
+======================================================================
+
+  Seed   Final error   Exact Leibniz   Odd-denom   Best return  Series
+──────────────────────────────────────────────────────────────────────────────────────────
+     0      0.028704           False       other       -0.0003  +1/16, +1/16, +1/16, +1/16, +1/13, +1/13, -1/21, +1/13, +1/3, +1/21
+     1      0.014203           False       other       -0.0001  +1/5, +1/5, +1/20, -1/22, +1/20, -1/22, -1/22, +1/19, +1/3, +1/20
+     2      0.023686           False       other       -0.0001  +1/2, -1/10, -1/25, +1/15, -1/14, +1/15, +1/15, +1/13, +1/6, +1/13
+     3      0.056946           False       other       -0.0001  +1/3, +1/19, +1/19, +1/19, -1/15, +1/19, -1/15, +1/4, +1/11, +1/11
+     4      0.042663           False       other       -0.0001  +1/2, +1/20, +1/20, +1/20, -1/9, +1/20, -1/6, +1/13, +1/6, +1/13
+     5      0.078006           False       other       -0.0002  +1/2, +1/18, -1/22, +1/18, -1/22, +1/16, -1/19, +1/9, +1/9, +1/9
+     6      0.024126           False       other       -0.0001  +1/2, -1/18, -1/18, -1/18, +1/15, +1/15, +1/15, +1/15, +1/7, +1/15
+     7      0.008043           False       other       -0.0000  +1/3, +1/18, +1/18, +1/18, -1/23, +1/15, +1/15, +1/16, +1/16, +1/16
+     8      0.031021           False       other       -0.0000  +1/2, -1/17, +1/13, -1/17, +1/14, -1/7, +1/7, +1/7, +1/14, +1/14
+     9      0.049548           False       other       -0.0000  +1/2, -1/9, +1/9, -1/9, +1/9, +1/23, -1/16, +1/9, +1/7, +1/10
+
+  Exact Leibniz match : 0/10
+  Odd-denom match     : 0/10
+  Mean final error    : 0.035695 ± 0.020143
+  Min / Max error     : 0.008043 / 0.078006
+  Leibniz T=10 error  : 0.024938  (reference)
+
+  Note: convergence to within 0.001 requires a sequence summing
+  more accurately than Leibniz. With T=10, D_max=25, the theoretical
+  minimum reachable error depends on the discrete search space.
+E-evaluation complete.
+
+======================================================================
+V — VERIFICATION
+======================================================================
+
+── Leibniz reference (T=10) ──
+  Terms: +1/1 −1/3 +1/5 −1/7 +1/9 −1/11 +1/13 −1/15 +1/17 −1/19
+  Partial sum : 0.7604599047
+  π/4         : 0.7853981634
+  Error       : 0.02493826  (Leibniz converges slowly — expected)
+  PASS  Leibniz T=10 sum matches 0.7604599...
+
+── Untrained policy returns (100 random episodes) ──
+  Mean return (random policy) : -0.8414
+  Mean return (trained)       : −0.0266
+
+── Trained policy (greedy) ──
+  Step  1: +1/3    → sum=0.333333  [Leibniz: +1/1    match=approx]
+  Step  2: +1/3    → sum=0.666667  [Leibniz: -1/3    match=approx]
+  Step  3: -1/24   → sum=0.625000  [Leibniz: +1/5    match=wrong]
+  Step  4: -1/24   → sum=0.583333  [Leibniz: -1/7    match=wrong]
+  Step  5: -1/24   → sum=0.541667  [Leibniz: +1/9    match=wrong]
+  Step  6: -1/19   → sum=0.489035  [Leibniz: -1/11   match=approx]
+  Step  7: -1/19   → sum=0.436404  [Leibniz: +1/13   match=approx]
+  Step  8: -1/19   → sum=0.383772  [Leibniz: -1/15   match=approx]
+  Step  9: +1/8    → sum=0.508772  [Leibniz: +1/17   match=wrong]
+  Step 10: +1/4    → sum=0.758772  [Leibniz: -1/19   match=wrong]
+  Final sum : 0.75877193
+  Error     : 0.02662623
+  Better than Leibniz T=10: False
+V-verification complete.
+
+======================================================================
+V — VALIDATION
+======================================================================
+
+── Generalisation: run trained policy at T=20 (untrained on this length) ──
+  Series (T=20): +1/3, +1/3, +1/6, -1/19, -1/19, -1/19, -1/19, -1/24, -1/24, -1/24, -1/19, -1/19, +1/6, -1/19, -1/19, +1/10, +1/8, +1/19, +1/8, +1/19
+  Final sum     : 0.90921053  (π/4 = 0.78539816)
+  Error         : 0.12381236
+  All odd denom : False
+  Exact Leibniz : False
+
+── Comparison: agent T=10 vs Leibniz T=10 ──
+  Agent error    : 0.02662623
+  Leibniz error  : 0.02493826
+  Match: DIFFERENT — agent found an alternative series.
+Validation complete.
+
+Total wall time: 595.9s

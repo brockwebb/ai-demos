@@ -1,0 +1,115 @@
+RL-Leibniz v2 — TEVV Report
+======================================================================
+  π/4 = 0.785398163397
+  Generated: 2026-03-14 10:42:21
+
+======================================================================
+T — TESTING
+======================================================================
+PASS  sign_action=0 → +1/1  (partial_sum=1.0)
+PASS  sign_action=1 → −1/1  (partial_sum=−1.0)
+PASS  denom_action=2 → +1/3
+PASS  Per-step reward = 0.057080 (positive: sum moved toward π/4)
+PASS  Terminal reward at T=2: -0.109144 = step_r + terminal_r
+PASS  Episode terminates at T=3
+PASS  Episode terminates at T=7
+PASS  Curriculum phase boundaries: [1,10K]→(3,10), [10K,50K]→(5,25), [50K,100K]→(10,40)
+PASS  Policy: sign head (1,2) + denom head (1,30), both sum to 1.0
+All T-checks passed.
+
+======================================================================
+MAIN TRAINING  (D_max=30, 100K episodes, seed=0, curriculum)
+======================================================================
+
+Training complete. Final 500-ep mean: -0.0469
+
+======================================================================
+E — EVALUATION  (3 seeds × 50,000 episodes)
+======================================================================
+
+  Seed 0: training…
+  Seed 0: T=20 alt-sign=False  odd-denom=False  is_leibniz=False  error=0.04297  (253.8s)
+
+  Seed 1: training…
+  Seed 1: T=20 alt-sign=False  odd-denom=False  is_leibniz=False  error=0.02035  (259.2s)
+
+  Seed 2: training…
+  Seed 2: T=20 alt-sign=False  odd-denom=False  is_leibniz=False  error=0.04836  (254.7s)
+
+── Aggregate ──
+
+  T=10:
+    Alt-sign         : 0/3
+    Odd-denom        : 0/3
+    Full Leibniz     : 0/3
+    Better than Leib.: 1/3  (Leibniz error=0.02494)
+    Mean error       : 0.03101 ± 0.00992
+
+  T=20:
+    Alt-sign         : 0/3
+    Odd-denom        : 0/3
+    Full Leibniz     : 0/3
+    Better than Leib.: 0/3  (Leibniz error=0.01249)
+    Mean error       : 0.03723 ± 0.01213
+
+  T=50:
+    Alt-sign         : 0/3
+    Odd-denom        : 0/3
+    Full Leibniz     : 0/3
+    Better than Leib.: 0/3  (Leibniz error=0.00500)
+    Mean error       : 0.11606 ± 0.00639
+
+── vs v1 baseline ──
+  v1: 0/10 alt-sign, 0/10 odd-denom, mean error 0.036 at T=10
+  v2 T=10: see above
+E-evaluation complete.
+
+======================================================================
+V — VERIFICATION
+======================================================================
+
+── Leibniz reference partial sums ──
+  T=  10: sum=0.76045990  error=0.02493826
+  T=  20: sum=0.77290595  error=0.01249221
+  T=  50: sum=0.78039866  error=0.00499950
+  T= 100: sum=0.78289823  error=0.00249994
+PASS  All Leibniz reference values verified
+
+── Untrained policy baseline (100 random episodes, T=10) ──
+  Mean return (random policy): -0.8835 ± 0.5567
+  Trained policy T=10 error : 0.024947  (Leibniz T=10: 0.024938)
+
+── Trained policy greedy series ──
+  T= 10: [+1/2  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29]
+         error=0.024947  alt-sign=False  odd-denom=False  increasing=False  is_leibniz=False
+  T= 20: [+1/2  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29…]
+         error=0.030694  alt-sign=False  odd-denom=False  increasing=False  is_leibniz=False
+  T= 50: [+1/2  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29  +1/29…]
+         error=0.032764  alt-sign=False  odd-denom=False  increasing=False  is_leibniz=False
+V-verification complete.
+
+======================================================================
+V — VALIDATION
+======================================================================
+
+── Generalisation test: T=100 (trained on T≤40) ──
+  Series (first 20 terms): +1/2, +1/29, +1/29, +1/29, +1/29, +1/29, +1/29, +1/29, +1/29, +1/29, -1/30, +1/29, -1/30, +1/29, -1/30, +1/29, -1/30, +1/29, -1/30, +1/29…
+  Final sum   : 1.04121943  (π/4 = 0.78539816)
+  Error       : 0.25582126
+  Leibniz T=100: sum=0.78289823  error=0.00249994
+  Alt-sign    : False
+  Odd-denom   : False
+  Increasing  : False
+  Is Leibniz  : False
+  ✗ Signs do not alternate at T=100 — agent did not learn alternating pattern
+
+── Convergence comparison: agent vs Leibniz across T ──
+     T     Agent sum   Agent err   Leibniz err   Better?
+────────────────────────────────────────────────────────
+    10    0.81034483    0.024947      0.024938        no
+    20    0.81609195    0.030694      0.012492        no
+    50    0.81816178    0.032764      0.005000        no
+   100    1.04121943    0.255821      0.002500        no
+Validation complete.
+
+Total wall time: 1478.7s  (24.6 min)
