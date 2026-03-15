@@ -1,0 +1,10 @@
+event_store:
+  path: seldon_events.jsonl
+neo4j:
+  database: seldon-leibniz-pi
+  uri: bolt://localhost:7687
+project:
+  created_at: '2026-03-15T10:39:19.109659Z'
+  domain: research
+  name: leibniz-pi
+  slug: leibniz-pi
