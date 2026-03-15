@@ -1,0 +1,1 @@
+{"seed": 4, "generation": 1800, "best_fitness": -0.0012975502079074913, "best_expr": "((-1 ^ k) / (1 + (k + k)))", "elapsed": 358.28, "remaining": 1.45, "params": {"alpha": 0.05, "lambda_p": 0.005, "pop_size": 5000, "tournament_k": 7}}

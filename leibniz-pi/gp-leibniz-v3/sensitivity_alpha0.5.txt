@@ -1,0 +1,15 @@
+=== GP Sensitivity Sweep: alpha0.5 ===
+alpha=0.5  lambda_p=0.005  pop_size=1000  tournament_k=7
+Seeds: [42, 7, 137, 2718, 31415]
+Seeds found: 4/5
+
+  Seed 0 (val=42): gen=8923 fit=0.448702 [FOUND]  expr=((-1 ^ k) / ((k + k) - -1))
+  Seed 1 (val=7): gen=6830 fit=0.448702 [FOUND]  expr=((-1 ^ k) / ((1 + k) + k))
+  Seed 2 (val=137): gen=4468 fit=0.438702 [FOUND]  expr=(((k + (k + 1)) * (-1 ^ k)) ^ -1)
+  Seed 3 (val=2718): gen=5571 fit=0.448702 [FOUND]  expr=((-1 ^ k) / ((2 * k) - -1))
+  Seed 4 (val=31415): gen=5492 fit=0.423089 [not found]  expr=(1 / (k - ((((-k) * (k + k)) * 2) - 2)))
+
+Expressions found: ['((-1 ^ k) / ((k + k) - -1))', '((-1 ^ k) / ((1 + k) + k))', '(((k + (k + 1)) * (-1 ^ k)) ^ -1)', '((-1 ^ k) / ((2 * k) - -1))']
+Gens at success:   [8923, 6830, 4468, 5571]
+
+RESULT: alpha=0.5 lambda_p=0.005 pop_size=1000 tournament_k=7 seeds_found=4/5 expressions=['((-1 ^ k) / ((k + k) - -1))', '((-1 ^ k) / ((1 + k) + k))', '(((k + (k + 1)) * (-1 ^ k)) ^ -1)', '((-1 ^ k) / ((2 * k) - -1))']

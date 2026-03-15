@@ -1,0 +1,266 @@
+========================================================================
+ENTROPY-LEIBNIZ v3 MINIMAL: TEVV REPORT
+Minimal terminal set {k, 1, -1, 2}, no injection, 30-min budget
+========================================================================
+
+Configuration (v3 minimal changes from entropy v1):
+  pop_size=1000, max_depth=6, max_nodes=30
+  tournament_k=7, n_elite=5
+  W1=0.02, W2=0.04, W3=0.03, lambda_p=0.005
+  T_checkpoints=[5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
+  n_seeds=5, max_total=1800.0s, max_seed=360.0s
+  TERM_FIXED=['k', 1, -1, 2]  [CHANGED: no ephemerals]
+  EPHEMERALS=[]  [CHANGED: empty]
+  Leibniz injection: NONE  [CHANGED: removed from pop init]
+
+Fitness: W1*(total_info/50) + W2*monotonicity + W3*(mean_rate/5) - lambda_p*nodes
+========================================================================
+T — UNIT TESTS (Entropy v3 minimal)
+========================================================================
+
+  ── Info Bits Computation ──
+  [PASS] -log2(0.025) ≈ 5.32
+  [PASS] error=0 → info=50 (capped)
+  [PASS] error=1.0 → info=0.0
+
+  ── Terminal set (v3 minimal) ──
+  TERM_FIXED = ['k', 1, -1, 2]
+  EPHEMERALS = []
+  ALL_TERMINALS = ['k', 1, -1, 2]
+  [PASS] Exactly 4 terminals
+  [PASS] Terminals are k, 1, -1, 2
+
+  ── Tree Primitives ──
+  [PASS] div(1,0) → 1.0
+  [PASS] pow(-1,k) = [1,-1,1,-1,1]
+  [PASS] Leibniz tree k=0..9 correct
+
+  ── Fitness Calibration ──
+  Leibniz fitness  : 0.021021
+  GP v1 best fitness: -0.025223
+    Leibniz : ti=15.288 mo=1.00 mr=3.318 ps=0.0450
+    GP v1   : ti=11.440 mo=0.00 mr=0.034 ps=0.0300
+  [PASS] Leibniz (0.0210) beats GP v1 (-0.0252)
+  [PASS] Leibniz monotonicity = 1.0
+  [PASS] GP v1 monotonicity < 0.25
+  [PASS] 50 random trees within constraints
+  [PASS] Crossover valid sizes
+  [PASS] Mutation valid size
+  [PASS] Leibniz (0.0210) in top 10% of random pop (≥-0.0307)
+
+  Results: 15 passed, 0 failed
+
+========================================================================
+E — EVALUATION (per seed)
+========================================================================
+
+Seed 0 (val=42):
+  Gens: 711  Elapsed: 20.7s
+  Expression : ((-(-1 ^ k)) / ((-k) - (k - -1)))
+  Nodes      : 11
+  Fitness    : 0.01102149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.055000 = 0.011021
+  Total info : 15.2877 bits at T=10000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : False
+  Monotone info profile  : True
+
+Seed 1 (val=7):
+  Gens: 6136  Elapsed: 153.1s
+  Expression : ((-(-1 ^ k)) / ((-1 - k) - k))
+  Nodes      : 10
+  Fitness    : 0.01602149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.050000 = 0.016021
+  Total info : 15.2877 bits at T=10000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : False
+  Monotone info profile  : True
+
+Seed 2 (val=137):
+  Gens: 893  Elapsed: 22.8s
+  Expression : ((-(-1 ^ k)) / ((-1 - k) - k))
+  Nodes      : 10
+  Fitness    : 0.01602149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.050000 = 0.016021
+  Total info : 15.2877 bits at T=10000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : False
+  Monotone info profile  : True
+
+Seed 3 (val=2718):
+  Gens: 3351  Elapsed: 81.2s
+  Expression : ((-1 ^ k) / (k + (1 + k)))
+  Nodes      : 9
+  Fitness    : 0.02102149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.045000 = 0.021021
+  Total info : 15.2877 bits at T=10000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : True
+  Monotone info profile  : True
+
+Seed 4 (val=31415):
+  Gens: 3814  Elapsed: 92.1s
+  Expression : ((-1 ^ k) / ((k * 2) - -1))
+  Nodes      : 9
+  Fitness    : 0.02102149
+  Components : 0.02×(ti/50)=0.006115 + 0.04×mo=0.040000 + 0.03×(mr/5)=0.019906 - ps=0.045000 = 0.021021
+  Total info : 15.2877 bits at T=10000
+  Monotonicity: 1.0000  Mean rate: 3.3177 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        4.3358    0.04952247        4.3400
+      10        5.3255    0.02493826        5.3300
+      20        6.3228    0.01249221        6.3200
+      50        7.6440    0.00499950        7.6400
+     100        8.6439    0.00249994        8.6400
+     200        9.6439    0.00124999        9.6400
+     500       10.9658    0.00050000       10.9700
+    1000       11.9658    0.00025000       11.9700
+    2000       12.9658    0.00012500       12.9700
+    5000       14.2877    0.00005000       14.2900
+   10000       15.2877    0.00002500       15.2900
+
+  Equivalent to Leibniz  : True
+  Structural resemblance : False
+  Monotone info profile  : True
+
+────────────────────────────────────────────────────────────────────────
+Aggregate:
+  Mean best fitness  : 0.01702149
+  Best (any seed)    : 0.02102149
+  Any equiv Leibniz  : True
+  Any structural     : True
+  Any monotone info  : True
+
+========================================================================
+V — VERIFICATION
+========================================================================
+
+Fitness under entropy minimal function:
+  Leibniz : 0.021021
+  GP v1   : -0.025223
+  Margin  : 0.046244
+
+Leibniz rank vs random-100: 0.0210 ≥ p90=-0.0307: True
+
+========================================================================
+V — VALIDATION
+========================================================================
+
+Best seed: 3  Gens: 3351
+  Expression: ((-1 ^ k) / (k + (1 + k)))
+  T=5000 error: 5e-05
+  T=5000 info : 14.2877 bits
+  T=10000 error: 0.00002500  info: 15.2877 bits
+  T=20000 error: 0.00001250  (still converging: 1)
+  Monotone info profile: True
+
+────────────────────────────────────────────────────────────────────────
+Cross-experiment comparison:
+  Method            info@T=10  info@T=1k  info@T=5k   mono?   rate  Notes
+  ────────────────────────────────────────────────────────────────────────
+  RL v1                  4.30        N/A        N/A   False   ~0.0  Diverges T>10
+  RL v2                  4.30        N/A        N/A   False   ~0.0  Diverges T>20
+  ACO                   14.10        N/A        N/A   False   ~0.0  Collapses T>40
+  GP v1                 11.44      11.44      11.44   False   ~0.0  Flatlines (wrong limit)
+  GP v2                  4.40      10.97      14.29    True  ~3.32  5/5 Leibniz (with injection)
+  Entropy                4.40      10.97      14.29    True  ~3.32  5/5 Leibniz (with injection)
+  GP v3 wide              N/A        N/A        N/A   False    N/A  0/5 no injection
+  Entropy v3 wide         N/A        N/A        N/A   False    N/A  0/5 no injection
+  GP v3 hostile           N/A        N/A        N/A   False    N/A  0/5 no injection
+  Entr v3 hostile         N/A        N/A        N/A   False    N/A  0/5 no injection
+  Entr v3 minimal        5.33      11.97      14.29    True   3.32  Leibniz found!
+
+========================================================================
+V — VERDICT
+========================================================================
+  Found Leibniz equivalent : True
+  Found monotone info profile: True
+  Seeds finding Leibniz: 5/5
+================================================================================
+DISCUSSION — Minimal Terminal Set Robustness Test
+================================================================================
+
+This experiment tests whether removing the Leibniz injection from population
+initialization prevents rediscovery of the series. With only {k, 1, -1, 2}
+as terminals and no seed individual, the optimizer must construct the Leibniz
+structure purely from selection pressure.
+
+The v2/entropy experiments (5/5 success) injected make_leibniz_tree() at
+population[0], guaranteeing the target formula was present in generation 0.
+This minimal variant removes that crutch entirely.
+
+Key question: Does the convergence/entropy fitness landscape have a basin of
+attraction around Leibniz large enough to be found by random search within a
+30-minute budget?
+================================================================================

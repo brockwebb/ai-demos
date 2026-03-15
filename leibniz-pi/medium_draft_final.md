@@ -1,61 +1,71 @@
-# The Wave That Never Collapses
+# The World's Longest Line to Pi
 
-Happy Pi Day.
+Happy Pi Day, 2026.
 
-The Leibniz series is one of the most beautiful formulas in mathematics and one of the most impractical.
+The Leibniz series is often considered one of the most beautiful formulas in mathematics. For calculating π, it is also one of the most impractical.
 
-π/4 = 1 - 1/3 + 1/5 - 1/7 + 1/9 - ...
+π/4 = 1 - 1/3 + 1/5 - 1/7 + 1/9 - …
 
-You need about 5 billion terms to get 10 digits of π. Vastly better algorithms exist. Leibniz is not famous because it is efficient. It is famous because it is perfect in a way efficiency cannot measure.
+You need about 5 billion terms to get 10 digits of π (Leibniz formula for π, n.d.). Far better algorithms exist. Leibniz is not famous because it is efficient. It is famous because it is perfect in a way that efficiency cannot measure.
 
-## A Wave, Not a Number
+## A Look Under the PI-roscope
 
-Leibniz is not a value. It is a process. Each term is a correction. The first term overshoots π/4. The second corrects back below it. The third overshoots again, less. The fourth corrects, less still. A wave, damping toward a limit it never reaches.
+Leibniz is a process that only reaches its final value at infinity. A long series of terms are added together, each in an attempt to correct the error the previous one introduced. The first term overshoots π/4. The second drops below. The third overshoots by less. The fourth corrects, also by less. The sum swings around π/4, its amplitude shrinking each step. A wave that settles but never quite stops.
 
-Think of a thermostat. Set point: π/4. The system swings high, swings low, swings high, swings low. Each swing smaller than the last. The oscillation damps. The system approaches equilibrium but never arrives. At every step, the partial sum is wrong. At every step, it is less wrong than the step before.
+A thermostat is a useful analogy. Set the target to π/4, and the partial sums act like the thermostat's measurement. The value swings above and then below, each swing smaller than the last. It gets closer to equilibrium but never quite reaches it. At every step, the partial sum is not equal to π/4. At every step, it is less wrong than before.
 
-This is the defining property. Not the value it converges to. The structure of how it converges. Alternating signs. Decreasing amplitude. A single rule applied identically at every position: term(k) = (-1)^k / (2k+1). Infinite, regular, harmonious, and never finished.
+The defining property of Leibniz is not the value it converges to but the structure of how it converges. Alternating signs. Decreasing amplitude. A single rule applied identically at every position: term(k) = (-1)^k / (2k+1). Infinite, regular, harmonious, and never finished.
 
-## The Optimization Paradox
+## The Opti-pization Paradox
 
-Traditional optimization cannot see Leibniz. By definition, optimization seeks the shortest path. Given a target value and a set of arithmetic building blocks, any optimizer will find the fastest route to 0.7854 and take it. Compact expressions exist that reach the right neighborhood in fewer steps with less error at any finite checkpoint.
+Traditional optimization seeks to maximize some efficiency goal under constraints like maximizing package deliveries using the shortest possible route. If we approached this problem as the most efficient route to π/4, we'd end up with the fastest convergence to a close enough approximation and stop.
 
-Those solutions are numerically superior and mathematically empty. They converge to a value near π/4, not to π/4 itself. They hit the number and stop improving. At 10 terms, they look better. At 5,000 terms, they have not gained a single additional digit of precision. They arrived at the wrong address and parked.
+Those solutions seem numerically superior but are mathematically empty. They converge near π/4, not to π/4 itself, and stop improving. After 10 terms, they outperform Leibniz. By 5,000 terms, precision has not increased by a single digit. They reached the wrong address and parked.
 
-Leibniz never parks. It keeps driving. At 10 terms, it is less accurate than the shortcuts. At 5,000 terms, it has passed them all, and it is still accelerating. The most harmoniously inefficient path to π is also, in the limit, the only one that gets there.
+Leibniz is the most harmoniously inefficient path to π. Reproducing it computationally requires a different kind of optimization. You cannot reward proximity to the answer. You have to reward the properties of a process that never ends: sustained convergence, structural regularity, and minimal complexity. The question changes from "how close are you?" to "are you still getting closer, and will you always be?"
 
-To reproduce Leibniz computationally, you cannot optimize for proximity to the answer. You have to optimize for the properties of a process that never ends: sustained convergence, structural regularity, minimal complexity. You have to reframe what "good" means. Not "how close are you?" but "are you still getting closer, and will you always be?"
+## Two Slices of π
 
-## Two Lenses
+We approached Leibniz from two different directions.
 
-Two different framings, drawn from unrelated fields, both capture this.
+**Moldy PI?** 
+Slime molds are organisms that can solve optimization problems without a brain or centralized control system. They explore many paths in parallel and reinforce the most efficient ones for obtaining food. The structure that emerges is always the simplest one that works. The same principle applies to searching for mathematical rules. Start with a population of random mathematical expressions built from basic parts: addition, multiplication, division, exponents, constants, and the variable k. A candidate formula might be k / (k + 3). Another might be (-1)^k * k. Neither is useful. But cross them, take the sign-flipping mechanism from one and the denominator structure from the other, and the offspring might score better than either parent. Mutate a constant, swap an operator, and test again. The algorithm does not know about π. It cannot look up the answer. It breeds, mutates, and selects based on a single fitness score.
 
-*Convergence as shortest path.* Slime molds solve optimization problems without a brain. They explore in parallel and reinforce whatever path connects food sources most efficiently. The structure that emerges is always the simplest one that works.
+It turns out that, for this type of optimization problem, two properties matter the most: simplicity and constant improvement. Simplicity, in this case, means the fewest operations needed to define the rule. The Leibniz formula uses just three to create a highly compact formula for generating an infinite series: raise -1 to the power k, the 2k+1 denominator, and divide. Constant improvement means that the solution at each step is closer to the final answer than the one before. Not just the first few steps, but at 50 terms, 200 terms, 5,000 terms, forever.
 
-Applied to Leibniz: search over symbolic rules, not sequences of terms. Small expression trees, not lists of fractions. Reward two things. First, true convergence: the error must keep decreasing at T=10, 50, 200, 1,000, 5,000. If it flatlines anywhere, the rule has converged to a wrong limit. Second, parsimony: every node in the expression tree costs fitness. The simplest rule that truly converges wins.
+It's interesting that neither property explicitly mentions alternating signs or odd denominators. Those emerge on their own because oscillating correction turns out to be the simplest mechanism that converges to π/4 forever. Under these two constraints, Leibniz is what you get. (-1)^k / (2k+1). The simplest rule that never stops converging.
 
-Under these two pressures, Leibniz emerges. (-1)^k / (2k+1). The simplest rule that never stops converging. The shortest path that stays alive.
-
-*Convergence as information gain.* Define precision at step T as bits of information captured about π/4:
+**Information Super-piway.** 
+The second approach uses the same evolutionary search but replaces the fitness function entirely. Instead of rewarding simplicity and sustained convergence, it rewards information gain. If we define the precision at step T as the bits of information the partial sum has captured about π/4:
 
 info(T) = -log₂(|error at T|)
 
-Leibniz at T=10: about 5 bits. At T=1,000: about 12 bits. At T=5,000: about 14 bits. The rate: 3.32 bits per tenfold increase in terms. Where does that number come from? The Leibniz error at T terms is bounded by 1/(2T+1). So info = log₂(2T+1). On a log-T axis, the slope is log₂(10) = 3.32. The rate is not an empirical observation. It is a mathematical consequence of the convergence order.
+When you start plugging away the numbers on this log scale, every power of 10 turns out to be a difference of 3.32 bits. In other words, this is not an empirical observation, but a direct computation of the rate of change that remains constant. Essentially, Leibniz is a straight line on a log scale that gains information at a constant rate with no upper bound.
 
-The rate is constant. There is no ceiling. Every decade of additional terms buys exactly 3.32 more bits of precision, forever.
+## Not to be PI-dantic
 
-Shortcut solutions spike early and collapse. Wrong-limit solutions flatline. Leibniz is a straight line on a log scale, gaining information at a constant rate, with no upper bound. The signature of a process that is always learning and never done.
+Both approaches found Leibniz. Five out of five random seeds, each time producing the exact expression (-1)^k / (2k+1). The convergence-aware search and the information-theoretic search arrived at the same formula independently. Neither objective mentioned π.
 
-Reward sustained information gain, penalize complexity, and Leibniz emerges again. Same answer. Different lens.
+| | T=10 | T=50 | T=200 | T=1,000 | T=5,000 |
+|---|---|---|---|---|---|
+| Leibniz | 0.02494 | 0.00500 | 0.00125 | 0.00025 | 0.00005 |
+| GP v2 (convergence) | 0.02494 | 0.00500 | 0.00125 | 0.00025 | 0.00005 |
+| Entropy GP | 0.02494 | 0.00500 | 0.00125 | 0.00025 | 0.00005 |
 
-## The Point
+Every cell matches. Not approximately. Exactly.
 
-Neither lens required any knowledge of Leibniz's structure. No hint about alternating signs or odd denominators. The formula emerged because it is the simplest rule whose convergence properties satisfy three constraints: infinite improvement, constant information gain rate, and minimal description length.
+That is the result, but it is not the insight. The insight is that "find a series that sums to π/4" does not produce Leibniz. It produces shortcuts that get close and stop improving. Defining success as proximity to a target gets you solutions that arrive and park.
 
-The work was not in the algorithm. The work was in defining what we were looking for. "Find a series that sums to π/4" produces shortcuts. "Find the simplest rule that generates infinite, structured, damped oscillation toward π/4" produces Leibniz. The first specifies an answer. The second specifies a process. Leibniz lives in the process, not the answer.
+"Find the simplest rule that never stops converging" produces Leibniz. The formula was not hard to find. Knowing what to ask for was the hard part.
 
-This generalizes. Any time you define success as proximity to a target, you get solutions that hit the target and stop learning. The discipline is in asking what properties a good answer has beyond being correct. What should still be true at twice the scale? Ten times? Infinity?
+That generalizes. Define success as hitting a target, and you get solutions that stop learning once they arrive. Define success as the properties a good answer should have at every scale, and you get solutions that keep improving. The discipline is not in finding answers. It is in asking better questions.
 
-Leibniz's formula never reaches π/4. It approaches forever, each term a smaller correction, the wave always collapsing, never collapsed. Finite volume of knowledge. Infinite surface area of what remains unknown.
+Leibniz's formula never reaches π/4. It approaches forever, each term a smaller correction, the wave always collapsing, yet never collapsed. The knowledge it holds at any step is finite. The boundary of what remains is not.
 
-Happy Pi Day. The code and full analysis are on [GitHub](link).
+Happy Pi Day.
+
+The code and full analysis are on [GitHub](https://github.com/brockwebb/ai-demos/tree/main/leibniz-pi).
+
+## References
+
+Leibniz formula for π. (n.d.). Wikipedia. https://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80

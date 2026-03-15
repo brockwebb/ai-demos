@@ -1,0 +1,21 @@
+A log-log convergence comparison chart for a blog article about computationally rediscovering the Leibniz series for π/4.
+
+X-axis: Number of terms T (log scale), with ticks at 10, 50, 200, 1000, 5000. Label: "Terms (T)"
+
+Y-axis: Absolute error from π/4 (log scale), range from ~1.0 down to ~0.00001. Label: "Absolute Error"
+
+Plot five lines:
+
+1. Leibniz reference: Dashed gray line showing theoretical error bound 1/(2T+1). Straight diagonal descent on log-log from upper-left to lower-right. Label: "Leibniz (reference)"
+
+2. RL agents: Red dotted line. Starts around T=10 with error ~0.1, then flatlines or drifts upward. Visually stops improving early. Label: "RL (diverges)"
+
+3. Ant Colony: Orange line. Drops steeply to beat Leibniz by T=10, then collapses (error shoots back up) around T=40. Label: "Ant Colony (collapses)"
+
+4. GP v1: Yellow/amber solid line. Drops to error ~0.000360 then flatlines horizontally forever. Never improves past that floor. Label: "GP v1 (parks)"
+
+5. GP v2 + Entropy GP: Green solid line overlaying the Leibniz reference exactly. These two methods both found Leibniz (5/5 seeds), so they track the dashed gray reference line perfectly. Label: "GP v2 / Entropy (found Leibniz)"
+
+Style: Clean, minimal, dark background suitable for Medium. No gridlines clutter. Legend in corner or inline labels. The visual story is that four methods plateau or fail while one tracks the reference line all the way down.
+
+Title: "Parked vs. Converging"
