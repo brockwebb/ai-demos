@@ -1,0 +1,116 @@
+========================================================================
+GRADIENT FITNESS TEST — Approach orig_pop2000
+n_perturbations=5, pop_size=2000
+15 terminals: ['k', 1, -1, 2, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+========================================================================
+
+========================================================================
+CALIBRATION CHECK — Approach orig_pop2000
+========================================================================
+
+Fitness under Approach orig_pop2000:
+  Tree                                Fitness     Entropy       Mag        CV
+  ----------------------------------------------------------------------
+  Leibniz (-1)^k/(2k+1)              0.021021    0.021021    1.2176    0.6859
+  Wrong-limit 5/((6+4k)(k-2))        0.007253    0.007253    1.3529    0.6786
+  Zero constant (0)                 -0.004861   -0.004861    0.1269    1.6138
+
+Leibniz beats wrong-limit attractor: True
+  Margin: 0.013768
+
+Entropy components (for reference):
+  Tree                                 ti    mono      rate  parsimony
+  -----------------------------------------------------------------
+  Leibniz                          15.288   1.000     3.318     0.0450
+  Wrong-limit                      15.927   1.000     4.314     0.0650
+  Zero constant                     0.348   0.000     0.000     0.0050
+
+========================================================================
+GP RESULTS — Per Seed
+========================================================================
+
+Seed 0 (val=42):
+  Gens: 7090  Elapsed: 360.0s
+  Expression : (((k / 3) + 4) ^ -2)
+  Nodes      : 7
+  Fitness (approach orig_pop2000): 0.01294949
+  Entropy fitness (for reference): 0.01294949
+  Components: ti=7.9022 mo=0.8000 mr=2.1314 ps=0.0350
+  Info profile (bits):
+    T=    10:     1.2453 bits, error=  0.4218105507
+    T=   100:     3.5735 bits, error=  0.0839982553
+    T=  1000:     6.3595 bits, error=  0.0121789835
+    T=  5000:     7.6218 bits, error=   0.005077177
+    T= 10000:     7.9022 bits, error=  0.0041802737
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 1 (val=7):
+  Gens: 6805  Elapsed: 360.1s
+  Expression : ((5 / -4) ^ (k / -5))
+  Nodes      : 7
+  Fitness (approach orig_pop2000): -0.00467351
+  Entropy fitness (for reference): -0.00467351
+  Components: ti=7.0359 mo=0.4000 mr=1.9187 ps=0.0350
+  Info profile (bits):
+    T=    10:     0.9845 bits, error=  0.5053981634
+    T=   100:     5.9138 bits, error=  0.0165875529
+    T=  1000:     7.0359 bits, error=  0.0076203856
+    T=  5000:     7.0359 bits, error=  0.0076203856
+    T= 10000:     7.0359 bits, error=  0.0076203856
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 2 (val=137):
+  Gens: 5796  Elapsed: 360.1s
+  Expression : ((5 ^ -5) / 4)
+  Nodes      : 5
+  Fitness (approach orig_pop2000): -0.00411242
+  Entropy fitness (for reference): -0.00411242
+  Components: ti=6.0977 mo=0.2000 mr=1.7414 ps=0.0250
+  Info profile (bits):
+    T=    10:       0.35 bits, error=  0.7845981634
+    T=   100:     0.3633 bits, error=  0.7773981634
+    T=  1000:     0.5035 bits, error=  0.7053981634
+    T=  5000:     1.3756 bits, error=  0.3853981634
+    T= 10000:     6.0977 bits, error=  0.0146018366
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 3 (val=2718):
+  Gens: 3737  Elapsed: 359.9s
+  Expression : ((-5 ^ -5) / -4)
+  Nodes      : 5
+  Fitness (approach orig_pop2000): -0.00411242
+  Entropy fitness (for reference): -0.00411242
+  Components: ti=6.0977 mo=0.2000 mr=1.7414 ps=0.0250
+  Info profile (bits):
+    T=    10:       0.35 bits, error=  0.7845981634
+    T=   100:     0.3633 bits, error=  0.7773981634
+    T=  1000:     0.5035 bits, error=  0.7053981634
+    T=  5000:     1.3756 bits, error=  0.3853981634
+    T= 10000:     6.0977 bits, error=  0.0146018366
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 4 (val=31415):
+  Gens: 5590  Elapsed: 360.0s
+  Expression : ((5 ^ -5) / 4)
+  Nodes      : 5
+  Fitness (approach orig_pop2000): -0.00411242
+  Entropy fitness (for reference): -0.00411242
+  Components: ti=6.0977 mo=0.2000 mr=1.7414 ps=0.0250
+  Info profile (bits):
+    T=    10:       0.35 bits, error=  0.7845981634
+    T=   100:     0.3633 bits, error=  0.7773981634
+    T=  1000:     0.5035 bits, error=  0.7053981634
+    T=  5000:     1.3756 bits, error=  0.3853981634
+    T= 10000:     6.0977 bits, error=  0.0146018366
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+────────────────────────────────────────────────────────────────────────
+AGGREGATE:
+  Seeds finding Leibniz: 0/5
+  Mean best fitness    : -0.00081226
+  Best (any seed)      : 0.01294949

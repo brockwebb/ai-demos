@@ -1,0 +1,116 @@
+========================================================================
+GRADIENT FITNESS TEST — Approach C
+n_perturbations=5, pop_size=1000
+15 terminals: ['k', 1, -1, 2, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+========================================================================
+
+========================================================================
+CALIBRATION CHECK — Approach C
+========================================================================
+
+Fitness under Approach C:
+  Tree                                Fitness     Entropy       Mag        CV
+  ----------------------------------------------------------------------
+  Leibniz (-1)^k/(2k+1)              0.260754    0.021021    1.2338    0.7750
+  Wrong-limit 5/((6+4k)(k-2))        0.253529    0.007253    1.0810    0.6368
+  Zero constant (0)                 -0.005000   -0.004861    0.0803    1.5525
+
+Leibniz beats wrong-limit attractor: True
+  Margin: 0.007225
+
+Entropy components (for reference):
+  Tree                                 ti    mono      rate  parsimony
+  -----------------------------------------------------------------
+  Leibniz                          15.288   1.000     3.318     0.0450
+  Wrong-limit                      15.927   1.000     4.314     0.0650
+  Zero constant                     0.348   0.000     0.000     0.0050
+
+========================================================================
+GP RESULTS — Per Seed
+========================================================================
+
+Seed 0 (val=42):
+  Gens: 3695  Elapsed: 360.0s
+  Expression : ((((((2 / -5) / 5) + -5) ^ -2) / k) / (k + -5))
+  Nodes      : 15
+  Fitness (approach C): 0.30225236
+  Entropy fitness (for reference): 0.00287600
+  Components: ti=18.8626 mo=0.9000 mr=5.7218 ps=0.0750
+  Info profile (bits):
+    T=    10:     7.4365 bits, error=  0.0057727081
+    T=   100:     11.311 bits, error=  0.0003935962
+    T=  1000:    14.8919 bits, error=   3.28927e-05
+    T=  5000:    19.0992 bits, error=    1.7806e-06
+    T= 10000:    18.8626 bits, error=    2.0979e-06
+  Equivalent to Leibniz : False
+  Monotone info profile : False
+
+Seed 1 (val=7):
+  Gens: 974  Elapsed: 81.6s
+  Expression : (((((-3 - 4) ^ -3) - 4) / (k / 2)) / ((4 - -3) * (2 - k)))
+  Nodes      : 19
+  Fitness (approach C): 0.24957637
+  Entropy fitness (for reference): -0.01967291
+  Components: ti=17.2288 mo=1.0000 mr=4.7393 ps=0.0950
+  Info profile (bits):
+    T=    10:     2.8899 bits, error=  0.1349110978
+    T=   100:     6.4418 bits, error=  0.0115034907
+    T=  1000:     9.9126 bits, error=  0.0010375328
+    T=  5000:    13.0135 bits, error=  0.0001209309
+    T= 10000:    17.2288 bits, error=    6.5104e-06
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 2 (val=137):
+  Gens: 1440  Elapsed: 145.5s
+  Expression : ((2 / (k + -5)) / ((2 / (4 + (5 / 4))) + (5 * 4)))
+  Nodes      : 17
+  Fitness (approach C): 0.21500000
+  Entropy fitness (for reference): -0.03578885
+  Components: ti=16.7687 mo=0.3000 mr=5.0839 ps=0.0850
+  Info profile (bits):
+    T=    10:     0.4036 bits, error=  0.7559589111
+    T=   100:     1.1285 bits, error=  0.4573971192
+    T=  1000:     2.1428 bits, error=  0.2264328741
+    T=  5000:      3.877 bits, error=   0.068064176
+    T= 10000:    16.7687 bits, error=    8.9563e-06
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 3 (val=2718):
+  Gens: 1745  Elapsed: 215.9s
+  Expression : (-3 / ((((1 - k) + 2) * ((k - 1) + (5 - -3))) / -1))
+  Nodes      : 17
+  Fitness (approach C): 0.18127589
+  Entropy fitness (for reference): -0.01679045
+  Components: ti=13.3138 mo=1.0000 mr=3.8140 ps=0.0850
+  Info profile (bits):
+    T=    10:     1.8426 bits, error=  0.2788205346
+    T=   100:     5.0988 bits, error=  0.0291821894
+    T=  1000:     8.5887 bits, error=   0.002597368
+    T=  5000:    12.2758 bits, error=  0.0002016569
+    T= 10000:    13.3138 bits, error=   9.82084e-05
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 4 (val=31415):
+  Gens: 2185  Elapsed: 360.0s
+  Expression : ((4 ^ -5) / (((2 ^ -1) + (((2 + 4) ^ -2) + 3)) ^ 2))
+  Nodes      : 17
+  Fitness (approach C): 0.11500000
+  Entropy fitness (for reference): -0.05443466
+  Components: ti=10.4617 mo=0.2000 mr=3.0634 ps=0.0850
+  Info profile (bits):
+    T=    10:     0.3499 bits, error=  0.7846134743
+    T=   100:      0.363 bits, error=  0.7775512727
+    T=  1000:     0.5004 bits, error=  0.7069292565
+    T=  5000:     1.3472 bits, error=  0.3930536287
+    T= 10000:    10.4617 bits, error=   0.000709094
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+────────────────────────────────────────────────────────────────────────
+AGGREGATE:
+  Seeds finding Leibniz: 0/5
+  Mean best fitness    : 0.21262092
+  Best (any seed)      : 0.30225236

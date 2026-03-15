@@ -1,0 +1,116 @@
+========================================================================
+GRADIENT FITNESS TEST — Approach B
+n_perturbations=5, pop_size=1000
+15 terminals: ['k', 1, -1, 2, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]
+========================================================================
+
+========================================================================
+CALIBRATION CHECK — Approach B
+========================================================================
+
+Fitness under Approach B:
+  Tree                                Fitness     Entropy       Mag        CV
+  ----------------------------------------------------------------------
+  Leibniz (-1)^k/(2k+1)              0.012842    0.021021    1.2421    0.6658
+  Wrong-limit 5/((6+4k)(k-2))        0.004142    0.007253    1.3424    0.6865
+  Zero constant (0)                 -0.002031   -0.004861    0.0472    1.4476
+
+Leibniz beats wrong-limit attractor: True
+  Margin: 0.008700
+
+Entropy components (for reference):
+  Tree                                 ti    mono      rate  parsimony
+  -----------------------------------------------------------------
+  Leibniz                          15.288   1.000     3.318     0.0450
+  Wrong-limit                      15.927   1.000     4.314     0.0650
+  Zero constant                     0.348   0.000     0.000     0.0050
+
+========================================================================
+GP RESULTS — Per Seed
+========================================================================
+
+Seed 0 (val=42):
+  Gens: 2937  Elapsed: 360.1s
+  Expression : (((k / 3) + 4) ^ -2)
+  Nodes      : 7
+  Fitness (approach B): 0.00783082
+  Entropy fitness (for reference): 0.01294949
+  Components: ti=7.9022 mo=0.8000 mr=2.1314 ps=0.0350
+  Info profile (bits):
+    T=    10:     1.2453 bits, error=  0.4218105507
+    T=   100:     3.5735 bits, error=  0.0839982553
+    T=  1000:     6.3595 bits, error=  0.0121789835
+    T=  5000:     7.6218 bits, error=   0.005077177
+    T= 10000:     7.9022 bits, error=  0.0041802737
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 1 (val=7):
+  Gens: 3651  Elapsed: 360.0s
+  Expression : 0
+  Nodes      : 1
+  Fitness (approach B): -0.00203145
+  Entropy fitness (for reference): -0.00486060
+  Components: ti=0.3485 mo=0.0000 mr=0.0000 ps=0.0050
+  Info profile (bits):
+    T=    10:     0.3485 bits, error=  0.7853981634
+    T=   100:     0.3485 bits, error=  0.7853981634
+    T=  1000:     0.3485 bits, error=  0.7853981634
+    T=  5000:     0.3485 bits, error=  0.7853981634
+    T= 10000:     0.3485 bits, error=  0.7853981634
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 2 (val=137):
+  Gens: 3613  Elapsed: 360.0s
+  Expression : 0
+  Nodes      : 1
+  Fitness (approach B): -0.00203145
+  Entropy fitness (for reference): -0.00486060
+  Components: ti=0.3485 mo=0.0000 mr=0.0000 ps=0.0050
+  Info profile (bits):
+    T=    10:     0.3485 bits, error=  0.7853981634
+    T=   100:     0.3485 bits, error=  0.7853981634
+    T=  1000:     0.3485 bits, error=  0.7853981634
+    T=  5000:     0.3485 bits, error=  0.7853981634
+    T= 10000:     0.3485 bits, error=  0.7853981634
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 3 (val=2718):
+  Gens: 3723  Elapsed: 360.0s
+  Expression : 0
+  Nodes      : 1
+  Fitness (approach B): -0.00203145
+  Entropy fitness (for reference): -0.00486060
+  Components: ti=0.3485 mo=0.0000 mr=0.0000 ps=0.0050
+  Info profile (bits):
+    T=    10:     0.3485 bits, error=  0.7853981634
+    T=   100:     0.3485 bits, error=  0.7853981634
+    T=  1000:     0.3485 bits, error=  0.7853981634
+    T=  5000:     0.3485 bits, error=  0.7853981634
+    T= 10000:     0.3485 bits, error=  0.7853981634
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+Seed 4 (val=31415):
+  Gens: 3871  Elapsed: 359.9s
+  Expression : 0
+  Nodes      : 1
+  Fitness (approach B): -0.00203145
+  Entropy fitness (for reference): -0.00486060
+  Components: ti=0.3485 mo=0.0000 mr=0.0000 ps=0.0050
+  Info profile (bits):
+    T=    10:     0.3485 bits, error=  0.7853981634
+    T=   100:     0.3485 bits, error=  0.7853981634
+    T=  1000:     0.3485 bits, error=  0.7853981634
+    T=  5000:     0.3485 bits, error=  0.7853981634
+    T= 10000:     0.3485 bits, error=  0.7853981634
+  Equivalent to Leibniz : False
+  Monotone info profile : True
+
+────────────────────────────────────────────────────────────────────────
+AGGREGATE:
+  Seeds finding Leibniz: 0/5
+  Mean best fitness    : -0.00005900
+  Best (any seed)      : 0.00783082
