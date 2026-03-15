@@ -1,0 +1,26 @@
+========================================================================
+SCALING HEATMAP: terminals=20, pop_size=1000
+Terminal set: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8, -7, 9, -8, 10, -9]
+EPHEMERALS: []
+MAX_SEED=1800s, MAX_TOTAL=10800s
+========================================================================
+
+Discovery: 0/5 seeds found Leibniz
+
+Top expressions (failed seeds):
+  (((-1 / (k ^ 10)) ^ k) * (7 ^ 7))
+  (((4 - k) / 4) ^ -9)
+  ((-1 ^ (k / -9)) / (10 ^ -6))
+  ((-1 ^ (k / -9)) / (10 ^ -6))
+  ((-7 ^ 7) * (-1 ^ (k / -9)))
+
+Seed 0 (val=42): gens=52978 elapsed=1800.0s found=False ti=0.35 mo=0.40 mr=6.85 stop=time_limit_seed
+  expr=((-1 ^ (k / -9)) / (10 ^ -6))
+Seed 1 (val=7): gens=3642 elapsed=115.8s found=False ti=17.26 mo=0.10 mr=11.18 stop=early_stop_converged
+  expr=(((-1 / (k ^ 10)) ^ k) * (7 ^ 7))
+Seed 2 (val=137): gens=60504 elapsed=1800.0s found=False ti=4.48 mo=0.20 mr=6.81 stop=time_limit_seed
+  expr=(((4 - k) / 4) ^ -9)
+Seed 3 (val=2718): gens=60272 elapsed=1800.0s found=False ti=0.35 mo=0.40 mr=6.85 stop=time_limit_seed
+  expr=((-1 ^ (k / -9)) / (10 ^ -6))
+Seed 4 (val=31415): gens=48243 elapsed=1800.1s found=False ti=0.35 mo=0.40 mr=6.76 stop=time_limit_seed
+  expr=((-7 ^ 7) * (-1 ^ (k / -9)))

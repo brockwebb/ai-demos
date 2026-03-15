@@ -1,0 +1,26 @@
+========================================================================
+SCALING HEATMAP: terminals=12, pop_size=10000
+Terminal set: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5]
+EPHEMERALS: []
+MAX_SEED=1800s, MAX_TOTAL=10800s
+========================================================================
+
+Discovery: 0/5 seeds found Leibniz
+
+Top expressions (failed seeds):
+  ((4 + (k / 3)) ^ -2)
+  (((k + -4) / -4) ^ (-5 - 4))
+  (((-4 + k) / -4) ^ (-5 + -4))
+  ((6 ^ 6) / (-1 ^ (k / 3)))
+  (((4 - k) / 3) ^ -5)
+
+Seed 0 (val=42): gens=6177 elapsed=1800.1s found=False ti=0.35 mo=0.40 mr=4.80 stop=time_limit_seed
+  expr=((6 ^ 6) / (-1 ^ (k / 3)))
+Seed 1 (val=7): gens=4191 elapsed=1800.3s found=False ti=4.48 mo=0.20 mr=6.81 stop=time_limit_seed
+  expr=(((k + -4) / -4) ^ (-5 - 4))
+Seed 2 (val=137): gens=4383 elapsed=1800.2s found=False ti=4.48 mo=0.20 mr=6.81 stop=time_limit_seed
+  expr=(((-4 + k) / -4) ^ (-5 + -4))
+Seed 3 (val=2718): gens=8736 elapsed=1800.1s found=False ti=7.90 mo=0.80 mr=2.13 stop=time_limit_seed
+  expr=((4 + (k / 3)) ^ -2)
+Seed 4 (val=31415): gens=8905 elapsed=1800.1s found=False ti=3.79 mo=0.20 mr=3.57 stop=time_limit_seed
+  expr=(((4 - k) / 3) ^ -5)

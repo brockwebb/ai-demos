@@ -1,0 +1,21 @@
+========================================================================
+SCALING HEATMAP: terminals=4, pop_size=10000
+Terminal set: ['k', 1, -1, 2]
+EPHEMERALS: []
+MAX_SEED=1800s, MAX_TOTAL=10800s
+========================================================================
+
+Discovery: 5/5 seeds found Leibniz
+Mean generations (successful): 972.4
+Mean elapsed (successful): 343.9s
+
+Seed 0 (val=42): gens=604 elapsed=267.6s found=True ti=15.29 mo=1.00 mr=3.32 stop=early_stop_converged
+  expr=((-1 ^ k) / (1 + (2 * k)))
+Seed 1 (val=7): gens=1320 elapsed=480.2s found=True ti=15.29 mo=1.00 mr=3.32 stop=early_stop_converged
+  expr=((-1 ^ k) / ((2 * k) - -1))
+Seed 2 (val=137): gens=1364 elapsed=547.0s found=True ti=15.29 mo=1.00 mr=3.32 stop=early_stop_converged
+  expr=((-1 ^ k) / (1 + (k * 2)))
+Seed 3 (val=2718): gens=1014 elapsed=274.9s found=True ti=15.29 mo=1.00 mr=3.32 stop=early_stop_converged
+  expr=((-(-1 ^ k)) / (-1 - (k + k)))
+Seed 4 (val=31415): gens=560 elapsed=149.9s found=True ti=15.29 mo=1.00 mr=3.32 stop=early_stop_converged
+  expr=(-((-1 ^ k) / (-1 - (k + k))))

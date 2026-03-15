@@ -1,0 +1,26 @@
+========================================================================
+SCALING HEATMAP: terminals=15, pop_size=2000
+Terminal set: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8]
+EPHEMERALS: []
+MAX_SEED=1800s, MAX_TOTAL=10800s
+========================================================================
+
+Discovery: 0/5 seeds found Leibniz
+
+Top expressions (failed seeds):
+  (-3 / ((7 + k) * (k + -3)))
+  ((7 ^ 7) / (-1 ^ (k / 3)))
+  ((7 ^ 7) / (-1 ^ (k / -3)))
+  ((7 ^ 7) / (-1 ^ (k / -3)))
+  ((-5 / (k + -5)) ^ 7)
+
+Seed 0 (val=42): gens=30492 elapsed=1800.0s found=False ti=0.35 mo=0.40 mr=6.06 stop=time_limit_seed
+  expr=((7 ^ 7) / (-1 ^ (k / 3)))
+Seed 1 (val=7): gens=35845 elapsed=1800.0s found=False ti=0.35 mo=0.40 mr=6.06 stop=time_limit_seed
+  expr=((7 ^ 7) / (-1 ^ (k / -3)))
+Seed 2 (val=137): gens=28706 elapsed=1800.1s found=False ti=0.35 mo=0.40 mr=6.06 stop=time_limit_seed
+  expr=((7 ^ 7) / (-1 ^ (k / -3)))
+Seed 3 (val=2718): gens=35945 elapsed=1800.1s found=False ti=2.12 mo=0.20 mr=5.57 stop=time_limit_seed
+  expr=((-5 / (k + -5)) ^ 7)
+Seed 4 (val=31415): gens=23166 elapsed=1123.5s found=False ti=13.31 mo=1.00 mr=3.81 stop=early_stop_converged
+  expr=(-3 / ((7 + k) * (k + -3)))
