@@ -1,0 +1,238 @@
+========================================================================
+PARSIMONY PRESSURE TEST: TEVV REPORT  (lambda_p=0.01)
+Minimal terminal set {k, 1, -1, 2}, no injection, 30-min budget
+========================================================================
+
+Configuration:
+  pop_size=1000, max_depth=6, max_nodes=30
+  tournament_k=7, n_elite=5
+  W1=0.02, W2=0.04, W3=0.03, lambda_p=0.01
+  T_checkpoints=[5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
+  n_seeds=5, max_total=1800.0s, max_seed=360.0s
+  TERM_FIXED=['k', 1, -1, 2]
+  EPHEMERALS=[]
+  Leibniz injection: NONE
+
+Fitness: W1*(total_info/50) + W2*monotonicity + W3*(mean_rate/5) - lambda_p*nodes
+========================================================================
+T — UNIT TESTS (Parsimony test, lambda_p=0.01)
+========================================================================
+
+  ── Info Bits Computation ──
+  [PASS] -log2(0.025) ≈ 5.32
+  [PASS] error=0 → info=50 (capped)
+  [PASS] error=1.0 → info=0.0
+
+  ── Terminal set ──
+  TERM_FIXED = ['k', 1, -1, 2]
+  EPHEMERALS = []
+  ALL_TERMINALS = ['k', 1, -1, 2]
+  [PASS] Exactly 4 terminals
+  [PASS] Terminals are k, 1, -1, 2
+
+  ── Parsimony check ──
+  LAMBDA_P = 0.01
+  LP_TAG   = lp0.01
+  [PASS] LAMBDA_P matches arg
+
+  ── Tree Primitives ──
+  [PASS] div(1,0) → 1.0
+  [PASS] pow(-1,k) = [1,-1,1,-1,1]
+  [PASS] Leibniz tree k=0..9 correct
+
+  ── Fitness Calibration ──
+  Leibniz fitness  : -0.023979
+  GP v1 best fitness: -0.055223
+    Leibniz : ti=15.288 mo=1.00 mr=3.318 ps=0.0900
+    GP v1   : ti=11.440 mo=0.00 mr=0.034 ps=0.0600
+  [PASS] Leibniz (-0.0240) beats GP v1 (-0.0552)
+  [PASS] Leibniz monotonicity = 1.0
+  [PASS] GP v1 monotonicity < 0.25
+  [PASS] 50 random trees within constraints
+  [PASS] Crossover valid sizes
+  [PASS] Mutation valid size
+  [PASS] Leibniz (-0.0240) in top 10% of random pop (≥-0.0357)
+
+  Results: 16 passed, 0 failed
+
+========================================================================
+E — EVALUATION (per seed)
+========================================================================
+
+Seed 0 (val=42):
+  Gens: 16881  Elapsed: 360.0s
+  Expression : (-1 - -1)
+  Nodes      : 3
+  Fitness    : -0.02986060
+  Components : 0.02×(ti/50)=0.000139 + 0.04×mo=0.000000 + 0.03×(mr/5)=0.000000 - ps=0.030000 = -0.029861
+  Total info : 0.3485 bits at T=10000
+  Monotonicity: 0.0000  Mean rate: 0.0000 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        0.3485    0.78539816        4.3400
+      10        0.3485    0.78539816        5.3300
+      20        0.3485    0.78539816        6.3200
+      50        0.3485    0.78539816        7.6400
+     100        0.3485    0.78539816        8.6400
+     200        0.3485    0.78539816        9.6400
+     500        0.3485    0.78539816       10.9700
+    1000        0.3485    0.78539816       11.9700
+    2000        0.3485    0.78539816       12.9700
+    5000        0.3485    0.78539816       14.2900
+   10000        0.3485    0.78539816       15.2900
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+  Monotone info profile  : True
+
+Seed 1 (val=7):
+  Gens: 17836  Elapsed: 360.0s
+  Expression : (-1 + 1)
+  Nodes      : 3
+  Fitness    : -0.02986060
+  Components : 0.02×(ti/50)=0.000139 + 0.04×mo=0.000000 + 0.03×(mr/5)=0.000000 - ps=0.030000 = -0.029861
+  Total info : 0.3485 bits at T=10000
+  Monotonicity: 0.0000  Mean rate: 0.0000 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        0.3485    0.78539816        4.3400
+      10        0.3485    0.78539816        5.3300
+      20        0.3485    0.78539816        6.3200
+      50        0.3485    0.78539816        7.6400
+     100        0.3485    0.78539816        8.6400
+     200        0.3485    0.78539816        9.6400
+     500        0.3485    0.78539816       10.9700
+    1000        0.3485    0.78539816       11.9700
+    2000        0.3485    0.78539816       12.9700
+    5000        0.3485    0.78539816       14.2900
+   10000        0.3485    0.78539816       15.2900
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+  Monotone info profile  : True
+
+Seed 2 (val=137):
+  Gens: 17745  Elapsed: 360.0s
+  Expression : (1 + -1)
+  Nodes      : 3
+  Fitness    : -0.02986060
+  Components : 0.02×(ti/50)=0.000139 + 0.04×mo=0.000000 + 0.03×(mr/5)=0.000000 - ps=0.030000 = -0.029861
+  Total info : 0.3485 bits at T=10000
+  Monotonicity: 0.0000  Mean rate: 0.0000 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        0.3485    0.78539816        4.3400
+      10        0.3485    0.78539816        5.3300
+      20        0.3485    0.78539816        6.3200
+      50        0.3485    0.78539816        7.6400
+     100        0.3485    0.78539816        8.6400
+     200        0.3485    0.78539816        9.6400
+     500        0.3485    0.78539816       10.9700
+    1000        0.3485    0.78539816       11.9700
+    2000        0.3485    0.78539816       12.9700
+    5000        0.3485    0.78539816       14.2900
+   10000        0.3485    0.78539816       15.2900
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+  Monotone info profile  : True
+
+Seed 3 (val=2718):
+  Gens: 17841  Elapsed: 360.0s
+  Expression : (k - k)
+  Nodes      : 3
+  Fitness    : -0.02986060
+  Components : 0.02×(ti/50)=0.000139 + 0.04×mo=0.000000 + 0.03×(mr/5)=0.000000 - ps=0.030000 = -0.029861
+  Total info : 0.3485 bits at T=10000
+  Monotonicity: 0.0000  Mean rate: 0.0000 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        0.3485    0.78539816        4.3400
+      10        0.3485    0.78539816        5.3300
+      20        0.3485    0.78539816        6.3200
+      50        0.3485    0.78539816        7.6400
+     100        0.3485    0.78539816        8.6400
+     200        0.3485    0.78539816        9.6400
+     500        0.3485    0.78539816       10.9700
+    1000        0.3485    0.78539816       11.9700
+    2000        0.3485    0.78539816       12.9700
+    5000        0.3485    0.78539816       14.2900
+   10000        0.3485    0.78539816       15.2900
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+  Monotone info profile  : True
+
+Seed 4 (val=31415):
+  Gens: 17319  Elapsed: 360.0s
+  Expression : (k - k)
+  Nodes      : 3
+  Fitness    : -0.02986060
+  Components : 0.02×(ti/50)=0.000139 + 0.04×mo=0.000000 + 0.03×(mr/5)=0.000000 - ps=0.030000 = -0.029861
+  Total info : 0.3485 bits at T=10000
+  Monotonicity: 0.0000  Mean rate: 0.0000 bits/decade
+
+  Information profile (bits of precision about π/4):
+       T   info (bits)         error  Leibniz bits
+  ──────────────────────────────────────────────────
+       5        0.3485    0.78539816        4.3400
+      10        0.3485    0.78539816        5.3300
+      20        0.3485    0.78539816        6.3200
+      50        0.3485    0.78539816        7.6400
+     100        0.3485    0.78539816        8.6400
+     200        0.3485    0.78539816        9.6400
+     500        0.3485    0.78539816       10.9700
+    1000        0.3485    0.78539816       11.9700
+    2000        0.3485    0.78539816       12.9700
+    5000        0.3485    0.78539816       14.2900
+   10000        0.3485    0.78539816       15.2900
+
+  Equivalent to Leibniz  : False
+  Structural resemblance : False
+  Monotone info profile  : True
+
+────────────────────────────────────────────────────────────────────────
+Aggregate:
+  Mean best fitness  : -0.02986060
+  Best (any seed)    : -0.02986060
+  Any equiv Leibniz  : False
+  Any structural     : False
+  Any monotone info  : True
+
+========================================================================
+V — VERIFICATION
+========================================================================
+
+Fitness under parsimony test (lambda_p=0.01):
+  Leibniz : -0.023979
+  GP v1   : -0.055223
+  Margin  : 0.031244
+
+Leibniz rank vs random-100: -0.0240 ≥ p90=-0.0357: True
+
+========================================================================
+V — VALIDATION
+========================================================================
+
+Best seed: 0  Gens: 16881
+  Expression: (-1 - -1)
+  T=5000 error: 0.7853981634
+  T=5000 info : 0.3485 bits
+  T=10000 error: 0.78539816  info: 0.3485 bits
+  T=20000 error: 0.78539816  (still converging: 0)
+  Monotone info profile: True
+
+========================================================================
+V — VERDICT
+========================================================================
+  Found Leibniz equivalent : False
+  Found monotone info profile: True
+  Seeds finding Leibniz: 0/5

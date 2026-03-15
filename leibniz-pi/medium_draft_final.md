@@ -69,3 +69,29 @@ The code and full analysis are on [GitHub](https://github.com/brockwebb/ai-demos
 ## References
 
 Leibniz formula for π. (n.d.). Wikipedia. https://en.wikipedia.org/wiki/Leibniz_formula_for_%CF%80
+
+
+
+##NOTES
+Leibniz's error decays as 1/(2T+1). On a log scale, info = log₂(2T+1). That's logarithmic — first order. The rate of information gain is constant (3.32 bits per decade). That's the defining signature.
+In reaction kinetics, a first-order reaction has exponential decay: concentration drops by a constant fraction per unit time. Rate depends only on current concentration. One reactant.
+A second-order reaction has decay like 1/t — the rate depends on the square of concentration, or on two reactants. A plot of 1/[A] vs time gives a straight line.
+Leibniz's error goes as 1/T. Plot 1/error vs T — straight line. That's second-order kinetics.
+Now here's the connection to thermodynamics: the entropy fitness is measuring information gain, which is the log of the inverse error. It's essentially measuring the free energy of the system — how much "order" (precision about π/4) has been extracted from the "disorder" (uncertainty). The 3.32 bits/decade is a constant rate of entropy reduction. A steady-state dissipation rate.
+In thermodynamics, systems that minimize free energy at a constant rate are at a steady-state far from equilibrium. They're not at equilibrium (that would be π/4 exactly, which Leibniz never reaches). They're constantly dissipating — each term reduces uncertainty at a steady rate, forever.
+So the entropy fitness isn't just "a different scoring function." It's measuring the thermodynamic signature of a process that operates at constant efficiency infinitely far from equilibrium. And Leibniz is the unique formula that achieves that.
+The GP convergence fitness asks: "are you getting closer?" The entropy fitness asks: "are you dissipating uncertainty at a constant rate?" The second question is physically deeper. That's why it works better — it's selecting for a thermodynamic property, not just a trend.
+Leibniz's error is 1/(2T+1). That's 1/T behavior. If you plot 1/error vs T, you get a straight line. That's the signature of a second-order process.
+In chemistry, a second-order reaction plots 1/[concentration] vs time as a straight line. The rate depends on two things interacting, not just one thing decaying.
+Leibniz has the same structure. Each term's correction depends on TWO things: the position k (which determines magnitude) and the alternating sign (which determines direction). One thing decaying would give you exponential convergence. Two things interacting gives you 1/T convergence. That's why Leibniz is slow — it's fundamentally second-order.
+The entropy fitness measures information gain, which is log(1/error) = log(2T+1). On a log-log plot, that's a straight line with constant slope. That's the integrated form of the second-order rate law — the same way you'd plot a second-order reaction to confirm its order.
+So: the entropy fitness is literally the integrated second-order rate law applied to convergence. It's selecting for processes that obey second-order kinetics. Leibniz is the simplest process that does.
+That's why entropy works better than the GP convergence fitness. The GP fitness asks "is error shrinking?" — a first-order question. The entropy fitness asks "is 1/error growing linearly?" — a second-order question. The second-order question has a unique answer. The first-order question doesn't.
+GP convergence fitness asks: "Is the error shrinking between checkpoints?" That's a first-order question. Is the thing going down? It's checking the trend. Lots of things have downward trends that stop.
+Entropy fitness asks: "Is information accumulating at a constant rate?" That's a second-order question. It's checking the rate of the rate. Not "is it going down" but "is it going down at a consistent pace on a log scale." That's more selective. Fewer things satisfy it.
+But what would be even more fundamental? Your thermodynamic instinct points at it. The universe doesn't optimize for "information gain rate." It optimizes for something simpler: minimum free energy dissipation at steady state. Systems that persist are systems that found the most efficient way to dissipate a gradient. A river doesn't find the fastest path downhill — it finds the path that dissipates gravitational potential energy most efficiently given the constraints.
+For Leibniz, the "gradient" is the gap between the partial sum and π/4. The "dissipation" is how efficiently each term reduces that gap. The simplest possible fitness function from this perspective would be something like:
+"What is the minimum work (operations) per unit of uncertainty reduced?"
+That's efficiency. Operations per bit. Leibniz uses 3 operations per term and gains 3.32 bits per decade. An 11-node bloated equivalent uses 5 operations per term for the same 3.32 bits. The thermodynamic fitness would naturally prefer the 9-node form because it's more efficient per unit of information gained.
+That's what the current entropy fitness is missing. It measures information gained but doesn't divide by the cost of gaining it. Adding that denominator — information per operation — would simultaneously solve the bloated-expression problem AND create a more physically grounded fitness.
+As for combining them in an ensemble — the GP convergence fitness and the entropy fitness are measuring different moments of the same process. Convergence measures the first derivative (is error shrinking?). Entropy measures the integrated second-order behavior (is 1/error growing linearly?). An ensemble would be redundant if the entropy fitness already captures the deeper structure. You don't need both — you need the one that operates at the most fundamental level and add the efficiency constraint.
