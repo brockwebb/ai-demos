@@ -17,7 +17,21 @@ EDA/                        # Early exploratory experiments (v1)
 gp-leibniz-v2/              # GP v2: convergence-aware fitness — 5/5 seeds find Leibniz
 entropy-leibniz/            # GP with information-theoretic fitness — 5/5 seeds find Leibniz
 
+gp-leibniz-v3/              # v3 robustness tests: wide/hostile/minimal terminal sets + sensitivity sweep
+  gp_leibniz_v3_wide.py     # Wide pool (41 terminals) — 0/5 clean
+  gp_leibniz_v3_hostile.py  # Hostile pool (no 2) — 0/5 clean
+  gp_leibniz_v3_minimal.py  # Minimal {k,1,-1,2}, no injection — 2/5
+  gp_sensitivity_sweep.py   # Parameterized sensitivity sweep (argparse)
+  parameter_sensitivity.md  # Sweep results: pop_size=2000 → 5/5
+
+entropy-leibniz-v3/         # Entropy v3 robustness + stress tests
+  entropy_leibniz_v3_*.py   # Wide/hostile/minimal variants
+  entropy_stress_test.py    # Progressive difficulty levels (argparse --level)
+  stress_test_results.md    # Level 1 (15 terminals) → 0/5; stopped
+
+v3_results_summary.md       # Full corrected v3 results (injection confound documented)
 medium_draft_final.md       # Pi Day article: "The Wave That Never Collapses"
+figures/paperbanana/        # Generated diagram assets
 ```
 
 ## Experiment Progression
@@ -27,24 +41,31 @@ medium_draft_final.md       # Pi Day article: "The Wave That Never Collapses"
 | RL v1/v2 | Policy gradient on term sequences | Diverges after T>20 |
 | ACO | Pheromone-guided symbolic search | Collapses after T>40 |
 | GP v1 | GP with naive convergence reward | Finds wrong-limit series (flatlines) |
-| GP v2 | GP with convergence-rate fitness | ✓ 5/5 seeds find Leibniz |
-| Entropy-GP | GP with info-theoretic fitness (−log₂\|error\|) | ✓ 5/5 seeds find Leibniz |
+| GP v2 | GP with convergence-rate fitness | ✓ 5/5 (injection was load-bearing — see v3) |
+| Entropy-GP | GP with info-theoretic fitness (−log₂\|error\|) | ✓ 5/5 (injection was load-bearing — see v3) |
+| GP v3 minimal | Convergence fitness, {k,1,-1,2}, no injection | 2/5 at 30min |
+| GP v3 pop=2000 | Same + doubled population | ✓ 5/5 (~10k gens, ~30min) |
+| Entropy v3 minimal | Entropy fitness, {k,1,-1,2}, no injection | ✓ 5/5 (~6min total) |
+| Entropy stress L1 | Entropy fitness, 15 terminals, no injection | 0/5 — wrong-limit attractors |
 
-## Key Scientific Insight
+## Key Scientific Insights
 
-Two independent fitness framings both recover Leibniz:
+**The injection confound:** GP v2 and Entropy v2 "5/5" results were artifacts of injecting the Leibniz tree at gen 0. The tree survived through elitism — it was retained, not discovered. Clean runs (no injection) both go 0/5 with the original 55s budget.
 
-1. **Convergence-rate framing** (GP v2): reward series whose error keeps decreasing across checkpoints T=10, 50, 200, 1k, 5k, penalize tree complexity
-2. **Information-theoretic framing** (Entropy-GP): reward sustained bits-of-precision gain at ~3.32 bits/log₁₀-decade, penalize complexity
+**Entropy without injection:** With the minimal terminal set {k, 1, -1, 2} and no injection, entropy fitness finds Leibniz 5/5 in ~6 minutes. The fitness landscape has a strong enough gradient. GP (convergence-rate) manages 2/5 in 30 minutes; pop=2000 achieves 5/5.
 
-Neither framing encodes Leibniz structure. The formula emerges as the simplest rule satisfying the constraints.
+**Terminal set is the critical variable:** Entropy fitness breaks sharply at 15 terminals. With 4 terminals, `(-1)^k` is essentially the only oscillating structure available. With 15, rational attractors like `5/((6+4k)(k-2))` are cheaper, more monotone, and accidentally close to π/4. The fitness can't distinguish "converges to π/4" from "converges toward π/4 within the evaluation window."
 
-## GP Engine (shared by v2 and Entropy)
+**GP is a search-coverage problem:** Every GP configuration that found Leibniz found the exact formula. Failures converge to wrong-limit attractors (primarily `(-11)^-4`). The dominant fix is population size: doubling from 1000→2000 is enough for 5/5 with 4 terminals.
 
-- Population 1000, tournament size 7, elitism 5
+## GP Engine (shared by v2 and v3 variants)
+
+- Population 1000 (v2/baseline), 2000 (optimal for clean discovery)
+- Tournament size 7, elitism 5
 - Ramped half-and-half initialization, subtree crossover/mutation
 - Fitness cache keyed by expression string
-- Leibniz tree injected at gen 0 of every seed (calibration baseline)
+- **v2:** Leibniz tree injected at gen 0 (load-bearing — results were artifact)
+- **v3:** No injection — pure random initialization
 - Early stopping: stable 100 gens AND info at T_max ≥ 13 bits AND monotone profile
 
 ## Entropy Fitness Function
