@@ -1,0 +1,51 @@
+# 6. Discussion
+
+## 6.1 Second-Order Kinetics Connection
+
+Leibniz's error decays as 1/(2T+1), algebraically 1/T behavior. Plotting 1/error versus T yields a straight line. In chemical kinetics, this is the signature of a second-order reaction: the rate depends on the product of two concentrations, or the square of one.
+
+The analogy is structural. Each Leibniz term's correction depends on two interacting quantities: the position k, which determines the magnitude 1/(2k+1), and the alternating sign (-1)^k, which determines the direction. A process depending on only one quantity would exhibit exponential (first-order) convergence. The interaction of two quantities produces 1/T convergence, fundamentally slower but with a distinctive constant-rate signature on a log scale.
+
+The information-theoretic fitness measures info(T) = log₂(2T+1), which grows logarithmically. The rate d(info)/d(log T) is constant: log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade. This is the integrated form of the second-order rate law. The convergence-aware fitness asks a first-order question: "is error shrinking between checkpoints?" The information-theoretic fitness asks a second-order question: "is 1/error growing linearly?" Fewer processes satisfy the second-order criterion. Leibniz is the simplest among them in the minimal terminal set.
+
+We present this as a structural observation, not a proven result. The kinetics analogy is productive for intuition and for fitness design, but the mathematical correspondence should not be taken beyond the specific decay-rate relationship described here.
+
+## 6.2 Thermodynamic Interpretation
+
+The information gain measures how much precision about π/4 has been extracted from uncertainty. The constant rate of {{result:info_rate_3_32:value}} bits per decade represents a steady-state entropy dissipation rate.
+
+Systems that reduce free energy at a constant rate operate in a far-from-equilibrium steady state. Leibniz never reaches equilibrium (π/4 exactly): it dissipates uncertainty at a constant rate, forever. This connects the Leibniz convergence structure to non-equilibrium thermodynamics, though the connection is analogical rather than physical. We offer it as a framing device, not a derivation.
+
+## 6.3 Discovery = Fitness Quality × Coverage / Search Space
+
+The unifying result across all experiments can be stated as a proportionality: P(discovery) scales with fitness quality times coverage, divided by search space size.
+
+$$P(\text{discovery}) \propto \frac{\text{fitness quality} \times \text{coverage}}{\text{search space size}}$$
+
+Fitness quality is fixed: the information-theoretic fitness correctly identifies Leibniz as optimal in all tested configurations. Improving the fitness function, through extended checkpoints, gradient-based selection, or rate consistency penalties, does not improve discovery rates at 15 terminals.
+
+Coverage scales linearly with population size. Doubling the population roughly doubles the initial structural diversity. Search space scales combinatorially with terminal count: adding one terminal multiplies the number of distinct expressions at each tree size. The space grows much faster than coverage.
+
+The phase transition occurs where coverage/search_space drops below the threshold needed for the correct building blocks to appear in the initial population and survive long enough for selection to assemble them. The scaling grid confirms this quantitatively: the t=10 boundary holds across all tested population sizes, and larger populations produce only marginal improvements at t=6 and t=8.
+
+## 6.4 The Confabulation Analogy
+
+The project uses wrong-limit attractors as an analogy for confabulation in language models: outputs that appear correct within a finite evaluation window but fail under asymptotic scrutiny.
+
+*RL and ACO approaches.* These methods produced outputs that pattern-matched superficially to series convergence behavior but diverged under scrutiny, analogous to confabulation: generating plausible-sounding text that does not correspond to correct knowledge.
+
+*GP with convergence-aware fitness.* This produced miscalibration: outputs that approached a plausible value and stopped improving, analogous to a model that gives a confident answer without the capacity for further refinement.
+
+*Leibniz.* This exhibits calibrated behavior: infinite improvement at a constant rate, never fully confident, always refining. The constant-rate information gain is the series-domain analog of a well-calibrated probability estimate that updates appropriately with evidence.
+
+The analogy is imperfect but productive. Both phenomena arise from optimization against finite evaluation: a fitness function or loss function that rewards local plausibility without the capacity to verify global correctness. The remedy in both cases is not better loss functions but better questions, evaluating process properties (sustained improvement, calibration) rather than output properties (proximity to a target).
+
+## 6.5 Implications for Symbolic Regression
+
+Three findings extend beyond the Leibniz problem, each pointing toward a different aspect of fitness-guided search over infinite-horizon processes.
+
+*Process-level fitness design.* Standard symbolic regression evaluates pointwise accuracy. For problems involving infinite-horizon behavior, such as convergence, stability, or asymptotic scaling, process-level fitness functions that evaluate behavior across evaluation depths may be necessary. The information-theoretic approach demonstrated here is one such instantiation.
+
+*Wrong-limit attractors are a distinct failure mode.* They are not bloat: they are simpler than the correct answer. They are not overfitting: they genuinely converge. They are not fitness function errors: the fitness ranks them correctly when the correct answer is present. They are coverage failures exploiting the evaluation horizon, and they require a different diagnosis and response than the failure modes typically discussed in symbolic regression.
+
+*The evaluation horizon trap is fundamental.* Any finite evaluation horizon creates exploitable wrong-limit attractors. This constraint applies to any fitness-guided search over infinite-horizon processes, not just GP-based symbolic regression. Extending the horizon shifts the attractor landscape but does not eliminate it.
