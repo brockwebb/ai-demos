@@ -1,43 +1,46 @@
 #!/usr/bin/env python3
 """
-GP Scaling Column: Convergence-Aware Fitness, configurable pop size, all terminal counts.
+GP Extended Time Test: t=10, pop=5000, convergence-aware fitness.
+MAX_SEED=7200s (2h), MAX_TOTAL=36000s (10h).
 
-Supplementary curiosity run: same grid structure as entropy scaling_heatmap.py
-but using convergence-aware ("slime mold") fitness.
+Asks: with 4x the time budget, do additional seeds beyond seed 1 (val=7)
+find Leibniz at the t=10/p=5000 condition?
 
-Seeds, terminal counts, and time budgets are loaded from:
-  entropy-leibniz-v3/config/scaling_heatmap_config.json
+Seeds loaded from: entropy-leibniz-v3/config/scaling_heatmap_config.json
+Output: gp-leibniz-v3/results_gp_extended_t10_p5000/
 
 Usage:
-    python3 gp_scaling_column.py                    # pop=5000 (default)
-    python3 gp_scaling_column.py --pop_size 10000   # pop=10000
+    python3 gp_extended_t10_p5000.py
 """
 
-import argparse
 import json
 import time
 import math
 import random
 import sys
-import multiprocessing
 from pathlib import Path
 
 import numpy as np
 
-# ── Config path ───────────────────────────────────────────────────────────────
+# ── Config ────────────────────────────────────────────────────────────────────
 
 _CFG_PATH = Path(__file__).parent.parent / "entropy-leibniz-v3" / "config" / "scaling_heatmap_config.json"
+with open(_CFG_PATH) as _f:
+    _cfg = json.load(_f)
 
-# ── Module-level globals (set by _pool_init in workers, by run_all in main) ───
+SEED_VALS = _cfg["seeds"]   # [42, 7, 137, 2718, 31415]
+N_SEEDS   = len(SEED_VALS)
 
-TERMINAL_COUNTS = [4, 6, 8, 10, 12, 15, 20]
-POP_SIZE        = 5000
-SEED_VALS       = [42, 7, 137, 2718, 31415]
-N_SEEDS         = 5
-MAX_SEED        = 1800.0
-MAX_TOTAL       = 10800.0
-MAX_WORKERS     = 5
-OUT_DIR         = Path(__file__).parent / "results_gp_scaling_p5000"
+# Fixed condition
+TERMINALS_N = 10
+POP_SIZE    = 5000
+
+# Extended time budgets (not from config — this is the point of the test)
+MAX_SEED  = 7200.0   # 2 hours per seed
+MAX_TOTAL = 36000.0  # 10 hours total
+
+# Output
+OUT_DIR = Path(__file__).parent / "results_gp_extended_t10_p5000"
 
 # GP hyperparameters (match gp_sensitivity_sweep.py baseline)
 MAX_DEPTH    = 6
@@ -46,42 +49,33 @@ TOURNAMENT_K = 7
 P_CROSS      = 0.70
 P_MUT        = 0.20
 N_ELITE      = 5
-ALPHA        = 0.05     # convergence bonus weight
-LAMBDA_P     = 0.005    # parsimony penalty per node
+ALPHA        = 0.05
+LAMBDA_P     = 0.005
 PATIENCE     = 100
-STOP_THRESH  = 0.001    # accuracy threshold for early stop
+STOP_THRESH  = 0.001
 DIV_INJECT   = 100
 WORST        = -1e9
-CHECKPOINT_INTERVAL = 50
-LOG_INTERVAL        = 10
+LOG_INTERVAL = 10
 
 # Fitness evaluation
-K_MAX    = 5000
-K_ARRAY  = np.arange(K_MAX, dtype=float)
-T_EVAL   = [10, 50, 200, 1000, 5000]
+K_MAX     = 5000
+K_ARRAY   = np.arange(K_MAX, dtype=float)
+T_EVAL    = [10, 50, 200, 1000, 5000]
 PI_OVER_4 = math.pi / 4
 
-LEIBNIZ_REFS = {T: sum((-1)**k / (2*k+1) for k in range(T)) for T in T_EVAL + [10000]}
-
-# Known entropy results for comparison (from scaling_heatmap_results.md)
-ENTROPY_P5000  = {4: "5/5", 6: "1/5", 8: "1/5", 10: "0/5", 12: "0/5", 15: "0/5", 20: "0/5"}
-ENTROPY_P10000 = {4: "5/5", 6: "1/5", 8: "0/5", 10: "0/5", 12: "0/5", 15: "2/5", 20: "0/5"}
-
-# Primitives
 FUNC_ARITIES = {"add": 2, "sub": 2, "mul": 2, "div": 2, "pow": 2, "neg": 1}
-FNAMES = list(FUNC_ARITIES.keys())
-EPHEMERALS = []
+FNAMES       = list(FUNC_ARITIES.keys())
+EPHEMERALS   = []
 
-# Runtime globals (set per cell by setup_globals)
-TERM_FIXED    = ["k", 1, -1, 2]
-ALL_TERMINALS = TERM_FIXED[:]
+# Runtime globals (set by setup_globals)
+TERM_FIXED    = []
+ALL_TERMINALS = []
 _fitness_cache: dict = {}
 
 
-# ── Terminal set construction ─────────────────────────────────────────────────
+# ── Terminal set ──────────────────────────────────────────────────────────────
 
 def make_terminals(n):
-    """Build terminal set of size n: base {k,1,-1,2} + expanding integers."""
     base = ["k", 1, -1, 2]
     if n <= 4:
         return base
@@ -96,9 +90,9 @@ def make_terminals(n):
     return result[:n]
 
 
-def setup_globals(terminals_n):
+def setup_globals():
     global TERM_FIXED, ALL_TERMINALS, _fitness_cache
-    TERM_FIXED    = make_terminals(terminals_n)
+    TERM_FIXED    = make_terminals(TERMINALS_N)
     ALL_TERMINALS = TERM_FIXED + EPHEMERALS
     _fitness_cache = {}
 
@@ -194,11 +188,6 @@ def safe_eval(tree, k_arr=None):
 # ── Convergence-aware fitness ─────────────────────────────────────────────────
 
 def compute_fitness(tree):
-    """
-    fitness = accuracy + ALPHA * conv_bonus - LAMBDA_P * nodes
-    accuracy    = -mean(|partial_sum(T) - pi/4| for T in T_EVAL)
-    conv_bonus  = fraction of consecutive T-pairs with >5% error reduction
-    """
     key = tree.to_str()
     if key in _fitness_cache:
         return _fitness_cache[key]
@@ -226,7 +215,6 @@ def compute_fitness(tree):
 
 
 def fitness_components(tree):
-    """Return (accuracy, conv_bonus, parsimony, fitness)."""
     terms = safe_eval(tree)
     if terms is None:
         return (WORST, 0.0, 0.0, WORST)
@@ -367,16 +355,15 @@ def run_seed(seed_idx, seed_val, max_time, global_t0):
     log(f"  Perf: {t_per_ind*1000:.2f}ms/ind, ~{est_per_gen*1000:.0f}ms/gen → "
         f"~{int(max_time / max(est_per_gen, 1e-6))} gens")
 
-    # Pure random init — no injection
     population = ramped_h_h(POP_SIZE)
     fitnesses  = [compute_fitness(ind) for ind in population]
 
-    best_fit      = max(fitnesses)
-    best_ind      = population[fitnesses.index(best_fit)].copy()
+    best_fit       = max(fitnesses)
+    best_ind       = population[fitnesses.index(best_fit)].copy()
     best_unchanged = 0
-    history       = []
-    gen           = 0
-    stop_reason   = None
+    history        = []
+    gen            = 0
+    stop_reason    = None
 
     while True:
         elapsed_seed  = time.time() - t0
@@ -482,7 +469,7 @@ def analyze_result(result):
     cum    = np.cumsum(terms)
     errors = {T: round(abs(float(cum[T-1]) - PI_OVER_4), 10) for T in T_EVAL}
 
-    k_ext    = np.arange(10000, dtype=float)
+    k_ext     = np.arange(10000, dtype=float)
     terms_ext = safe_eval(ind, k_ext)
     errors[10000] = (round(abs(float(np.sum(terms_ext)) - PI_OVER_4), 10)
                      if terms_ext is not None else None)
@@ -504,11 +491,7 @@ def analyze_result(result):
 
 # ── Output writers ────────────────────────────────────────────────────────────
 
-def write_cell_results(seed_results, terminals_n):
-    tag       = f"t{terminals_n}_p{POP_SIZE}"
-    txt_path  = OUT_DIR / f"gp_scaling_{tag}.txt"
-    json_path = OUT_DIR / f"gp_scaling_{tag}_data.json"
-
+def write_results(seed_results):
     n_found    = sum(1 for r in seed_results if r.get("analysis", {}).get("is_equivalent", False))
     successful = [r for r in seed_results if r.get("analysis", {}).get("is_equivalent", False)]
     failed     = [r for r in seed_results if not r.get("analysis", {}).get("is_equivalent", False)]
@@ -519,13 +502,14 @@ def write_cell_results(seed_results, terminals_n):
     W = 72
     lines = [
         "=" * W,
-        f"GP SCALING COLUMN: terminals={terminals_n}, pop_size={POP_SIZE}",
+        f"GP EXTENDED TIME TEST: terminals={TERMINALS_N}, pop_size={POP_SIZE}",
         f"Fitness: convergence-aware  ALPHA={ALPHA}  LAMBDA_P={LAMBDA_P}",
         f"Terminal set: {TERM_FIXED}",
-        f"MAX_SEED={MAX_SEED:.0f}s, MAX_TOTAL={MAX_TOTAL:.0f}s",
+        f"MAX_SEED={MAX_SEED:.0f}s (2h), MAX_TOTAL={MAX_TOTAL:.0f}s (10h)",
         "=" * W,
         "",
         f"Discovery: {n_found}/{N_SEEDS} seeds found Leibniz",
+        f"(Standard 1800s run: 1/5 — seed 1/val=7)",
     ]
     if mean_gens is not None:
         lines.append(f"Mean generations (successful): {mean_gens:.1f}")
@@ -548,11 +532,13 @@ def write_cell_results(seed_results, terminals_n):
         lines.append(f"  expr={r['best_expr'][:80]}")
     lines.append("")
 
+    txt_path = OUT_DIR / "gp_extended_t10_p5000.txt"
     txt_path.write_text("\n".join(lines))
     print(f"  Wrote {txt_path}", flush=True)
 
     data = {
-        "terminal_count": terminals_n, "term_fixed": TERM_FIXED,
+        "experiment": "gp_extended_t10_p5000",
+        "terminal_count": TERMINALS_N, "term_fixed": TERM_FIXED,
         "pop_size": POP_SIZE, "n_seeds": N_SEEDS,
         "n_found": n_found,
         "mean_gens_success": round(mean_gens, 2) if mean_gens is not None else None,
@@ -574,79 +560,23 @@ def write_cell_results(seed_results, terminals_n):
             for r in seed_results
         ],
     }
+    json_path = OUT_DIR / "gp_extended_t10_p5000_data.json"
     with open(json_path, "w") as f:
         json.dump(data, f, indent=2)
     print(f"  Wrote {json_path}", flush=True)
 
-    return n_found, mean_gens, mean_elap
-
-
-def _load_gp_p5000_results():
-    """Load GP conv p=5000 results from JSON files in results_gp_scaling_p5000/."""
-    p5000_dir = Path(__file__).parent / "results_gp_scaling_p5000"
-    results = {}
-    for t in TERMINAL_COUNTS:
-        json_path = p5000_dir / f"gp_scaling_t{t}_p5000_data.json"
-        if json_path.exists():
-            with open(json_path) as f:
-                d = json.load(f)
-            results[t] = f"{d['n_found']}/5"
-        else:
-            results[t] = "?"
-    return results
-
-
-def write_summary_md(results_map):
-    """Write gp_scaling_results.md with 4-column comparison table."""
-    gp_p5000 = _load_gp_p5000_results()
-
-    lines = [
-        f"# GP Convergence-Aware Scaling Column: pop={POP_SIZE}",
-        "",
-        f"Fitness: convergence-aware  ALPHA={ALPHA}  LAMBDA_P={LAMBDA_P}",
-        f"T_EVAL: {T_EVAL}  K_MAX={K_MAX}",
-        f"Budget: MAX_SEED={MAX_SEED:.0f}s, MAX_TOTAL={MAX_TOTAL:.0f}s",
-        f"5 seeds per cell: {SEED_VALS}",
-        "",
-        "## Discovery Rate Comparison",
-        "",
-        "| Terminals | GP Conv p=5000 | GP Conv p=10000 | Entropy p=5000 | Entropy p=10000 |",
-        "|-----------|----------------|-----------------|----------------|-----------------|",
-    ]
-
-    for t in TERMINAL_COUNTS:
-        gp5k  = gp_p5000.get(t, "?")
-        gp10k = f"{results_map[t]}/5" if isinstance(results_map.get(t), int) else str(results_map.get(t, "?"))
-        e5k   = ENTROPY_P5000.get(t, "?")
-        e10k  = ENTROPY_P10000.get(t, "?")
-        # Mark the current run's column
-        if POP_SIZE == 5000:
-            gp5k = f"**{gp5k}**"
-        else:
-            gp10k = f"**{gp10k}**"
-        lines.append(f"| {t:<9} | {gp5k:<14} | {gp10k:<15} | {e5k:<14} | {e10k:<15} |")
-
-    lines += [
-        "",
-        "## Terminal Sets Used",
-        "",
-    ]
-    for t in TERMINAL_COUNTS:
-        ts = make_terminals(t)
-        lines.append(f"- N={t:2d}: {ts}")
-    lines.append("")
-
-    md_path = OUT_DIR / "gp_scaling_results.md"
-    md_path.write_text("\n".join(lines))
-    print(f"\n  Wrote {md_path}", flush=True)
+    return n_found
 
 
 def write_config_record():
-    """Dump all parameters to gp_scaling_column_config.txt."""
     lines = [
-        "# GP Scaling Column — Parameter Record",
+        "# GP Extended Time Test — Parameter Record",
         f"Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}",
-        f"Pop size: {POP_SIZE}",
+        "",
+        "## Condition",
+        f"  terminals: {TERMINALS_N}",
+        f"  terminal set: {make_terminals(TERMINALS_N)}",
+        f"  pop_size: {POP_SIZE}",
         "",
         "## Fitness Function",
         "  name: convergence-aware (slime mold)",
@@ -655,21 +585,15 @@ def write_config_record():
         f"  LAMBDA_P: {LAMBDA_P}",
         f"  T_EVAL: {T_EVAL}",
         f"  K_MAX: {K_MAX}",
-        f"  convergence criterion: >5% error reduction per consecutive T-pair",
         "",
-        "## Grid",
-        f"  POP_SIZE: {POP_SIZE}",
-        f"  TERMINAL_COUNTS: {TERMINAL_COUNTS}",
-        f"  SEEDS: {SEED_VALS}",
-        f"  Seed source: {_CFG_PATH}",
+        "## Time Budgets (extended — not from config)",
+        f"  MAX_SEED: {MAX_SEED}s (2 hours per seed)",
+        f"  MAX_TOTAL: {MAX_TOTAL}s (10 hours total)",
+        f"  Standard budget was: 1800s/seed, 10800s/cell",
         "",
-        "## Time Budgets",
-        f"  MAX_SEED: {MAX_SEED}s",
-        f"  MAX_TOTAL: {MAX_TOTAL}s",
-        f"  Source: {_CFG_PATH}",
-        "",
-        "## Parallelism",
-        f"  MAX_WORKERS: {MAX_WORKERS} (from entropy config)",
+        "## Seeds",
+        f"  values: {SEED_VALS}",
+        f"  source: {_CFG_PATH}",
         "",
         "## GP Hyperparameters",
         f"  MAX_DEPTH: {MAX_DEPTH}",
@@ -682,175 +606,67 @@ def write_config_record():
         f"  STOP_THRESH: {STOP_THRESH}",
         f"  DIV_INJECT: {DIV_INJECT}",
         "",
-        "## Terminal Sets",
+        "## Motivation",
+        "  At t=10/p=5000 with standard budget, seed 1 (val=7) found Leibniz (1/5).",
+        "  This test asks: with 4x the time, do other seeds eventually find it?",
+        "  Runs sequentially (no Pool) — single cell, single machine.",
     ]
-    for t in TERMINAL_COUNTS:
-        lines.append(f"  N={t:2d}: {make_terminals(t)}")
-    lines.append("")
 
-    cfg_path = OUT_DIR / "gp_scaling_column_config.txt"
+    cfg_path = OUT_DIR / "gp_extended_config.txt"
     cfg_path.write_text("\n".join(lines))
     print(f"  Wrote {cfg_path}", flush=True)
 
 
-# ── Pool worker initializer ───────────────────────────────────────────────────
+# ── Main ──────────────────────────────────────────────────────────────────────
 
-def _pool_init(pop_size, seed_vals, max_seed, max_total, out_dir_str, terminal_counts):
-    """Set module globals in each worker process."""
-    global POP_SIZE, SEED_VALS, MAX_SEED, MAX_TOTAL, N_SEEDS, OUT_DIR, TERMINAL_COUNTS
-    POP_SIZE        = pop_size
-    SEED_VALS       = seed_vals
-    MAX_SEED        = max_seed
-    MAX_TOTAL       = max_total
-    N_SEEDS         = len(seed_vals)
-    OUT_DIR         = Path(out_dir_str)
-    TERMINAL_COUNTS = terminal_counts
+def main():
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    setup_globals()
+    write_config_record()
 
-
-# ── In-process cell runner ────────────────────────────────────────────────────
-
-def run_cell_inprocess(terminals_n):
-    """Worker: run one terminal-count cell, redirect stdout to log file."""
-    log_file = OUT_DIR / f"gp_scaling_t{terminals_n}_p{POP_SIZE}.log"
-    print(f"  [GRID] Starting t={terminals_n} p={POP_SIZE} → {log_file.name}", flush=True)
-    t0 = time.time()
-
-    try:
-        with open(log_file, "w") as lf:
-            old_out, old_err = sys.stdout, sys.stderr
-            sys.stdout = lf
-            sys.stderr = lf
-            try:
-                main_single(terminals_n)
-            finally:
-                sys.stdout = old_out
-                sys.stderr = old_err
-        elapsed = time.time() - t0
-        print(f"  [GRID] Done t={terminals_n} in {elapsed:.0f}s [OK]", flush=True)
-        return (terminals_n, 0, elapsed)
-    except Exception as exc:
-        elapsed = time.time() - t0
-        print(f"  [GRID] Error t={terminals_n} in {elapsed:.0f}s: {exc}", flush=True)
-        return (terminals_n, 1, elapsed)
-
-
-# ── Single-cell entry point ───────────────────────────────────────────────────
-
-def main_single(terminals_n):
-    setup_globals(terminals_n)
-    global_t0 = time.time()
-
-    print("=" * 72, flush=True)
-    print(f"GP Scaling Column: terminals={terminals_n}, pop_size={POP_SIZE}", flush=True)
+    print(f"\n[GP EXTENDED] terminals={TERMINALS_N} pop={POP_SIZE} "
+          f"MAX_SEED={MAX_SEED:.0f}s MAX_TOTAL={MAX_TOTAL:.0f}s", flush=True)
     print(f"  Terminal set: {TERM_FIXED}", flush=True)
-    print(f"  Fitness: convergence-aware  ALPHA={ALPHA}  LAMBDA_P={LAMBDA_P}", flush=True)
-    print(f"  π/4 = {PI_OVER_4:.10f}", flush=True)
-    print(f"  MAX_SEED={MAX_SEED:.0f}s  MAX_TOTAL={MAX_TOTAL:.0f}s", flush=True)
-    print("=" * 72, flush=True)
+    print(f"  Seeds (from config): {SEED_VALS}", flush=True)
+    print(f"  Log: {OUT_DIR / 'gp_extended_t10_p5000.log'}", flush=True)
 
-    seed_results = []
-    for i, sv in enumerate(SEED_VALS):
-        elapsed_total = time.time() - global_t0
-        remaining     = MAX_TOTAL - elapsed_total
-        seed_budget   = min(MAX_SEED, remaining / (N_SEEDS - i))
-        if seed_budget < 5:
-            print(f"  Skipping seed {i} ({remaining:.1f}s remaining)", flush=True)
-            break
-        result = run_seed(i, sv, seed_budget, global_t0)
-        seed_results.append(result)
+    log_path = OUT_DIR / "gp_extended_t10_p5000.log"
+
+    with open(log_path, "w") as lf:
+        old_out, old_err = sys.stdout, sys.stderr
+        sys.stdout = lf
+        sys.stderr = lf
+
+        try:
+            global_t0    = time.time()
+            seed_results = []
+
+            for i, sv in enumerate(SEED_VALS):
+                elapsed_total = time.time() - global_t0
+                remaining     = MAX_TOTAL - elapsed_total
+                seed_budget   = min(MAX_SEED, remaining / (N_SEEDS - i))
+                if seed_budget < 5:
+                    print(f"  Skipping seed {i} ({remaining:.1f}s remaining)", flush=True)
+                    break
+                result = run_seed(i, sv, seed_budget, global_t0)
+                seed_results.append(result)
+
+            if seed_results:
+                for r in seed_results:
+                    r["analysis"] = analyze_result(r)
+        finally:
+            sys.stdout = old_out
+            sys.stderr = old_err
 
     if not seed_results:
         print("ERROR: no seeds completed", flush=True)
-        return 0
+        return
 
-    for r in seed_results:
-        r["analysis"] = analyze_result(r)
+    n_found = write_results(seed_results)
 
-    n_found, mean_gens, mean_elap = write_cell_results(seed_results, terminals_n)
+    print(f"\n[GP EXTENDED] Done: {n_found}/{N_SEEDS} seeds found Leibniz", flush=True)
+    print(f"  (Standard 1800s run found 1/5)", flush=True)
 
-    print(f"\nResult: {n_found}/{N_SEEDS} seeds found Leibniz", flush=True)
-    if mean_gens:
-        print(f"  Mean generations (success): {mean_gens:.1f}", flush=True)
-        print(f"  Mean elapsed (success): {mean_elap:.1f}s", flush=True)
-    print(f"Total elapsed: {time.time() - global_t0:.1f}s", flush=True)
-    print("=" * 72, flush=True)
-    return n_found
-
-
-# ── Full grid runner ──────────────────────────────────────────────────────────
-
-def run_all():
-    """Run all terminal counts via multiprocessing Pool."""
-    global POP_SIZE, OUT_DIR, TERMINAL_COUNTS, SEED_VALS, MAX_SEED, MAX_TOTAL, MAX_WORKERS, N_SEEDS
-
-    parser = argparse.ArgumentParser(description="GP Scaling Column: convergence-aware fitness")
-    parser.add_argument("--pop_size", type=int, default=5000,
-                        help="Population size (default: 5000)")
-    args = parser.parse_args()
-
-    # Load config
-    with open(_CFG_PATH) as f:
-        cfg = json.load(f)
-
-    TERMINAL_COUNTS = cfg["grid"]["terminal_counts"]
-    SEED_VALS       = cfg["seeds"]
-    MAX_SEED        = float(cfg["time_budgets"]["max_seed_seconds"])
-    MAX_TOTAL       = float(cfg["time_budgets"]["max_total_seconds"])
-    MAX_WORKERS     = int(cfg["parallelism"]["max_workers"])
-    N_SEEDS         = len(SEED_VALS)
-    POP_SIZE        = args.pop_size
-    OUT_DIR         = Path(__file__).parent / f"results_gp_scaling_p{POP_SIZE}"
-
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    write_config_record()
-
-    print(f"\n[GP SCALING COLUMN] {len(TERMINAL_COUNTS)} cells, max_workers={MAX_WORKERS}", flush=True)
-    print(f"  POP_SIZE={POP_SIZE}, MAX_SEED={MAX_SEED:.0f}s, MAX_TOTAL={MAX_TOTAL:.0f}s", flush=True)
-    print(f"  Seeds loaded from config: {SEED_VALS}", flush=True)
-
-    completed   = []
-    results_map = {}
-
-    init_args = (POP_SIZE, SEED_VALS, MAX_SEED, MAX_TOTAL, str(OUT_DIR), TERMINAL_COUNTS)
-
-    with multiprocessing.Pool(processes=MAX_WORKERS,
-                              initializer=_pool_init,
-                              initargs=init_args) as pool:
-        for result in pool.imap_unordered(run_cell_inprocess, TERMINAL_COUNTS):
-            t_n, rc, elapsed = result
-            status = "OK" if rc == 0 else f"ERR({rc})"
-            print(f"  [GRID] Completed t={t_n} [{status}] in {elapsed:.0f}s "
-                  f"({len(completed)+1}/{len(TERMINAL_COUNTS)})", flush=True)
-            completed.append(result)
-
-            # Load n_found from data file
-            json_path = OUT_DIR / f"gp_scaling_t{t_n}_p{POP_SIZE}_data.json"
-            if json_path.exists():
-                with open(json_path) as f:
-                    d = json.load(f)
-                results_map[t_n] = d.get("n_found", "?")
-            else:
-                results_map[t_n] = "?"
-
-    print(f"\n[GP SCALING COLUMN] All {len(TERMINAL_COUNTS)} cells complete.", flush=True)
-
-    write_summary_md(results_map)
-
-    # Print final table
-    gp_p5000 = _load_gp_p5000_results()
-    print("\n| Terminals | GP Conv p=5000 | GP Conv p=10000 | Entropy p=5000 | Entropy p=10000 |", flush=True)
-    print("|-----------|----------------|-----------------|----------------|-----------------|", flush=True)
-    for t in TERMINAL_COUNTS:
-        gp5k  = gp_p5000.get(t, "?")
-        gp10k = results_map.get(t, "?")
-        if isinstance(gp10k, int):
-            gp10k = f"{gp10k}/5"
-        e5k  = ENTROPY_P5000.get(t, "?")
-        e10k = ENTROPY_P10000.get(t, "?")
-        print(f"| {t:<9} | {str(gp5k):<14} | {str(gp10k):<15} | {e5k:<14} | {e10k:<15} |", flush=True)
-
-
-# ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    run_all()
+    main()
