@@ -1,0 +1,82 @@
+{
+  "terminal_count": 4,
+  "term_fixed": [
+    "k",
+    1,
+    -1,
+    2
+  ],
+  "pop_size": 10000,
+  "n_seeds": 5,
+  "n_found": 5,
+  "mean_gens_success": 4303.8,
+  "mean_elapsed_success": 1800.23,
+  "top_failed_exprs": [],
+  "seeds": [
+    {
+      "seed": 0,
+      "seed_val": 42,
+      "generations": 4308,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / (k + (1 + k)))",
+      "elapsed": 1800.36,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 1,
+      "seed_val": 7,
+      "generations": 4484,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / ((k + k) - -1))",
+      "elapsed": 1800.29,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 2,
+      "seed_val": 137,
+      "generations": 4333,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / ((2 * k) - -1))",
+      "elapsed": 1800.29,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 3,
+      "seed_val": 2718,
+      "generations": 4047,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / ((k + 1) + k))",
+      "elapsed": 1800.16,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 4,
+      "seed_val": 31415,
+      "generations": 4347,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / ((2 * k) - -1))",
+      "elapsed": 1800.04,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    }
+  ]
+}

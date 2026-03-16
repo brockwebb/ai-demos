@@ -1,0 +1,26 @@
+========================================================================
+GP SCALING COLUMN: terminals=8, pop_size=10000
+Fitness: convergence-aware  ALPHA=0.05  LAMBDA_P=0.005
+Terminal set: ['k', 1, -1, 2, 3, -2, 4, -3]
+MAX_SEED=1800s, MAX_TOTAL=10800s
+========================================================================
+
+Discovery: 0/5 seeds found Leibniz
+
+Top expressions (failed seeds):
+  ((k ^ -2) / ((-2 / -3) ^ -3))
+  (((-3 ^ ((-2 ^ k) / -2)) - k) ^ -3)
+  (((-3 ^ ((-2 ^ k) / -2)) - k) ^ -3)
+  ((k ^ -1) / ((4 - k) * -3))
+  ((-2 ^ -3) / (k * k))
+
+Seed 0 (val=42): gens=2289 elapsed=1800.8s found=False acc=-0.00128 cb=1.00 stop=time_limit_seed
+  expr=(((-3 ^ ((-2 ^ k) / -2)) - k) ^ -3)
+Seed 1 (val=7): gens=2431 elapsed=1800.5s found=False acc=-0.01159 cb=1.00 stop=time_limit_seed
+  expr=((k ^ -1) / ((4 - k) * -3))
+Seed 2 (val=137): gens=1837 elapsed=1800.1s found=False acc=-0.00951 cb=1.00 stop=time_limit_seed
+  expr=((k ^ -2) / ((-2 / -3) ^ -3))
+Seed 3 (val=2718): gens=3298 elapsed=1800.3s found=False acc=-0.01227 cb=0.75 stop=time_limit_seed
+  expr=((-2 ^ -3) / (k * k))
+Seed 4 (val=31415): gens=2095 elapsed=1800.1s found=False acc=-0.00128 cb=1.00 stop=time_limit_seed
+  expr=(((-3 ^ ((-2 ^ k) / -2)) - k) ^ -3)

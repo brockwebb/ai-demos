@@ -1,0 +1,86 @@
+{
+  "terminal_count": 6,
+  "term_fixed": [
+    "k",
+    1,
+    -1,
+    2,
+    3,
+    -2
+  ],
+  "pop_size": 10000,
+  "n_seeds": 5,
+  "n_found": 4,
+  "mean_gens_success": 3941.25,
+  "mean_elapsed_success": 1800.1,
+  "top_failed_exprs": [
+    "(-1 / (((k + 3) + k) * (k * 2)))"
+  ],
+  "seeds": [
+    {
+      "seed": 0,
+      "seed_val": 42,
+      "generations": 3303,
+      "best_fitness": -0.01239408,
+      "best_expr": "(-1 / (((k + 3) + k) * (k * 2)))",
+      "elapsed": 1800.44,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.00739408,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 1,
+      "seed_val": 7,
+      "generations": 3455,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / (1 - (k * -2)))",
+      "elapsed": 1800.07,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 2,
+      "seed_val": 137,
+      "generations": 3953,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / ((k + k) + 1))",
+      "elapsed": 1800.02,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 3,
+      "seed_val": 2718,
+      "generations": 4188,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / (k + (k + 1)))",
+      "elapsed": 1800.11,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 4,
+      "seed_val": 31415,
+      "generations": 4169,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / ((k - -1) + k))",
+      "elapsed": 1800.2,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    }
+  ]
+}

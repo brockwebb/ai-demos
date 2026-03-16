@@ -1,0 +1,26 @@
+========================================================================
+GP SCALING COLUMN: terminals=15, pop_size=10000
+Fitness: convergence-aware  ALPHA=0.05  LAMBDA_P=0.005
+Terminal set: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8]
+MAX_SEED=1800s, MAX_TOTAL=10800s
+========================================================================
+
+Discovery: 0/5 seeds found Leibniz
+
+Top expressions (failed seeds):
+  (-1 / (((7 * k) - -1) * k))
+  (-1 / (k * ((7 * k) - -1)))
+  ((2 / (2 + k)) / ((-7) * k))
+  (((-1 / k) / (7 + (-2 / -3))) / k)
+  (-3 / (k * ((-1 + (8 * 3)) * k)))
+
+Seed 0 (val=42): gens=3069 elapsed=1800.5s found=False acc=-0.00510 cb=1.00 stop=time_limit_seed
+  expr=(-1 / (((7 * k) - -1) * k))
+Seed 1 (val=7): gens=3592 elapsed=1800.2s found=False acc=-0.00726 cb=1.00 stop=time_limit_seed
+  expr=((2 / (2 + k)) / ((-7) * k))
+Seed 2 (val=137): gens=2747 elapsed=1800.2s found=False acc=-0.00510 cb=1.00 stop=time_limit_seed
+  expr=(-1 / (k * ((7 * k) - -1)))
+Seed 3 (val=2718): gens=3371 elapsed=1800.2s found=False acc=-0.00348 cb=1.00 stop=time_limit_seed
+  expr=(((-1 / k) / (7 + (-2 / -3))) / k)
+Seed 4 (val=31415): gens=3154 elapsed=1800.5s found=False acc=-0.00348 cb=1.00 stop=time_limit_seed
+  expr=(-3 / (k * ((-1 + (8 * 3)) * k)))
