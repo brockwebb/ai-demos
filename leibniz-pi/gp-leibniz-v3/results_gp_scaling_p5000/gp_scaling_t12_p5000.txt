@@ -1,0 +1,26 @@
+========================================================================
+GP SCALING COLUMN: terminals=12, pop_size=5000
+Fitness: convergence-aware  ALPHA=0.05  LAMBDA_P=0.005
+Terminal set: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5]
+MAX_SEED=1800s, MAX_TOTAL=10800s
+========================================================================
+
+Discovery: 0/5 seeds found Leibniz
+
+Top expressions (failed seeds):
+  (-1 / (k * (6 - (k * -4))))
+  (1 / (((-4 * k) - 6) * k))
+  (-3 / ((k * (-2 + (5 ^ 2))) * k))
+  ((((4 * 4) ^ (1 - k)) - k) ^ -3)
+  ((-3 - k) ^ (-k))
+
+Seed 0 (val=42): gens=5872 elapsed=1800.3s found=False acc=-0.00739 cb=1.00 stop=time_limit_seed
+  expr=(-1 / (k * (6 - (k * -4))))
+Seed 1 (val=7): gens=7614 elapsed=1800.1s found=False acc=-0.00348 cb=1.00 stop=time_limit_seed
+  expr=(-3 / ((k * (-2 + (5 ^ 2))) * k))
+Seed 2 (val=137): gens=101 elapsed=18.4s found=False acc=-0.00036 cb=0.00 stop=early_stop_converged
+  expr=((-3 - k) ^ (-k))
+Seed 3 (val=2718): gens=8065 elapsed=1800.0s found=False acc=-0.00130 cb=0.75 stop=time_limit_seed
+  expr=((((4 * 4) ^ (1 - k)) - k) ^ -3)
+Seed 4 (val=31415): gens=5916 elapsed=1800.0s found=False acc=-0.00739 cb=1.00 stop=time_limit_seed
+  expr=(1 / (((-4 * k) - 6) * k))

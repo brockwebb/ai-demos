@@ -26,4 +26,4 @@ Terminal sets are constructed deterministically at each size N. The base set {k,
 
 ## 4.4 Scaling Grid
 
-The scaling grid spans seven terminal counts (t = 4, 6, 8, 10, 12, 15, 20) and four population sizes (1000, 2000, 5000, 10000), with five seeds per cell, yielding 140 individual runs. The information-theoretic fitness is used throughout the grid. Time budget per seed is 1800 seconds. This design tests whether increasing population size can compensate for expanding terminal sets, and identifies the boundary beyond which no tested population size achieves reliable discovery.
+The scaling grid spans seven terminal counts (t = 4, 6, 8, 10, 12, 15, 20) and four population sizes (1000, 2000, 5000, 10000), with five seeds per cell, yielding 140 individual runs. The log-precision fitness is used throughout the grid. Time budget per seed is 1800 seconds. This design tests whether increasing population size can compensate for expanding terminal sets, and identifies the boundary beyond which no tested population size achieves reliable discovery.

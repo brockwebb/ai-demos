@@ -1,0 +1,92 @@
+{
+  "terminal_count": 8,
+  "term_fixed": [
+    "k",
+    1,
+    -1,
+    2,
+    3,
+    -2,
+    4,
+    -3
+  ],
+  "pop_size": 5000,
+  "n_seeds": 5,
+  "n_found": 0,
+  "mean_gens_success": null,
+  "mean_elapsed_success": null,
+  "top_failed_exprs": [
+    "(((-3 ^ ((-2 ^ k) / -2)) - k) ^ -3)",
+    "(((-3 ^ ((-2 ^ k) / -2)) - k) ^ -3)",
+    "((-3 / ((3 ^ 3) - 4)) / (k * k))",
+    "((3 / (4 + (-3 ^ 3))) / (k * k))",
+    "(((2 ^ (4 * (1 - k))) - k) ^ -3)"
+  ],
+  "seeds": [
+    {
+      "seed": 0,
+      "seed_val": 42,
+      "generations": 6277,
+      "best_fitness": -0.00847776,
+      "best_expr": "((-3 / ((3 ^ 3) - 4)) / (k * k))",
+      "elapsed": 1800.29,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.00347776,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 1,
+      "seed_val": 7,
+      "generations": 7035,
+      "best_fitness": -0.00628308,
+      "best_expr": "(((-3 ^ ((-2 ^ k) / -2)) - k) ^ -3)",
+      "elapsed": 1800.34,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.00128308,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 2,
+      "seed_val": 137,
+      "generations": 5412,
+      "best_fitness": -0.00628308,
+      "best_expr": "(((-3 ^ ((-2 ^ k) / -2)) - k) ^ -3)",
+      "elapsed": 1800.32,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.00128308,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 3,
+      "seed_val": 2718,
+      "generations": 6136,
+      "best_fitness": -0.00847776,
+      "best_expr": "((3 / (4 + (-3 ^ 3))) / (k * k))",
+      "elapsed": 1800.11,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.00347776,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 4,
+      "seed_val": 31415,
+      "generations": 7621,
+      "best_fitness": -0.0187983,
+      "best_expr": "(((2 ^ (4 * (1 - k))) - k) ^ -3)",
+      "elapsed": 1800.24,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.0012983,
+      "conv_bonus": 0.75
+    }
+  ]
+}

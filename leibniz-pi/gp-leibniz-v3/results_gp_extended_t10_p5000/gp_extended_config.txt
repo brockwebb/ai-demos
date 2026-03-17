@@ -1,0 +1,40 @@
+# GP Extended Time Test — Parameter Record
+Generated: 2026-03-16 12:05:04
+
+## Condition
+  terminals: 10
+  terminal set: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4]
+  pop_size: 5000
+
+## Fitness Function
+  name: convergence-aware (slime mold)
+  formula: fitness = accuracy + ALPHA * conv_bonus - LAMBDA_P * nodes
+  ALPHA: 0.05
+  LAMBDA_P: 0.005
+  T_EVAL: [10, 50, 200, 1000, 5000]
+  K_MAX: 5000
+
+## Time Budgets (extended — not from config)
+  MAX_SEED: 7200.0s (2 hours per seed)
+  MAX_TOTAL: 36000.0s (10 hours total)
+  Standard budget was: 1800s/seed, 10800s/cell
+
+## Seeds
+  values: [42, 7, 137, 2718, 31415]
+  source: /Users/brock/Documents/GitHub/ai-demos/leibniz-pi/entropy-leibniz-v3/config/scaling_heatmap_config.json
+
+## GP Hyperparameters
+  MAX_DEPTH: 6
+  MAX_NODES: 30
+  TOURNAMENT_K: 7
+  P_CROSS: 0.7
+  P_MUT: 0.2
+  N_ELITE: 5
+  PATIENCE: 100
+  STOP_THRESH: 0.001
+  DIV_INJECT: 100
+
+## Motivation
+  At t=10/p=5000 with standard budget, seed 1 (val=7) found Leibniz (1/5).
+  This test asks: with 4x the time, do other seeds eventually find it?
+  Runs sequentially (no Pool) — single cell, single machine.

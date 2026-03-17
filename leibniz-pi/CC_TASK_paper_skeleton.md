@@ -29,7 +29,7 @@ Append leibniz-pi-specific rules to the bottom of `paper/conventions.md` under t
 - **"Discovery"** means the GP found a Leibniz-equivalent expression from random initialization. Not "rediscovery" (implies prior knowledge). Not "recovery" (implies reconstruction).
 - **"Evaluation horizon"** is the maximum T at which partial sums are checked. Not "evaluation window" or "test range."
 - **"Coverage"** refers to the fraction of structurally distinct building blocks present in the population. Not "diversity" (which has a specific GP meaning related to fitness variance).
-- **"Information-theoretic fitness"** or **"entropy fitness"** interchangeably. Not "info fitness" or "IT fitness."
+- **"Log-precision fitness"** is the correct term. Do not write "entropy fitness" or "information-theoretic fitness."
 - **"Convergence-aware fitness"** for the first-order variant. Not "GP fitness" or "rate fitness."
 - **"Phase transition"** for the sharp boundary between discoverable and non-discoverable regions. Use "degradation" if data shows the boundary is gradual rather than sharp.
 
@@ -61,7 +61,7 @@ Create these files in `paper/sections/`. Write them in order. After each section
 
 Working title: "Reverse Engineering Leibniz: Evolutionary Discovery of the π/4 Series from Arithmetic Primitives"
 
-The abstract should cover: what we did (GP + information-theoretic fitness discovers Leibniz from primitives), the key positive result (5/5 at minimal terminals), the key negative result (sharp failure as terminals expand), the mechanism (wrong-limit attractors), and the framing (discovery difficulty is coverage, not fitness landscape). ~200 words.
+The abstract should cover: what we did (GP + log-precision fitness discovers Leibniz from primitives), the key positive result (5/5 at minimal terminals), the key negative result (sharp failure as terminals expand), the mechanism (wrong-limit attractors), and the framing (discovery difficulty is coverage, not fitness landscape). ~200 words.
 
 ### 01_introduction.md
 
@@ -94,7 +94,7 @@ Three subsections:
 
 *Evolutionary Search.* Standard GP: ramped half-and-half init, tournament selection, subtree crossover/mutation, elitism, diversity injection. No domain-specific operators. Parameters in a table.
 
-*Two Fitness Functions.* Convergence-aware (first-order: is error shrinking?) and information-theoretic (second-order: is 1/error growing linearly?). Mathematical definitions. Why the second-order question is more selective.
+*Two Fitness Functions.* Convergence-aware (first-order: is error shrinking?) and log-precision (second-order: is 1/error growing linearly?). Mathematical definitions. Why the second-order question is more selective.
 
 Use the "what the GP builds" walkthrough — explaining the three structural components (oscillation, odd denominator, division) that must be assembled. This makes the mechanism concrete for readers outside GP.
 
@@ -116,7 +116,7 @@ This section has PENDING stubs for the heat map. Write what we have:
 
 *Failure Under Expanded Terminals.* 15 terminals at pop=1000: 0/5. The 5/((6+4k)(k-2)) attractor example scoring 15.93 bits vs Leibniz's 15.29. The wrong-limit attractor scores *better* within the evaluation horizon.
 
-*Parsimony Pressure.* Table: λ_p = 0.005 (5/5) → 0.01 (0/5) → 0.02 (0/5) → 0.05 (0/5). Sharp transition. The information-theoretic reward ceiling (~0.07) sets a hard limit on viable parsimony.
+*Parsimony Pressure.* Table: λ_p = 0.005 (5/5) → 0.01 (0/5) → 0.02 (0/5) → 0.05 (0/5). Sharp transition. The log-precision reward ceiling (~0.07) sets a hard limit on viable parsimony.
 
 *Fitness Modifications.* Table of attempted fixes on 15 terminals (extended checkpoints, large-T penalty, rate consistency, gradient-based). All 0/5. Confirms coverage bottleneck, not fitness bottleneck.
 
@@ -124,9 +124,7 @@ This section has PENDING stubs for the heat map. Write what we have:
 
 ### 06_discussion.md
 
-*Second-Order Kinetics Connection.* Error decays as 1/(2T+1). Plot 1/error vs T: straight line = second-order signature. The entropy fitness is the integrated second-order rate law. Present as observation, not proof. Acknowledge the analogy is structural, not physical.
-
-*Thermodynamic Interpretation.* Constant bits/decade = steady-state entropy dissipation. Leibniz operates far from equilibrium. Brief treatment — this is suggestive, not central.
+*Second-Order Kinetics Connection.* Error decays as 1/(2T+1). Plot 1/error vs T: straight line = second-order signature. The log-precision fitness is the integrated second-order rate law. Present as observation, not proof. The 3.32 bits/decade constant is a property of Leibniz's error decay, not evidence of thermodynamic behavior.
 
 *Discovery = Fitness Quality × Coverage / Search Space.* The unifying finding. Fitness quality is fixed (correctly ranks Leibniz). Coverage scales linearly with population. Search space scales combinatorially with terminals. Phase transition where coverage/space drops below threshold.
 

@@ -1,0 +1,49 @@
+# Paper QC Configuration — Prose Quality Rules (Tier 2)
+# These are soft constraints: violations are flagged for review, not build-blocking.
+# Copied from seldon/templates/paper/ — edit for leibniz-pi specifics.
+
+prose_rules:
+  # Sentence constraints
+  max_sentence_words: 35
+  
+  # Paragraph constraints
+  min_paragraph_sentences: 2
+  max_paragraph_sentences: 8
+  
+  # Formatting constraints
+  no_inline_bold: true           # Bold only in headings/labels
+  no_em_dashes: true             # Zero tolerance — use commas, colons, or restructure
+  no_bold_pseudo_headers: true   # No "**Label.** Prose..." pattern in running text
+  
+  # Sentence structure
+  no_semicolons_over_words: 20   # Flag semicolons in sentences exceeding this word count
+  max_hedge_per_claim: 1         # "may suggest" OK; "may potentially suggest" not OK
+  
+  # Voice and tense
+  active_voice_preferred: true
+  first_person: "we"             # Consistent throughout; not "the authors" or "one"
+  tense_results: past            # "We tested", "The model achieved"
+  tense_claims: present          # "This demonstrates", "The framework provides"
+  
+  # Structure
+  lead_with_point: true          # Topic sentence should state the paragraph's point
+  one_idea_per_paragraph: true   # If two distinct points, split into two paragraphs
+  
+  # Pronoun clarity
+  flag_ambiguous_pronouns: true  # "This" or "It" opening a sentence without clear antecedent
+
+# Formatting rules for non-prose elements
+formatting_rules:
+  italic_run_in_heads: true      # APA Level 4: "*Label.* Prose continues..."
+  no_bullet_points_in_prose: true
+  figures_have_captions: true
+  tables_have_captions: true
+
+# Exceptions — paragraphs/sections where rules are relaxed
+exceptions:
+  min_paragraph_sentences:
+    - "abstract"
+    - "definitions"
+  no_inline_bold:
+    - "tables"
+    - "figure_captions"

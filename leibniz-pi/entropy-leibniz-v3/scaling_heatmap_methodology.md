@@ -120,12 +120,14 @@ Unary: neg
 
 **Safe operations:** `div(a, 0) → 1.0`, `pow` overflow → 1.0 (with 1e6 magnitude cap)
 
-### Fitness Function (Entropy / Information-Theoretic)
+### Fitness Function (Log-Precision)
+
+The fitness measures log-scale precision: -log₂(|error|) gives bits of precision about π/4. It does not measure entropy or information in the Shannon sense.
 
 ```
-info(T) = -log₂(|partial_sum(T) - π/4|)    (capped at 50 bits)
+precision(T) = -log₂(|partial_sum(T) - π/4|)    (capped at 50 bits)
 
-fitness = W1 × (total_info / INFO_NORM)
+fitness = W1 × (total_precision / INFO_NORM)
         + W2 × monotonicity
         + W3 × (mean_rate / RATE_NORM)
         - LAMBDA_P × node_count
@@ -133,9 +135,9 @@ fitness = W1 × (total_info / INFO_NORM)
 
 | Weight | Value | Component |
 |---|---|---|
-| W1 | 0.02 | Total information at T=10000 (normalized by 50) |
+| W1 | 0.02 | Total precision at T=10000 (normalized by 50) |
 | W2 | 0.04 | Fraction of consecutive checkpoint pairs with ≥0.5 bit gain |
-| W3 | 0.03 | Mean information gain rate in bits/decade (normalized by 5) |
+| W3 | 0.03 | Mean precision gain rate in bits/decade (normalized by 5) |
 | LAMBDA_P | 0.005 | Parsimony penalty per node |
 
 **T_CHECKPOINTS:** [5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000]
@@ -187,7 +189,7 @@ This catches algebraically equivalent but structurally different expressions (e.
 
 2. **Terminal set includes Leibniz primitives at all levels:** By design (Option A), {k, 1, -1, 2} are always present. This means Leibniz is always constructible. The experiment measures whether it's *findable*, not whether it's *constructible*.
 
-3. **Single fitness function:** Only entropy fitness is tested. GP convergence fitness was shown to work at pop=2000/4 terminals but is not included in this grid. This is a deliberate scope decision — entropy is the primary result for the preprint.
+3. **Single fitness function:** Only log-precision fitness is tested. GP convergence fitness was shown to work at pop=2000/4 terminals but is not included in this grid. This is a deliberate scope decision — log-precision fitness is the primary result for the preprint.
 
 4. **No replication beyond 5 seeds:** Statistical power is limited. 5/5 vs 0/5 is clear; 2/5 vs 3/5 is not distinguishable from noise. The heat map should be interpreted as approximate boundary characterization, not precise rate estimation.
 

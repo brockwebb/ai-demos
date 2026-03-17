@@ -62,7 +62,7 @@ reference for authors and AI editors.
 - **"Discovery"** means the GP found a Leibniz-equivalent expression from random initialization. Not "rediscovery" (implies prior knowledge). Not "recovery" (implies reconstruction).
 - **"Evaluation horizon"** is the maximum T at which partial sums are checked. Not "evaluation window" or "test range."
 - **"Coverage"** refers to the fraction of structurally distinct building blocks present in the population. Not "diversity" (which has a specific GP meaning related to fitness variance).
-- **"Information-theoretic fitness"** or **"entropy fitness"** interchangeably. Not "info fitness" or "IT fitness."
+- **"Log-precision fitness"** is the correct term for the fitness that measures -log₂(|error|). Do not write "entropy fitness" or "information-theoretic fitness" — these imply a connection to Shannon information theory that does not exist. The fitness measures log-scale precision, not entropy.
 - **"Convergence-aware fitness"** for the first-order variant. Not "GP fitness" or "rate fitness."
 - **"Phase transition"** for the sharp boundary between discoverable and non-discoverable regions. Use "degradation" if data shows the boundary is gradual rather than sharp.
 

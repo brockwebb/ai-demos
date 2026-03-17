@@ -1,0 +1,136 @@
+# Paper Style Configuration — Preferences & Blacklists (Tier 3)
+# Informational: reported for awareness, never blocks the build.
+# Copied from seldon/templates/paper/ — edit for leibniz-pi specifics.
+
+banned_words:
+  always:
+    - "novel"
+    - "utilize"
+    - "leverage"
+    - "robust"
+    - "notably"
+    - "remarkably"
+    - "strikingly"
+    - "importantly"
+    - "interestingly"
+    - "clearly"
+    - "obviously"
+    - "significant"       # Ambiguous — statistical or practical?
+    - "impactful"
+    - "synergy"
+    - "holistic"
+    - "paradigm"
+    - "cutting-edge"
+    - "state-of-the-art"  # OK only when citing specific SOTA benchmarks
+    - "groundbreaking"
+    - "transformative"
+    - "unprecedented"
+    - "comprehensive"
+
+  paper_specific:
+    - "hallucination"     # Use "confabulation" per NIST AI 600-1
+    - "ablation"          # Not the study design — use "knowledge representation study"
+
+banned_phrases:
+  always:
+    - "it is important to note"
+    - "it is important to note that"
+    - "it is worth noting"
+    - "it is worth noting that"
+    - "it should be noted"
+    - "it should be noted that"
+    - "it bears mentioning"
+    - "we would like to point out"
+    - "it is interesting to note"
+    - "in order to"
+    - "the fact that"
+    - "for the purpose of"
+    - "in terms of"
+    - "with respect to"
+    - "at the end of the day"
+    - "it goes without saying"
+    - "needless to say"
+    - "as a matter of fact"
+    - "provides an explanation of"
+    - "exhibits a difference from"
+    - "makes a contribution to"
+    - "provides a demonstration of"
+    - "conducts an analysis of"
+    - "performs an evaluation of"
+    - "achieves an improvement in"
+    - "may potentially"
+    - "could possibly"
+    - "might perhaps"
+    - "appears to possibly"
+    - "seems to suggest that it may"
+
+  paper_specific:
+    - "entropy fitness"               # Use "log-precision fitness" — our fitness is not entropy
+    - "information-theoretic fitness" # Use "log-precision fitness" — our fitness is not information-theoretic
+    - "information gain rate"         # Use "precision gain rate"
+    - "free energy"                   # Thermodynamic framing removed — not supported by the math
+    - "steady-state dissipation"      # Thermodynamic framing removed
+    - "dissipation rate"              # Thermodynamic framing removed
+
+cliche_patterns:
+  - "\\bpaves the way\\b"
+  - "\\bsheds light on\\b"
+  - "\\btip of the iceberg\\b"
+  - "\\bgame.?changer\\b"
+  - "\\bparadigm shift\\b"
+  - "\\bdouble.?edged sword\\b"
+  - "\\bseamless(ly)?\\b"
+  - "\\bopen(s)? the door\\b"
+  - "\\bbridges? the gap\\b"
+  - "\\bfills? a? gap\\b"
+  - "\\bin (a |the )?nutshell\\b"
+  - "\\bat the forefront\\b"
+  - "\\bthe elephant in the room\\b"
+  - "\\blow.?hanging fruit\\b"
+  - "\\bmove the needle\\b"
+  - "\\bunlock(s|ing)? (the )?potential\\b"
+  - "\\bpush(es|ing)? the boundar(y|ies)\\b"
+  - "\\braise(s|d)? the bar\\b"
+  - "\\bstand(s)? on the shoulders\\b"
+  - "\\btwo sides of the (same )?coin\\b"
+
+repetition_detection:
+  window_paragraphs: 3
+  flag_repeated_non_trivial_words: true
+  min_word_length: 6
+  min_occurrences: 3
+  exclude:
+    - "fitness"
+    - "precision"
+    - "convergence"
+    - "symbolic"
+    - "regression"
+    - "evaluation"
+    - "terminal"
+    - "attractor"
+    - "Leibniz"
+    - "information"
+
+self_congratulation:
+  flag_words:
+    - "very"
+    - "extremely"
+    - "highly"
+    - "incredibly"
+    - "tremendously"
+    - "dramatically"
+    - "vastly"
+    - "overwhelmingly"
+    - "profoundly"
+
+nominalizations:
+  "make a decision": "decide"
+  "provide assistance": "assist"
+  "give consideration to": "consider"
+  "have a preference for": "prefer"
+  "make an assumption": "assume"
+  "reach a conclusion": "conclude"
+  "take into consideration": "consider"
+  "make a comparison": "compare"
+  "perform a calculation": "calculate"
+  "carry out an investigation": "investigate"

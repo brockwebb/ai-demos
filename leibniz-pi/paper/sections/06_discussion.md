@@ -6,23 +6,17 @@ Leibniz's error decays as 1/(2T+1), algebraically 1/T behavior. Plotting 1/error
 
 The analogy is structural. Each Leibniz term's correction depends on two interacting quantities: the position k, which determines the magnitude 1/(2k+1), and the alternating sign (-1)^k, which determines the direction. A process depending on only one quantity would exhibit exponential (first-order) convergence. The interaction of two quantities produces 1/T convergence, fundamentally slower but with a distinctive constant-rate signature on a log scale.
 
-The information-theoretic fitness measures info(T) = log₂(2T+1), which grows logarithmically. The rate d(info)/d(log T) is constant: log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade. This is the integrated form of the second-order rate law. The convergence-aware fitness asks a first-order question: "is error shrinking between checkpoints?" The information-theoretic fitness asks a second-order question: "is 1/error growing linearly?" Fewer processes satisfy the second-order criterion. Leibniz is the simplest among them in the minimal terminal set.
+The log-precision fitness measures precision(T) = log₂(2T+1), which grows logarithmically. The rate d(precision)/d(log T) is constant: log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade. This is the integrated form of the second-order rate law. The convergence-aware fitness asks a first-order question: "is error shrinking between checkpoints?" The log-precision fitness asks a second-order question: "is 1/error growing linearly?" Fewer processes satisfy the second-order criterion. Leibniz is the simplest among them in the minimal terminal set.
 
 We present this as a structural observation, not a proven result. The kinetics analogy is productive for intuition and for fitness design, but the mathematical correspondence should not be taken beyond the specific decay-rate relationship described here.
 
-## 6.2 Thermodynamic Interpretation
-
-The information gain measures how much precision about π/4 has been extracted from uncertainty. The constant rate of {{result:info_rate_3_32:value}} bits per decade represents a steady-state entropy dissipation rate.
-
-Systems that reduce free energy at a constant rate operate in a far-from-equilibrium steady state. Leibniz never reaches equilibrium (π/4 exactly): it dissipates uncertainty at a constant rate, forever. This connects the Leibniz convergence structure to non-equilibrium thermodynamics, though the connection is analogical rather than physical. We offer it as a framing device, not a derivation.
-
-## 6.3 Discovery = Fitness Quality × Coverage / Search Space
+## 6.2 Discovery = Fitness Quality × Coverage / Search Space
 
 The unifying result across all experiments can be stated as a proportionality: P(discovery) scales with fitness quality times coverage, divided by search space size.
 
 $$P(\text{discovery}) \propto \frac{\text{fitness quality} \times \text{coverage}}{\text{search space size}}$$
 
-Fitness quality is fixed: the information-theoretic fitness correctly identifies Leibniz as optimal in all tested configurations. Improving the fitness function, through extended checkpoints, gradient-based selection, or rate consistency penalties, does not improve discovery rates at 15 terminals.
+Fitness quality is fixed: the log-precision fitness correctly identifies Leibniz as optimal in all tested configurations. Improving the fitness function, through extended checkpoints, gradient-based selection, or rate consistency penalties, does not improve discovery rates at 15 terminals.
 
 Coverage scales linearly with population size. Doubling the population roughly doubles the initial structural diversity. Search space scales combinatorially with terminal count: adding one terminal multiplies the number of distinct expressions at each tree size. The space grows much faster than coverage.
 
@@ -36,7 +30,7 @@ The project uses wrong-limit attractors as an analogy for confabulation in langu
 
 *GP with convergence-aware fitness.* This produced miscalibration: outputs that approached a plausible value and stopped improving, analogous to a model that gives a confident answer without the capacity for further refinement.
 
-*Leibniz.* This exhibits calibrated behavior: infinite improvement at a constant rate, never fully confident, always refining. The constant-rate information gain is the series-domain analog of a well-calibrated probability estimate that updates appropriately with evidence.
+*Leibniz.* This exhibits calibrated behavior: infinite improvement at a constant rate, never fully confident, always refining. The constant-rate precision gain is the series-domain analog of a well-calibrated probability estimate that updates appropriately with evidence.
 
 The analogy is imperfect but productive. Both phenomena arise from optimization against finite evaluation: a fitness function or loss function that rewards local plausibility without the capacity to verify global correctness. The remedy in both cases is not better loss functions but better questions, evaluating process properties (sustained improvement, calibration) rather than output properties (proximity to a target).
 

@@ -1,0 +1,98 @@
+{
+  "terminal_count": 15,
+  "term_fixed": [
+    "k",
+    1,
+    -1,
+    2,
+    3,
+    -2,
+    4,
+    -3,
+    5,
+    -4,
+    6,
+    -5,
+    7,
+    -6,
+    8
+  ],
+  "pop_size": 5000,
+  "n_seeds": 5,
+  "n_found": 1,
+  "mean_gens_success": 12503.0,
+  "mean_elapsed_success": 1800.06,
+  "top_failed_exprs": [
+    "(((-1 - (7 * k)) * k) ^ -1)",
+    "(1 / ((-1 - (k * 7)) * k))",
+    "((1 / k) / (-3 * (4 - k)))",
+    "((((8 + 8) ^ (1 - k)) - k) ^ -3)"
+  ],
+  "seeds": [
+    {
+      "seed": 0,
+      "seed_val": 42,
+      "generations": 6088,
+      "best_fitness": -0.00659188,
+      "best_expr": "((1 / k) / (-3 * (4 - k)))",
+      "elapsed": 1800.29,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.01159188,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 1,
+      "seed_val": 7,
+      "generations": 9374,
+      "best_fitness": -0.0187983,
+      "best_expr": "((((8 + 8) ^ (1 - k)) - k) ^ -3)",
+      "elapsed": 1800.04,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.0012983,
+      "conv_bonus": 0.75
+    },
+    {
+      "seed": 2,
+      "seed_val": 137,
+      "generations": 12503,
+      "best_fitness": -0.00129755,
+      "best_expr": "((-1 ^ k) / (k + (k + 1)))",
+      "elapsed": 1800.06,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": true,
+      "is_monotone": true,
+      "accuracy": -0.00629755,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 3,
+      "seed_val": 2718,
+      "generations": 5494,
+      "best_fitness": -0.00010265,
+      "best_expr": "(((-1 - (7 * k)) * k) ^ -1)",
+      "elapsed": 1800.03,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.00510265,
+      "conv_bonus": 1.0
+    },
+    {
+      "seed": 4,
+      "seed_val": 31415,
+      "generations": 7395,
+      "best_fitness": -0.00010265,
+      "best_expr": "(1 / ((-1 - (k * 7)) * k))",
+      "elapsed": 1800.08,
+      "stop_reason": "time_limit_seed",
+      "is_equivalent": false,
+      "is_monotone": true,
+      "accuracy": -0.00510265,
+      "conv_bonus": 1.0
+    }
+  ]
+}

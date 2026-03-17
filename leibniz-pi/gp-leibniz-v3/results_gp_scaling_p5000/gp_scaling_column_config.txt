@@ -1,0 +1,43 @@
+# GP Scaling Column — Parameter Record
+Generated: 2026-03-15 19:41:46
+
+## Fitness Function
+  name: convergence-aware (slime mold)
+  formula: fitness = accuracy + ALPHA * conv_bonus - LAMBDA_P * nodes
+  ALPHA: 0.05
+  LAMBDA_P: 0.005
+  T_EVAL: [10, 50, 200, 1000, 5000]
+  K_MAX: 5000
+  convergence criterion: >5% error reduction per consecutive T-pair
+
+## Grid
+  POP_SIZE: 5000
+  TERMINAL_COUNTS: [4, 6, 8, 10, 12, 15, 20]
+  SEEDS: [42, 7, 137, 2718, 31415]
+
+## Time Budgets
+  MAX_SEED: 1800.0s
+  MAX_TOTAL: 10800.0s
+
+## Parallelism
+  MAX_WORKERS: 5 (from entropy config)
+
+## GP Hyperparameters
+  MAX_DEPTH: 6
+  MAX_NODES: 30
+  TOURNAMENT_K: 7
+  P_CROSS: 0.7
+  P_MUT: 0.2
+  N_ELITE: 5
+  PATIENCE: 100
+  STOP_THRESH: 0.001
+  DIV_INJECT: 100
+
+## Terminal Sets
+  N= 4: ['k', 1, -1, 2]
+  N= 6: ['k', 1, -1, 2, 3, -2]
+  N= 8: ['k', 1, -1, 2, 3, -2, 4, -3]
+  N=10: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4]
+  N=12: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5]
+  N=15: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8]
+  N=20: ['k', 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8, -7, 9, -8, 10, -9]

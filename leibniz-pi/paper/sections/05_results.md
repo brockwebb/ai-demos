@@ -2,11 +2,11 @@
 
 ## 5.1 Discovery Under Minimal Terminals
 
-With the minimal terminal set {k, 1, -1, 2} and no injection, the information-theoretic fitness achieves {{result:entropy_minimal_5_5:value}}/5 discovery across five seeds. The convergence-aware fitness achieves {{result:gp_minimal_2_5:value}}/5 at population 1,000 and {{result:gp_pop2000_5_5:value}}/5 at population 2,000. Total runtime for the {{result:entropy_minimal_5_5:value}}/5 information-theoretic run across all five seeds was {{result:entropy_minimal_runtime:value}} seconds.
+With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision fitness achieves {{result:entropy_minimal_5_5:value}}/5 discovery across five seeds. The convergence-aware fitness achieves {{result:gp_minimal_2_5:value}}/5 at population 1,000 and {{result:gp_pop2000_5_5:value}}/5 at population 2,000. Total runtime for the {{result:entropy_minimal_5_5:value}}/5 information-theoretic run across all five seeds was {{result:entropy_minimal_runtime:value}} seconds.
 
 | Fitness | Pop | Seeds Found | Mean Generations |
 |---|---|---|---|
-| Information-theoretic | 1,000 | {{result:entropy_minimal_5_5:value}}/5 | 2,981 |
+| Log-precision | 1,000 | {{result:entropy_minimal_5_5:value}}/5 | 2,981 |
 | Convergence-aware | 1,000 | {{result:gp_minimal_2_5:value}}/5 | — |
 | Convergence-aware | 2,000 | {{result:gp_pop2000_5_5:value}}/5 | — |
 
@@ -56,11 +56,11 @@ The boundary between t=8 and t=10 holds for populations up to 5,000. Increasing 
 
 The transition is sharp. At λ_p = 0.005, the 9-node Leibniz tree scores approximately 0.021 fitness. At λ_p = 0.01, the same tree scores approximately -0.024. The score is still nominally better than the zero-constant attractor at approximately -0.030, but the margin is too small for selection pressure to overcome the initialization disadvantage within the time budget.
 
-The information-theoretic fitness components (w_1·ti + w_2·mono + w_3·rate) sum to at most approximately 0.07 for Leibniz, placing a hard ceiling on viable parsimony: λ_p × 9 < 0.07, so λ_p < 0.008. The baseline operates near but below this ceiling.
+The log-precision fitness components (w_1·ti + w_2·mono + w_3·rate) sum to at most approximately 0.07 for Leibniz, placing a hard ceiling on viable parsimony: λ_p × 9 < 0.07, so λ_p < 0.008. The baseline operates near but below this ceiling.
 
 ## 5.5 Fitness Modifications Cannot Rescue Large Terminal Sets
 
-We tested six modifications to the information-theoretic fitness on the 15-terminal configuration. All failed.
+We tested six modifications to the log-precision fitness on the 15-terminal configuration. All failed.
 
 | Modification | Seeds Found | Notes |
 |---|---|---|

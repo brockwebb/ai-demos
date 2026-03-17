@@ -53,7 +53,7 @@ entropy-leibniz-v3/            # Clean entropy experiments (no injection)
   stress_test_results.md       
   fitness_sensitivity_test.py  # Extended checkpoints, large-T penalty, rate consistency
   fitness_sensitivity_results.md
-  gradient_fitness_test.py     # Gradient-based thermodynamic selection
+  gradient_fitness_test.py     # Gradient-based selection (thermodynamic framing removed)
   gradient_fitness_results.md  
   parsimony_test.py            # Heavier parsimony pressure sweep
   parsimony_test_results.md    
@@ -96,7 +96,7 @@ W1=0.02, W2=0.04, W3=0.03, LAMBDA_P=0.005
 - `gp-leibniz-v3/parameter_sensitivity.md` — GP parameter sweep
 - `entropy-leibniz-v3/stress_test_results.md` — terminal set scaling
 - `entropy-leibniz-v3/fitness_sensitivity_results.md` — fitness modifications
-- `entropy-leibniz-v3/gradient_fitness_results.md` — thermodynamic selection
+- `entropy-leibniz-v3/gradient_fitness_results.md` — gradient-based selection results
 - `entropy-leibniz-v3/parsimony_test_results.md` — parsimony pressure
 
 ## Paper Writing

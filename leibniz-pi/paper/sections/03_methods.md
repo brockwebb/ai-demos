@@ -38,9 +38,9 @@ where accuracy = -mean(|S(T) - π/4|) across checkpoints, convergence_bonus = fr
 
 This asks a first-order question: *is the error shrinking?* Many processes exhibit shrinking error over some range. The convergence bonus rewards sustained shrinkage, but any monotonically converging series, regardless of its limit, can score well.
 
-### 3.3.2 Information-Theoretic Fitness (Second-Order)
+### 3.3.2 Log-Precision Fitness (Second-Order)
 
-The information-theoretic fitness measures precision in bits:
+The log-precision fitness measures precision in bits:
 
 $$\text{info}(T) = -\log_2 |S(T) - \pi/4|$$
 
@@ -50,12 +50,12 @@ The fitness combines three components:
 
 $$\text{fitness}_{\text{info}} = w_1 \frac{\text{info}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}$$
 
-where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = information gain in bits per decade of summation depth. Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005.
+where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005.
 
-This asks a second-order question: *is information gain sustained at a constant rate across scales?* Leibniz gains exactly log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade, a straight line on a log-log plot. The constant rate is the signature of second-order kinetics (Section 6.1), and fewer processes satisfy it than satisfy the first-order "is error shrinking?" criterion.
+This asks a second-order question: *is precision gain sustained at a constant rate across scales?* Leibniz gains exactly log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade, a straight line on a log-log plot. The constant rate is the signature of second-order kinetics (Section 6.1), and fewer processes satisfy it than satisfy the first-order "is error shrinking?" criterion.
 
 ### 3.3.3 Why the Second-Order Question Is More Selective
 
-Many series exhibit decreasing error. Rational functions like 5/((6+4k)(k-2)) converge monotonically to a finite limit and score well on the convergence-aware fitness. Their information gain rate is not constant across scales: it accelerates as the series approaches its limit, then plateaus.
+Many series exhibit decreasing error. Rational functions like 5/((6+4k)(k-2)) converge monotonically to a finite limit and score well on the convergence-aware fitness. Their precision gain rate is not constant across scales: it accelerates as the series approaches its limit, then plateaus.
 
-Leibniz is unusual: its information gain rate is constant because its error decays as 1/(2T+1). Plotting 1/error vs T yields a straight line, the integrated form of a second-order rate law. The information-theoretic fitness selects for this specific convergence structure, making it more discriminating than the convergence-aware fitness. Empirically, the information-theoretic fitness discovers Leibniz at population 1,000 ({{result:entropy_minimal_5_5:value}}/5 seeds), while the convergence-aware fitness requires population 2,000 for the same reliability.
+Leibniz is unusual: its precision gain rate is constant because its error decays as 1/(2T+1). Plotting 1/error vs T yields a straight line, the integrated form of a second-order rate law. The log-precision fitness selects for this specific convergence structure, making it more discriminating than the convergence-aware fitness. Empirically, the log-precision fitness discovers Leibniz at population 1,000 ({{result:entropy_minimal_5_5:value}}/5 seeds), while the convergence-aware fitness requires population 2,000 for the same reliability.
