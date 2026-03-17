@@ -12,7 +12,7 @@ For Leibniz, f(k) = (-1)^k / (2k+1), and S(T) → π/4 as T → ∞.
 
 *Terminals.* A configurable set always containing the variable k and constants. The minimal set is {k, 1, -1, 2}. Expanded sets add integers following a deterministic pattern described in Section 4.3.
 
-To make the search concrete, consider the target f(k) = (-1)^k / (2k+1). The GP must discover three structural components and compose them correctly. First, oscillation: (-1)^k produces the alternating sign, requiring the terminal -1, the variable k, and the power operator composed as pow(-1, k). Second, odd denominator: 2k+1 produces 1, 3, 5, 7, ..., requiring the terminals 2 and 1, the variable k, and multiplication and addition composed as add(mul(2, k), 1). Third, division: the oscillating numerator divided by the growing denominator produces terms of decreasing magnitude with alternating sign.
+To make the search concrete, consider the target f(k) = (-1)^k / (2k+1). The GP must discover three structural building blocks and compose them correctly. First, oscillation: (-1)^k produces the alternating sign, requiring the terminal -1, the variable k, and the power operator composed as pow(-1, k). Second, odd denominator: 2k+1 produces 1, 3, 5, 7, ..., requiring the terminals 2 and 1, the variable k, and multiplication and addition composed as add(mul(2, k), 1). Third, division: the oscillating numerator divided by the growing denominator produces terms of decreasing magnitude with alternating sign.
 
 With the minimal terminal set {k, 1, -1, 2}, these are essentially the only building blocks available. The GP has limited options for constructing oscillation (only (-1)^k works with the available terminals) and limited options for the denominator (only 2k+1 uses all remaining terminals meaningfully). This constraint is why discovery succeeds: the correct answer is one of few well-formed expressions in the search space.
 
@@ -48,11 +48,11 @@ The log-precision fitness evaluates partial sums at 11 checkpoints spanning thre
 
 $$\text{prec}(T) = -\log_2 |S(T) - \pi/4|$$
 
-The quantity -log₂(|error|) has the same mathematical form as Shannon's self-information, though it is not entropy in the information-theoretic sense: it measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=10 has precision approximately 4.4 bits; at T=10,000, approximately 15.3 bits.
+The quantity -log₂(|error|) has the same mathematical form as Shannon's self-information, though it is not entropy in the information-theoretic sense: it measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=10 has precision approximately 4.4 bits; at T=10,000, {{result:leibniz_ti_15_29:value}} bits.
 
 The design came from a chemical engineering perspective on process dynamics. The guiding analogy was crystallization: perfect order reconstructed from disorder along the slowest, most sustained path. Each step adds a small, constant increment of order. Leibniz does the same: each term adds a constant increment of precision about π/4, forever, at a rate that never accelerates or decelerates. The design question was not "which series converges fastest?" but "which series reduces uncertainty at the most constant rate?" That question led to measuring precision on a log scale and rewarding constant gain per decade. We later observed that -log₂(|error|) has the same mathematical structure as the integrated form of a second-order rate law. This connection is discussed in Section 6.1.
 
-The fitness combines three components:
+The fitness combines three terms:
 
 $$\text{fitness}_{\text{prec}} = w_1 \frac{\text{prec}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}$$
 

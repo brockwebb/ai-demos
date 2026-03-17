@@ -6,7 +6,7 @@ With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision 
 
 | Fitness | Pop | Seeds Found | Mean Generations |
 |---|---|---|---|
-| Log-precision | 1,000 | {{result:logprec_minimal_5_5:value}}/5 | 2,981 |
+| Log-precision | 1,000 | {{result:logprec_minimal_5_5:value}}/5 | {{result:logprec_minimal_mean_gen:value}} |
 | Convergence-aware | 1,000 | {{result:gp_minimal_2_5:value}}/5 | n/a |
 | Convergence-aware | 2,000 | {{result:gp_pop2000_5_5:value}}/5 | n/a |
 
@@ -58,7 +58,7 @@ The boundary between t=8 and t=10 holds for populations up to 5,000. Increasing 
 
 The transition is sharp. At λ_p = 0.005, the 9-node Leibniz tree scores approximately 0.021 fitness. At λ_p = 0.01, the same tree scores approximately -0.024. The score is still nominally better than the zero-constant attractor at approximately -0.030, but the margin is too small for selection pressure to overcome the initialization disadvantage within the time budget.
 
-The log-precision fitness components (w_1·ti + w_2·mono + w_3·rate) sum to at most approximately 0.07 for Leibniz, placing a hard ceiling on viable parsimony: λ_p × 9 < 0.07, so λ_p < 0.008. The baseline operates near but below this ceiling.
+The log-precision fitness terms (w_1·ti + w_2·mono + w_3·rate) sum to at most approximately 0.07 for Leibniz, placing a hard ceiling on viable parsimony: λ_p × 9 < 0.07, so λ_p < 0.008. The baseline operates near but below this ceiling.
 
 ## 5.5 Fitness Modifications Cannot Rescue Large Terminal Sets
 
@@ -72,7 +72,7 @@ We tested seven modifications to the log-precision fitness on the 15-terminal co
 | Rate consistency | 0/5 | Penalizes deviation from constant bits/decade |
 | Pure gradient magnitude | 0/5 | Rewards only information rate, ignores terminal value |
 | Hybrid scalar×uniformity | 0/5 | Combined rate and uniformity signal |
-| Min-component bottleneck | 0/5 | Requires all fitness components above threshold |
+| Min-component bottleneck | 0/5 | Requires all fitness terms above threshold |
 
 The alpha parameter sweep (reducing α from 1.0 to 0.5 in the convergence-aware fitness) produced {{result:gp_alpha_0_5_4_5:value}}/5 on the minimal terminal set, comparable to the baseline. No modification achieved better than 1/5 on 15 terminals.
 
