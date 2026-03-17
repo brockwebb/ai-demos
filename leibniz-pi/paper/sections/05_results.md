@@ -2,11 +2,11 @@
 
 ## 5.1 Discovery Under Minimal Terminals
 
-With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision fitness achieves {{result:entropy_minimal_5_5:value}}/5 discovery across five seeds. The convergence-aware fitness achieves {{result:gp_minimal_2_5:value}}/5 at population 1,000 and {{result:gp_pop2000_5_5:value}}/5 at population 2,000. Total runtime for the {{result:entropy_minimal_5_5:value}}/5 log-precision run across all five seeds was {{result:entropy_minimal_runtime:value}} seconds.
+With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision fitness achieves {{result:logprec_minimal_5_5:value}}/5 discovery across five seeds. The convergence-aware fitness achieves {{result:gp_minimal_2_5:value}}/5 at population 1,000 and {{result:gp_pop2000_5_5:value}}/5 at population 2,000. Total runtime for the {{result:logprec_minimal_5_5:value}}/5 log-precision run across all five seeds was {{result:logprec_minimal_runtime:value}} seconds.
 
 | Fitness | Pop | Seeds Found | Mean Generations |
 |---|---|---|---|
-| Log-precision | 1,000 | {{result:entropy_minimal_5_5:value}}/5 | 2,981 |
+| Log-precision | 1,000 | {{result:logprec_minimal_5_5:value}}/5 | 2,981 |
 | Convergence-aware | 1,000 | {{result:gp_minimal_2_5:value}}/5 | n/a |
 | Convergence-aware | 2,000 | {{result:gp_pop2000_5_5:value}}/5 | n/a |
 
@@ -23,7 +23,7 @@ The canonical 9-node form (-1)^k / (2k+1) is not always found: bloated algebraic
 
 ## 5.2 Failure Under Expanded Terminals
 
-With 15 terminals at population 1,000, no seeds find Leibniz: {{result:entropy_stress_l1_0_5:value}}/5. The dominant failure mode is wrong-limit attractors, rational functions whose partial sums converge to finite values near π/4.
+With 15 terminals at population 1,000, no seeds find Leibniz: {{result:logprec_stress_l1_0_5:value}}/5. The dominant failure mode is wrong-limit attractors, rational functions whose partial sums converge to finite values near π/4.
 
 Seed 42 found the expression 5/((6+4k)(k-2)), which achieves {{result:wrong_limit_ti_15_93:value}} bits of precision at T=10,000, exceeding Leibniz's {{result:leibniz_ti_15_29:value}} bits, with perfect monotonicity. This expression is not Leibniz. Its partial sums converge to a value that appears closer to π/4 than Leibniz within the evaluation horizon, but at T→∞, Leibniz converges exactly while this attractor converges to a different value.
 
