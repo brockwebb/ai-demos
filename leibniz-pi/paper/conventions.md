@@ -64,6 +64,7 @@ reference for authors and AI editors.
 - **"Coverage"** refers to the fraction of structurally distinct building blocks present in the population. Not "diversity" (which has a specific GP meaning related to fitness variance).
 - **"Log-precision fitness"** is the correct term for the fitness that measures -log₂(|error|). Do not write "entropy fitness" or "information-theoretic fitness" — these imply a connection to Shannon information theory that does not exist. The fitness measures log-scale precision, not entropy.
 - **"Convergence-aware fitness"** for the first-order variant. Not "GP fitness" or "rate fitness."
+- **"Slime mold"** may appear at most once as an analogy for the parallel search mechanism. After any such introductory mention, use "convergence-aware fitness" exclusively. Do not repeat "slime mold" elsewhere in the paper.
 - **"Phase transition"** for the sharp boundary between discoverable and non-discoverable regions. Use "degradation" if data shows the boundary is gradual rather than sharp.
 
 ### Numbers and References

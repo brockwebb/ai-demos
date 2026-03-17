@@ -71,6 +71,9 @@ banned_phrases:
     - "free energy"                   # Thermodynamic framing removed — not supported by the math
     - "steady-state dissipation"      # Thermodynamic framing removed
     - "dissipation rate"              # Thermodynamic framing removed
+    - "thermodynamic interpretation"  # Thermodynamic framing removed — not a subsection we keep
+    - "far from equilibrium"          # Thermodynamic framing removed
+    - "entropy reduction"             # Thermodynamic framing removed
 
 cliche_patterns:
   - "\\bpaves the way\\b"
