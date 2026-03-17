@@ -42,13 +42,13 @@ This asks a first-order question: *is the error shrinking?* Many processes exhib
 
 The log-precision fitness measures precision in bits:
 
-$$\text{info}(T) = -\log_2 |S(T) - \pi/4|$$
+$$\text{prec}(T) = -\log_2 |S(T) - \pi/4|$$
 
-This converts absolute error to an information measure: how many bits of certainty the partial sum provides about the value π/4. Leibniz at T=10 provides approximately 4.4 bits; at T=10,000, approximately 15.3 bits.
+The quantity -log₂(|error|) has the same mathematical form as Shannon's self-information, though it is not entropy in the information-theoretic sense — it measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=10 has precision approximately 4.4 bits; at T=10,000, approximately 15.3 bits.
 
 The fitness combines three components:
 
-$$\text{fitness}_{\text{info}} = w_1 \frac{\text{info}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}$$
+$$\text{fitness}_{\text{prec}} = w_1 \frac{\text{prec}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}$$
 
 where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005.
 

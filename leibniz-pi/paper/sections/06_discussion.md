@@ -8,7 +8,7 @@ The analogy is structural. Each Leibniz term's correction depends on two interac
 
 The log-precision fitness measures precision(T) = log₂(2T+1), which grows logarithmically. The rate d(precision)/d(log T) is constant: log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade. This is the integrated form of the second-order rate law. The convergence-aware fitness asks a first-order question: "is error shrinking between checkpoints?" The log-precision fitness asks a second-order question: "is 1/error growing linearly?" Fewer processes satisfy the second-order criterion. Leibniz is the simplest among them in the minimal terminal set.
 
-We present this as a structural observation, not a proven result. The kinetics analogy is productive for intuition and for fitness design, but the mathematical correspondence should not be taken beyond the specific decay-rate relationship described here.
+We present this as a structural observation recognized after the experiment, not a design input or proven result. The kinetics analogy is productive for intuition. The mathematical correspondence should not be taken beyond the specific decay-rate relationship described here.
 
 ## 6.2 Discovery = Fitness Quality × Coverage / Search Space
 
@@ -22,7 +22,7 @@ Coverage scales linearly with population size. Doubling the population roughly d
 
 The phase transition occurs where coverage/search_space drops below the threshold needed for the correct building blocks to appear in the initial population and survive long enough for selection to assemble them. The scaling grid confirms this quantitatively: the t=10 boundary holds across all tested population sizes, and larger populations produce only marginal improvements at t=6 and t=8.
 
-## 6.4 The Confabulation Analogy
+## 6.3 The Confabulation Analogy
 
 The project uses wrong-limit attractors as an analogy for confabulation in language models: outputs that appear correct within a finite evaluation window but fail under asymptotic scrutiny.
 
@@ -34,11 +34,11 @@ The project uses wrong-limit attractors as an analogy for confabulation in langu
 
 The analogy is imperfect but productive. Both phenomena arise from optimization against finite evaluation: a fitness function or loss function that rewards local plausibility without the capacity to verify global correctness. The remedy in both cases is not better loss functions but better questions, evaluating process properties (sustained improvement, calibration) rather than output properties (proximity to a target).
 
-## 6.5 Implications for Symbolic Regression
+## 6.4 Implications for Symbolic Regression
 
 Three findings extend beyond the Leibniz problem, each pointing toward a different aspect of fitness-guided search over infinite-horizon processes.
 
-*Process-level fitness design.* Standard symbolic regression evaluates pointwise accuracy. For problems involving infinite-horizon behavior, such as convergence, stability, or asymptotic scaling, process-level fitness functions that evaluate behavior across evaluation depths may be necessary. The information-theoretic approach demonstrated here is one such instantiation.
+*Process-level fitness design.* Standard symbolic regression evaluates pointwise accuracy. For problems involving infinite-horizon behavior, such as convergence, stability, or asymptotic scaling, process-level fitness functions that evaluate behavior across evaluation depths may be necessary. The log-precision approach demonstrated here is one such instantiation.
 
 *Wrong-limit attractors are a distinct failure mode.* They are not bloat: they are simpler than the correct answer. They are not overfitting: they genuinely converge. They are not fitness function errors: the fitness ranks them correctly when the correct answer is present. They are coverage failures exploiting the evaluation horizon, and they require a different diagnosis and response than the failure modes typically discussed in symbolic regression.
 
