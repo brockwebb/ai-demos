@@ -7,8 +7,8 @@ With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision 
 | Fitness | Pop | Seeds Found | Mean Generations |
 |---|---|---|---|
 | Log-precision | 1,000 | {{result:entropy_minimal_5_5:value}}/5 | 2,981 |
-| Convergence-aware | 1,000 | {{result:gp_minimal_2_5:value}}/5 | — |
-| Convergence-aware | 2,000 | {{result:gp_pop2000_5_5:value}}/5 | — |
+| Convergence-aware | 1,000 | {{result:gp_minimal_2_5:value}}/5 | n/a |
+| Convergence-aware | 2,000 | {{result:gp_pop2000_5_5:value}}/5 | n/a |
 
 All discovered expressions are algebraically equivalent to (-1)^k / (2k+1), verified identical at k=100,000 with zero divergence. Table 2 shows the structural variants that appear across seeds.
 
