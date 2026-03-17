@@ -46,6 +46,8 @@ $$\text{prec}(T) = -\log_2 |S(T) - \pi/4|$$
 
 The quantity -log₂(|error|) has the same mathematical form as Shannon's self-information, though it is not entropy in the information-theoretic sense — it measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=10 has precision approximately 4.4 bits; at T=10,000, approximately 15.3 bits.
 
+The design came from a chemical engineering perspective on process dynamics. The guiding analogy was crystallization: perfect order reconstructed from disorder along the slowest, most sustained path. Each step adds a small, constant increment of order. Leibniz does the same: each term adds a constant increment of precision about π/4, forever, at a rate that never accelerates or decelerates. The design question was not "which series converges fastest?" but "which series reduces uncertainty at the most constant rate?" That question led to measuring precision on a log scale and rewarding constant gain per decade. We later recognized that -log₂(|error|) corresponds mathematically to the integrated form of a second-order rate law, connecting the design back to the reaction kinetics framework discussed in Section 6.1.
+
 The fitness combines three components:
 
 $$\text{fitness}_{\text{prec}} = w_1 \frac{\text{prec}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}$$
