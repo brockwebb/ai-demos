@@ -58,7 +58,7 @@ $$\text{fitness}_{\text{prec}} = w_1 \frac{\text{prec}(T_{\max})}{50} + w_2 \cdo
 
 where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005.
 
-By the same kinetics analogy, this asks a "second-order" question: *is precision gain sustained at a constant rate across scales?* Leibniz gains exactly log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade, a straight line on a log-log plot. The constant rate is the signature of second-order kinetics (Section 6.1), and fewer processes satisfy it than satisfy the first-order "is error shrinking?" criterion.
+By the same kinetics analogy, this asks a "second-order" question: *is precision gain sustained at a constant rate across scales?* Leibniz gains exactly log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade, a straight line on a log-log plot. The constant rate is the signature of second-order kinetics (Section 6.1). Fewer processes satisfy this criterion than satisfy first-order error shrinkage.
 
 ### 3.3.3 Why the Second-Order Question Is More Selective
 

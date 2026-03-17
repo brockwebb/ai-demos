@@ -2,7 +2,7 @@
 
 ## 5.1 Discovery Under Minimal Terminals
 
-With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision fitness achieves {{result:entropy_minimal_5_5:value}}/5 discovery across five seeds. The convergence-aware fitness achieves {{result:gp_minimal_2_5:value}}/5 at population 1,000 and {{result:gp_pop2000_5_5:value}}/5 at population 2,000. Total runtime for the {{result:entropy_minimal_5_5:value}}/5 information-theoretic run across all five seeds was {{result:entropy_minimal_runtime:value}} seconds.
+With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision fitness achieves {{result:entropy_minimal_5_5:value}}/5 discovery across five seeds. The convergence-aware fitness achieves {{result:gp_minimal_2_5:value}}/5 at population 1,000 and {{result:gp_pop2000_5_5:value}}/5 at population 2,000. Total runtime for the {{result:entropy_minimal_5_5:value}}/5 log-precision run across all five seeds was {{result:entropy_minimal_runtime:value}} seconds.
 
 | Fitness | Pop | Seeds Found | Mean Generations |
 |---|---|---|---|
@@ -10,7 +10,7 @@ With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision 
 | Convergence-aware | 1,000 | {{result:gp_minimal_2_5:value}}/5 | — |
 | Convergence-aware | 2,000 | {{result:gp_pop2000_5_5:value}}/5 | — |
 
-All discovered expressions are algebraically equivalent to (-1)^k / (2k+1), verified identical at k=100,000 with zero divergence. Structural variants appear across seeds:
+All discovered expressions are algebraically equivalent to (-1)^k / (2k+1), verified identical at k=100,000 with zero divergence. Table 2 shows the structural variants that appear across seeds.
 
 | Seed | Expression | Nodes |
 |---|---|---|
@@ -41,7 +41,9 @@ The 7 × 4 scaling grid reveals a phase transition between t=8 and t=10 for popu
 | 15 | 0/5 | 0/5 | 0/5 | 2/5 |
 | 20 | 0/5 | 0/5 | 0/5 | 0/5 |
 
-At t=4, discovery is reliable across all population sizes. At t=6 and t=8, success drops but remains nonzero. At t=10 and above, discovery fails completely except for one anomaly. At t=15 with pop=10000, 2/5 seeds succeed, a partial recovery not observed at t=10 or t=12 and absent at t=20. We do not have a confirmed mechanistic account of this non-monotonicity. The most plausible explanation is that at t=15 the search space contains a small cluster of wrong-limit attractors that a large population can occasionally escape by maintaining sufficient structural diversity.
+At t=4, discovery is reliable across all population sizes. At t=6 and t=8, success drops but remains nonzero. At t=10 and above, discovery fails completely except for one anomaly: at t=15 with pop=10,000, 2/5 seeds succeed. This partial recovery is absent at t=10, t=12, and t=20.
+
+We do not have a confirmed mechanistic account of this non-monotonicity. The most plausible explanation is that at t=15 the search space contains fewer wrong-limit attractors than at t=10 or t=12, allowing a large population to occasionally maintain sufficient structural coverage.
 
 The boundary between t=8 and t=10 holds for populations up to 5,000. Increasing population from 1,000 to 10,000 does not shift this boundary: it provides marginal gains at t=6 and t=8 and produces the anomalous partial recovery at t=15, but the t=10 wall remains intact. This confirms that coverage, not fitness landscape quality, limits discovery.
 
@@ -60,7 +62,7 @@ The log-precision fitness components (w_1·ti + w_2·mono + w_3·rate) sum to at
 
 ## 5.5 Fitness Modifications Cannot Rescue Large Terminal Sets
 
-We tested six modifications to the log-precision fitness on the 15-terminal configuration. All failed.
+We tested seven modifications to the log-precision fitness on the 15-terminal configuration. None achieved reliable discovery.
 
 | Modification | Seeds Found | Notes |
 |---|---|---|
@@ -74,4 +76,4 @@ We tested six modifications to the log-precision fitness on the 15-terminal conf
 
 The alpha parameter sweep (reducing α from 1.0 to 0.5 in the convergence-aware fitness) produced {{result:gp_alpha_0_5_4_5:value}}/5 on the minimal terminal set, comparable to the baseline. No modification achieved better than 1/5 on 15 terminals.
 
-The consistent failure confirms the diagnosis: the bottleneck is coverage, not fitness landscape quality. The fitness correctly ranks Leibniz as optimal when it is present. The problem is that presence requires the population to contain the right building blocks, and the probability of this decreases sharply with terminal set size.
+The consistent failure confirms the diagnosis: the bottleneck is coverage, not fitness landscape quality. The fitness correctly ranks Leibniz as optimal when Leibniz-equivalent subtrees are present in the population. Presence requires the population to contain the right building blocks, and the probability of assembling them decreases sharply with terminal set size.
