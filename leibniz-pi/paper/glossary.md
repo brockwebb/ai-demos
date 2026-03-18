@@ -58,9 +58,11 @@ Run `python paper/check_glossary.py` to scan sections for banned synonyms.
 : By analogy to chemical reaction kinetics. First-order: "is error shrinking?" (convergence-aware fitness asks this). Second-order: "is precision gain sustained at a constant rate across scales?" (log-precision fitness asks this). Leibniz's 1/T error decay is the integrated form of a second-order rate law.
 : Present as analogy/observation, not proven result. The analogy is structural, not rigorous.
 
-**Parsimony pressure**
-: Fitness penalty proportional to expression tree size (node count). λ_p = 0.005 is the baseline. At λ_p ≥ 0.01, discovery collapses.
-: Do not write: "complexity penalty" (acceptable in related-work context when describing others' work, but use 'parsimony pressure' for our own).
+**Parsimony pressure (λ_p)**
+: A penalty term that penalizes larger expression trees. Subtracts λ_p × (number of nodes) from the fitness score. Keeps evolved expressions simple by making the GP prefer shorter solutions. Standard GP technique.
+: Synonyms in literature: complexity penalty, bloat control, size penalty.
+: In this paper: use "parsimony pressure" on first mention with definition, then "size penalty" or "parsimony" as shorthand.
+: Do not write: "complexity penalty" (conflicts with the common use of 'complexity' for expression tree size).
 
 ## GP Terminology
 
@@ -93,8 +95,9 @@ Run `python paper/check_glossary.py` to scan sections for banned synonyms.
 **Precision (bits)**
 : -log₂(|S(T) - π/4|). Measures how many binary digits of π/4 the partial sum has resolved. Not to be confused with machine precision or numerical precision.
 
-**Information rate / precision gain rate**
+**Precision gain rate**
 : Bits of precision gained per decade of summation depth. Leibniz gains log₂(10) ≈ 3.32 bits/decade. Constant rate is the signature the log-precision fitness selects for.
+: Do not write: "information rate" (information-theoretic connotation; use 'precision gain rate' throughout).
 
 **Monotonicity**
 : Fraction of consecutive checkpoint pairs where precision increases by at least 0.5 bits. A component of the log-precision fitness.
