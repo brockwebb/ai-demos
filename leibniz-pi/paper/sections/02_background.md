@@ -14,7 +14,7 @@ All of these systems optimize pointwise fitness: they minimize error between pre
 
 The standard symbolic regression fitness is root-mean-square error between predicted and observed outputs. Pareto-based approaches add complexity as a second objective. Parsimony pressure (λ_p, a size penalty on expression trees), penalizing expression size, is the simplest form.
 
-For infinite-horizon convergent processes, pointwise fitness is insufficient. A series that sums to 0.7851 (near π/4) at T=10,000 terms would score well on pointwise accuracy but has no structural relationship to Leibniz. The fitness must instead evaluate how partial sums *behave* across evaluation depth. Does error decrease monotonically? Is the rate of improvement sustained? Does the precision gain follow a predictable scaling law?
+For infinite-horizon convergent processes, pointwise fitness is insufficient. A series that sums to a value near π/4 at T=10,000 terms would score well on pointwise accuracy but has no structural relationship to Leibniz. The fitness must instead evaluate how partial sums *behave* across evaluation depth. Does error decrease monotonically? Is the rate of improvement sustained? Does the precision gain follow a predictable scaling law?
 
 Prior symbolic regression work does not address fitness design for this objective class. The closest analog is time-series forecasting, where models are evaluated on multi-step-ahead prediction quality rather than single-point accuracy. Both require evaluating trajectory behavior rather than endpoint accuracy, but the Leibniz problem evaluates convergence structure across geometric scales rather than sequential forecast accuracy.
 

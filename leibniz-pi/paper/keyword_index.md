@@ -12,9 +12,9 @@ Shows which glossary terms appear in which sections (with line counts).
 
 **Confabulation**: 01_introduction (2), 06_discussion (3)
 
-**Convergence-aware fitness**: 01_introduction (1), 03_methods (5), 05_results (2), 06_discussion (2), 09_appendix_expressions (2)
+**Convergence-aware fitness**: 01_introduction (1), 03_methods (5), 05_results (3), 06_discussion (2), 09_appendix_expressions (2)
 
-**Coverage**: 00_abstract (1), 01_introduction (1), 05_results (5), 06_discussion (7), 07_conclusion (1), 09_appendix_expressions (1)
+**Coverage**: 00_abstract (1), 01_introduction (1), 05_results (2), 06_discussion (7), 07_conclusion (1), 09_appendix_expressions (1)
 
 **Design provenance**: 06_discussion (1)
 
@@ -32,17 +32,17 @@ Shows which glossary terms appear in which sections (with line counts).
 
 **Injection confound**: 02_background (1), 04_experimental_design (2), 09_appendix_expressions (1)
 
-**Leibniz series**: 00_abstract (1), 01_introduction (1), 03_methods (1), 04_experimental_design (1)
+**Leibniz series**: 00_abstract (1), 01_introduction (1), 04_experimental_design (1)
 
 **Log-precision fitness**: 00_abstract (2), 01_introduction (1), 03_methods (4), 04_experimental_design (1), 05_results (3), 06_discussion (3), 09_appendix_expressions (7)
 
-**Monotonicity**: 03_methods (3), 05_results (2)
+**Monotonicity**: 03_methods (3), 05_results (2), 06_discussion (1)
 
 **Phase transition**: 00_abstract (1), 01_introduction (2), 05_results (1), 06_discussion (1)
 
 **Precision gain rate**: 03_methods (3), 05_results (1), 09_appendix_expressions (1)
 
-**Scaling grid**: 00_abstract (1), 01_introduction (1), 03_methods (1), 04_experimental_design (3), 05_results (2), 06_discussion (1), 07_conclusion (1)
+**Scaling grid**: 00_abstract (1), 01_introduction (1), 04_experimental_design (3), 05_results (2), 06_discussion (1), 07_conclusion (1)
 
 **Terminal set**: 00_abstract (1), 01_introduction (2), 02_background (2), 03_methods (1), 04_experimental_design (2), 05_results (3), 06_discussion (1), 09_appendix_expressions (5)
 
