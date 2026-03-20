@@ -3,7 +3,7 @@
 Research project: can genetic programming rediscover the Leibniz series for π/4 from arithmetic primitives and a convergence objective, without being given the formula?
 
 ## Status
-Research experiments complete. Next: preprint paper (to be written in this repo). Medium article will be a summary linking to preprint.
+Research experiments complete. Paper in iterative editing. Medium article will be a summary linking to preprint.
 
 ## Research Notes
 Findings, theoretical observations, experiment progression, and preprint outline: `RESEARCH_NOTES.md`
@@ -26,42 +26,12 @@ Each run produces: `results*.txt` (human-readable), `*_data.json` (machine-reada
 
 ```
 EDA/                           # Failed early experiments (RL v1/v2, ACO, GP v1)
-  rl-leibniz/                  
-  aco-leibniz/                 
-  gp-leibniz/                  
-
 gp-leibniz-v2/                 # GP v2: convergence-aware fitness (v2 injected Leibniz at gen 0)
-  gp_leibniz_v2.py             
-  gp_leibniz_v2_viz.html       # Interactive viz (JSON embedded, works on file://)
-
 entropy-leibniz/               # Entropy fitness v2 (injected Leibniz at gen 0)
-  entropy_leibniz.py           
-  entropy_leibniz_viz.html     # Interactive viz (JSON embedded, works on file://)
-
 gp-leibniz-v3/                 # Clean GP experiments (no injection)
-  gp_leibniz_v3_wide.py        # 42 terminals
-  gp_leibniz_v3_hostile.py     # 44 terminals, no 2
-  gp_leibniz_v3_minimal.py     # 4 terminals {k, 1, -1, 2}
-  gp_sensitivity_sweep.py      # Parameterized sweep (--alpha, --lambda_p, --pop_size, --tournament_k)
-  parameter_sensitivity.md     # Sweep results
-
-entropy-leibniz-v3/            # Clean entropy experiments (no injection)
-  entropy_leibniz_v3_wide.py   # 42 terminals
-  entropy_leibniz_v3_hostile.py # 44 terminals, no 2
-  entropy_leibniz_v3_minimal.py # 4 terminals {k, 1, -1, 2}
-  entropy_stress_test.py       # Progressive terminal set difficulty (--level)
-  stress_test_results.md       
-  fitness_sensitivity_test.py  # Extended checkpoints, large-T penalty, rate consistency
-  fitness_sensitivity_results.md
-  gradient_fitness_test.py     # Gradient-based selection (thermodynamic framing removed)
-  gradient_fitness_results.md  
-  parsimony_test.py            # Heavier parsimony pressure sweep
-  parsimony_test_results.md    
-
+entropy-leibniz-v3/            # Clean log-precision experiments (no injection)
 v3_results_summary.md          # Master results: all v3 experiments in one place
-medium_draft_final.md          # Working draft (will become Medium summary)
-figures/paperbanana/           # Diagram assets
-CC_TASK_*.md                   # Claude Code task instructions (historical)
+paper/                         # Paper manuscript and supporting files
 ```
 
 ## GP Engine (shared across all experiments)
@@ -84,43 +54,51 @@ accuracy = -mean(|partial_sum(T) - π/4| for T in T_EVAL)
 convergence_bonus = fraction of consecutive T-pairs with >5% error reduction
 ```
 
-**Entropy / information-theoretic (entropy-leibniz, entropy-leibniz-v3):**
+**Log-precision / information-theoretic (entropy-leibniz, entropy-leibniz-v3):**
 ```
 info(T) = -log₂(|partial_sum(T) - π/4|)
 fitness = W1*(total_info/50) + W2*monotonicity + W3*(mean_rate/5) - LAMBDA_P*nodes
 ```
 W1=0.02, W2=0.04, W3=0.03, LAMBDA_P=0.005
 
-## Key Files for Results
-- `v3_results_summary.md` — master summary of all v3 experiments
-- `gp-leibniz-v3/parameter_sensitivity.md` — GP parameter sweep
-- `entropy-leibniz-v3/stress_test_results.md` — terminal set scaling
-- `entropy-leibniz-v3/fitness_sensitivity_results.md` — fitness modifications
-- `entropy-leibniz-v3/gradient_fitness_results.md` — gradient-based selection results
-- `entropy-leibniz-v3/parsimony_test_results.md` — parsimony pressure
-
 ## Paper Writing
 
-Paper lives in `paper/`. Seldon is initialized on this project (44 artifacts, 11 verified results in `seldon-leibniz-pi` Neo4j database).
+Paper lives in `paper/`. Seldon is initialized on this project (`seldon-leibniz-pi` Neo4j database). All 9 sections registered as PaperSection artifacts with content hashes.
 
-### Writing Workflow
-1. Read `paper/conventions.md` before writing any prose
-2. Write sections in `paper/sections/NN_name.md` (sorted by number)
+### Foundation Files — READ THESE FIRST
+
+| File | Purpose |
+|------|---------|
+| `paper/glossary.md` | Controlled vocabulary. Authoritative term definitions + banned synonyms. |
+| `paper/keyword_index.md` | Auto-generated concordance. Which terms appear where. |
+| `paper/evidence_map.md` | Results → claims → sections mapping. Provenance reference. |
+| `paper/conventions.md` | Style rules + paper-specific terminology rules. |
+
+**Before writing or editing any section, read `glossary.md` and `conventions.md`.** These are the constraint surface. Using an undefined term or a banned synonym is a violation.
+
+### Writing Workflow — MANDATORY: edit → check → sync → build
+
+1. Read `paper/glossary.md` and `paper/conventions.md` before writing any prose
+2. Write/edit sections in `paper/sections/NN_name.md` (sorted by number)
 3. Use `{{result:NAME:value}}` for all research numbers — NEVER write literals
-4. Run `seldon paper audit paper/sections/*.md` after editing to check prose quality
-5. Run `seldon paper build` to resolve references, check structural integrity, assemble .qmd
-6. Run `seldon paper build --no-render` if Quarto isn't needed yet
+4. **After ANY edit to section files:**
+   ```bash
+   python paper/check_glossary.py       # check terms + regenerate keyword index
+   seldon paper sync                    # reconcile graph with disk
+   seldon paper build --no-render       # verify references resolve
+   ```
+5. This includes CC tasks. If a task modifies section files or renames Result artifacts, the full check → sync → build cycle MUST follow.
 
 ### Reference Syntax
 ```
-{{result:entropy_minimal_5_5:value}}         → 1.0
-{{result:entropy_minimal_runtime:value}}     → 369.9
+{{result:logprec_minimal_5_5:value}}         → 1.0
+{{result:logprec_minimal_runtime:value}}     → 369.9
 {{result:info_rate_3_32:value}}              → 3.32
 {{result:wrong_limit_ti_15_93:value}}        → 15.93
 ```
 
 Available results: `seldon result list` (11 verified results)
-Result provenance: `seldon result trace <name>`
+Result provenance: `seldon result trace <n>`
 
 ### QC Config
 - `paper/paper_qc_config.yaml` — prose rules (Tier 2)

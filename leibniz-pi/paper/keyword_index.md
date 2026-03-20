@@ -6,11 +6,11 @@ Shows which glossary terms appear in which sections (with line counts).
 
 ---
 
-**Building blocks**: 00_abstract (2), 01_introduction (1), 02_background (1), 03_methods (2), 04_experimental_design (1), 05_results (1), 06_discussion (2), 07_conclusion (1), 09_appendix_expressions (1)
+**Building blocks**: 00_abstract (2), 01_introduction (2), 02_background (1), 03_methods (2), 04_experimental_design (1), 05_results (1), 06_discussion (2), 07_conclusion (1), 09_appendix_expressions (1)
 
-**Checkpoint**: 03_methods (3)
+**Checkpoint**: 03_methods (3), 09_appendix_expressions (3)
 
-**Confabulation**: 06_discussion (3)
+**Confabulation**: 01_introduction (2), 06_discussion (3)
 
 **Convergence-aware fitness**: 01_introduction (1), 03_methods (5), 05_results (2), 06_discussion (2), 09_appendix_expressions (2)
 
@@ -18,15 +18,15 @@ Shows which glossary terms appear in which sections (with line counts).
 
 **Design provenance**: 06_discussion (1)
 
-**Discovery**: 00_abstract (2), 01_introduction (3), 02_background (1), 03_methods (2), 04_experimental_design (5), 05_results (8), 06_discussion (4), 07_conclusion (1), 09_appendix_expressions (1)
+**Discovery**: 00_abstract (2), 01_introduction (2), 02_background (1), 03_methods (2), 04_experimental_design (5), 05_results (8), 06_discussion (4), 07_conclusion (1), 09_appendix_expressions (1)
 
 **Diversity injection**: 03_methods (1)
 
 **Elitism**: 02_background (1), 03_methods (1), 04_experimental_design (2)
 
-**Evaluation horizon**: 00_abstract (1), 01_introduction (2), 02_background (4), 03_methods (1), 05_results (1), 06_discussion (3), 09_appendix_expressions (2)
+**Evaluation horizon**: 00_abstract (1), 01_introduction (2), 02_background (4), 03_methods (1), 05_results (1), 06_discussion (3), 09_appendix_expressions (4)
 
-**Evaluation horizon trap**: 01_introduction (1), 02_background (2), 06_discussion (1), 09_appendix_expressions (1)
+**Evaluation horizon trap**: 01_introduction (1), 02_background (2), 06_discussion (1), 09_appendix_expressions (2)
 
 **Expression tree**: 03_methods (1), 04_experimental_design (1)
 
@@ -34,19 +34,19 @@ Shows which glossary terms appear in which sections (with line counts).
 
 **Leibniz series**: 00_abstract (1), 01_introduction (1), 03_methods (1), 04_experimental_design (1)
 
-**Log-precision fitness**: 00_abstract (2), 01_introduction (1), 03_methods (4), 04_experimental_design (1), 05_results (3), 06_discussion (3), 09_appendix_expressions (6)
+**Log-precision fitness**: 00_abstract (2), 01_introduction (1), 03_methods (4), 04_experimental_design (1), 05_results (3), 06_discussion (3), 09_appendix_expressions (7)
 
 **Monotonicity**: 03_methods (3), 05_results (2)
 
-**Phase transition**: 00_abstract (1), 01_introduction (1), 05_results (1), 06_discussion (1)
+**Phase transition**: 00_abstract (1), 01_introduction (2), 05_results (1), 06_discussion (1)
 
-**Precision gain rate**: 03_methods (3), 05_results (1)
+**Precision gain rate**: 03_methods (3), 05_results (1), 09_appendix_expressions (1)
 
-**Scaling grid**: 00_abstract (1), 03_methods (1), 04_experimental_design (3), 05_results (2), 06_discussion (1), 07_conclusion (1)
+**Scaling grid**: 00_abstract (1), 01_introduction (1), 03_methods (1), 04_experimental_design (3), 05_results (2), 06_discussion (1), 07_conclusion (1)
 
-**Terminal set**: 00_abstract (1), 02_background (2), 03_methods (1), 04_experimental_design (2), 05_results (3), 06_discussion (1), 09_appendix_expressions (5)
+**Terminal set**: 00_abstract (1), 01_introduction (2), 02_background (2), 03_methods (1), 04_experimental_design (2), 05_results (3), 06_discussion (1), 09_appendix_expressions (5)
 
-**Wrong-limit attractor**: 02_background (1), 05_results (2), 09_appendix_expressions (1)
+**Wrong-limit attractor**: 01_introduction (1), 02_background (1), 05_results (2), 09_appendix_expressions (2)
 
 ---
 

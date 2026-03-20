@@ -76,19 +76,20 @@ The fitness\_approach2\_w0.1 experiment used the minimal terminal set with a mod
 The table shows the 10 highest-fitness wrong-limit attractors plus the canonical `5/((6+4k)(k-2))`
 attractor from the stress test. Section A.2.1 discusses the canonical attractor in detail.
 
-| Seed | Raw Form | Nodes | Fitness | t | Experiment | Notes |
-|------|----------|-------|---------|---|------------|-------|
-| 31415 | `(-3 / ((7 + k) * (k + -3)))` | 9 | 0.0232 | 15 | scaling\_heatmap\_t15\_p2000 | Partial fraction near pi/4 |
-| 7 | `(((-1 / (k ^ 10)) ^ k) * (7 ^ 7))` | 11 | 0.0230 | 20 | scaling\_heatmap\_t20\_p1000 | Decaying oscillation times constant |
-| 31415 | `((7 ^ 7) * ((-(k ^ 10)) ^ (-k)))` | 9 | 0.0230 | 20 | scaling\_heatmap\_t20\_p2000 | Variant of above |
-| 42 | `(((k - 4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p10000 | Power-law decay family |
-| 7 | `(((k + -4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p10000 | Power-law decay family |
-| 31415 | `(((k - 4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p10000 | Power-law decay family |
-| 137 | `(((4 - k) / 4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p1000 | Power-law decay family |
-| 137 | `(((-4 + k) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p2000 | Power-law decay family |
-| 2718 | `((-4 / (k - 4)) ^ 9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p2000 | Power-law decay family |
-| 42 | `(((k + -4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p5000 | Power-law decay family |
-| 42 | `(5 / (((1 + 5) + (k * 4)) * (k + -2)))` | 13 | 0.0073 | 15 | stress\_L1 | Canonical 5/((6+4k)(k-2)) attractor |
+| Seed | Raw Form | Nodes | Fitness | t | Experiment | Simplified | Notes |
+|------|----------|-------|---------|---|------------|------------|-------|
+| 31415 | `(((-1 ^ k) * (-k)) / ((1 / 2) - (-k)))` | 13 | 0.00877 | 4 | scaling\_heatmap\_t4\_p2000 | `-2k(-1)^k/(2k+1)` | Grandi-Leibniz: S(T)=L(T)-G(T) |
+| 31415 | `(-3 / ((7 + k) * (k + -3)))` | 9 | 0.0232 | 15 | scaling\_heatmap\_t15\_p2000 | `-3/((k-3)(k+7))` | Partial fraction near pi/4 |
+| 7 | `(((-1 / (k ^ 10)) ^ k) * (7 ^ 7))` | 11 | 0.0230 | 20 | scaling\_heatmap\_t20\_p1000 | `823543*(-1/k^10)^k` | Decaying oscillation times constant |
+| 31415 | `((7 ^ 7) * ((-(k ^ 10)) ^ (-k)))` | 9 | 0.0230 | 20 | scaling\_heatmap\_t20\_p2000 | `823543/(-k^10)^k` | Variant of above |
+| 42 | `(((k - 4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p10000 | `-262144/(k-4)^9` | Power-law decay family |
+| 7 | `(((k + -4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p10000 | `-262144/(k-4)^9` | Power-law decay family |
+| 31415 | `(((k - 4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p10000 | `-262144/(k-4)^9` | Power-law decay family |
+| 137 | `(((4 - k) / 4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p1000 | `-262144/(k-4)^9` | Power-law decay family |
+| 137 | `(((-4 + k) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p2000 | `-262144/(k-4)^9` | Power-law decay family |
+| 2718 | `((-4 / (k - 4)) ^ 9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p2000 | `-262144/(k-4)^9` | Power-law decay family |
+| 42 | `(((k + -4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p5000 | `-262144/(k-4)^9` | Power-law decay family |
+| 42 | `(5 / (((1 + 5) + (k * 4)) * (k + -2)))` | 13 | 0.0073 | 15 | stress\_L1 | `5/(2(k-2)(2k+3))` | Canonical 5/((6+4k)(k-2)) attractor |
 
 ### A.2.1 The 5/((6+4k)(k-2)) Attractor
 
@@ -116,6 +117,34 @@ evaluation horizon, its partial-sum curve looks like rapid convergence to a smal
 All five seeds at pop=10000 converged to this family. The power-law attractor dominated before
 Leibniz building blocks could be assembled in the 20-terminal search space.
 
+### A.2.3 The Grandi-Leibniz Attractor (t=4, seed=31415)
+
+The most structurally interesting wrong-limit attractor in the dataset is `(((-1 ^ k) * (-k)) / ((1 / 2) - (-k)))`, found by seed 31415 at t=4 and pop=2000. The expression has 13 nodes and fitness 0.00877 under the log-precision function. The GP discovered this expression from random initialization; no Leibniz encoding was present.
+
+Sympy reduces the raw form to `-2k(-1)^k / (2k+1)`. Factoring yields:
+
+```
+-2k / (2k+1) = -(2k+1-1) / (2k+1) = -1 + 1/(2k+1)
+```
+
+Multiplying by `(-1)^k` gives the k-th term as `-(-1)^k + (-1)^k/(2k+1)`. The partial sum decomposes as:
+
+```
+S(T) = L(T) - G(T)
+```
+
+where L(T) = sum_{k=0}^{T-1} (-1)^k / (2k+1) is the Leibniz partial sum and G(T) = sum_{k=0}^{T-1} (-1)^k is the Grandi partial sum. G(T) equals 0 at even T and 1 at odd T.
+
+We verified this computationally. At T=10, 20, 50, 100, 1000, S(T) = L(T) to machine precision. At T=5, S(5) = L(5) - 1, giving an error of approximately 0.95 relative to pi/4.
+
+The series does not converge in the standard sense. Even-indexed partial sums converge to pi/4; odd-indexed partial sums converge to pi/4 - 1.
+
+The log-precision fitness uses 11 checkpoints at T = {5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000}. We counted 1 odd checkpoint (T=5) and 10 even checkpoints. At every even checkpoint, S(T) = L(T) exactly, so the attractor's precision profile is indistinguishable from Leibniz's at 10 of 11 evaluation points.
+
+The single odd checkpoint (T=5) records {{result:grandi_leibniz_ti_t5_0_07:value}} bits of precision, far below Leibniz's 4.34 bits at the same depth. But this low baseline raises the apparent mean precision gain rate to {{result:grandi_leibniz_mean_rate_4_61:value}} bits/decade, above Leibniz's {{result:info_rate_3_32:value}} bits/decade. The fitness simultaneously penalizes T=5 and rewards the elevated rate, leaving the attractor at a lower fitness (0.00877) than Leibniz (0.02102). The 10-of-11 checkpoint alignment made the attractor competitive enough to dominate this run.
+
+The Grandi-Leibniz attractor is the most direct instance of the evaluation horizon trap in the dataset. The trap exploits not just the finiteness of the evaluation horizon but the specific parity structure of the checkpoint grid. A checkpoint grid with more odd values would have identified the divergence immediately.
+
 ## A.3 Expressions by Terminal Count
 
 ### A.3.1 t=4 (Minimal Terminal Set)
@@ -124,8 +153,7 @@ With four terminals {k, 1, -1, 2}, (-1)^k is the only oscillating structure cons
 the available primitives. This makes the fitness landscape nearly unimodal: the single basin of
 attraction corresponds to Leibniz variants. We found 28 of 30 seeds (93%) discovered
 Leibniz-equivalent expressions across the two t=4 population sweeps. Two t=4 seeds from
-scaling\_heatmap\_t4\_p2000 failed; the Grandi-Leibniz attractor analysis in the research notes
-covers seed 31415's anomalous result.
+scaling\_heatmap\_t4\_p2000 failed; Section A.2.3 covers seed 31415's anomalous result in detail.
 
 All 28 successful t=4 expressions simplify to -1/(2k+1) under sympy. Node count is 9 in 21 cases
 and 10 or 11 in the remaining 7 cases, reflecting how many negation nodes the GP included in the

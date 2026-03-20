@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>paper</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="paper_files/libs/clipboard/clipboard.min.js"></script>
+<script src="paper_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="paper_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="paper_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="paper_files/libs/quarto-html/popper.min.js"></script>
+<script src="paper_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="paper_files/libs/quarto-html/anchor.min.js"></script>
+<link href="paper_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="paper_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="paper_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="paper_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="paper_files/libs/bootstrap/bootstrap-d6a003b94517c951b2d65075d42fb01b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+
+
+
+<section id="abstract" class="level1">
+<h1>Abstract</h1>
+<p>We investigate whether genetic programming can discover the Leibniz series for π/4 from arithmetic primitives alone, without prior knowledge of the target formula. Using a log-precision fitness function that rewards constant precision gain per decade of summation depth, a minimal GP system discovers Leibniz-equivalent expressions in 1.0/5 seeds with the terminal set {k, 1, -1, 2}. Discovery fails sharply as the terminal set expands: at 15 terminals and population 1,000, no seeds succeed (0.0/5) despite the fitness correctly ranking Leibniz as optimal when present.</p>
+<p>We characterize this phase transition through a scaling grid of terminal counts and population sizes. The primary failure mechanism is wrong-limit attractors: series that converge to values near π/4 and can score higher than Leibniz within any finite evaluation horizon. These attractors are structurally simpler than Leibniz and cannot be eliminated by fitness engineering. Six fitness modifications all failed at 15 terminals, confirming that the bottleneck is combinatorial coverage of correct building blocks, not fitness landscape quality.</p>
+<p>The log-precision fitness measures -log₂(|error|), rewarding processes whose precision grows at a constant rate across scales. Leibniz gains 3.32 bits per decade, the rate predicted by its 1/T error decay. By analogy to reaction kinetics, the fitness selects for second-order convergence structure, a more discriminating criterion than first-order error reduction. The difficulty of formula discovery lies not in the answer but in the search: whether the population covers enough of the space for correct building blocks to appear before wrong-limit attractors dominate.</p>
+</section>
+<section id="introduction" class="level1">
+<h1>1. Introduction</h1>
+<p>The Leibniz series</p>
+<p><span class="math display">\[\frac{\pi}{4} = \sum_{k=0}^{\infty} \frac{(-1)^k}{2k+1} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots\]</span></p>
+<p>converges to π/4 but does so slowly: roughly 5 billion terms are required for 10 digits of precision. Far more efficient algorithms exist for computing π. The series is famous not for its efficiency but for its structural elegance, a process that approaches its target monotonically, each term a smaller correction than the last, improving forever without arriving.</p>
+<p>This paper asks a constructive question: given only arithmetic primitives and a fitness criterion that rewards sustained convergence, can an evolutionary search discover Leibniz from scratch? The answer is conditionally yes. The conditions under which discovery fails are more instructive than the conditions under which it succeeds.</p>
+<p>Symbolic regression typically searches for equations that fit observed data points. The Leibniz problem differs: there are no data points. The fitness must evaluate a <em>process</em>, a generating rule applied at every integer k. The question is whether that process exhibits the convergence properties characteristic of a series summing to a mathematical constant. This shifts the optimization objective from pointwise accuracy to process-level behavior: not “how close is the output?” but “is the output still improving, and will it always be?”</p>
+<p>We develop two fitness functions for this objective. The first, convergence-aware fitness, rewards expressions whose partial sums decrease in error between evaluation checkpoints. By analogy to reaction kinetics (see Section 6.1), we call this a first-order question: is error shrinking? The second, log-precision fitness, rewards expressions that gain bits of precision about π/4 at a constant rate across orders of magnitude of summation depth. By the same analogy, this asks a second-order question: is precision gain sustained at a constant rate across scales? Both discover Leibniz under favorable conditions. The log-precision fitness is more reliable, succeeding at half the population size.</p>
+<p>The central finding is not that Leibniz can be discovered, but that discovery exhibits a sharp phase transition as the search space grows. With 4 terminals, discovery is reliable. With 15, it fails completely. The fitness function does not break; it correctly identifies Leibniz as optimal when Leibniz is present. The failure is that the search space becomes populated with wrong-limit attractors. These are series that converge to values near π/4 within any finite evaluation horizon and score well on the fitness criteria. Wrong-limit attractors are structurally simpler than Leibniz. No improvement to the fitness function can eliminate them, because no finite evaluation can distinguish “converges to π/4” from “converges to a nearby value.”</p>
+<p>This evaluation horizon trap has implications beyond the Leibniz problem. Any fitness-guided search over infinite-horizon processes faces the same constraint. The difficulty of discovery is not in the fitness landscape, which places Leibniz at or near its global optimum. The difficulty is in coverage: whether the search explores enough of the space for correct building blocks to assemble before wrong-limit attractors dominate the population.</p>
+</section>
+<section id="background-and-related-work" class="level1">
+<h1>2. Background and Related Work</h1>
+<section id="symbolic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="symbolic-regression">2.1 Symbolic Regression</h2>
+<p>Symbolic regression searches for mathematical expressions that fit data, discovering both the functional form and its parameters simultaneously. Unlike conventional regression, which assumes a model structure and optimizes coefficients, symbolic regression explores the full space of compositions over a given operator and terminal set.</p>
+<p>Schmidt and Lipson (2009) showed that GP-based symbolic regression could recover Hamiltonians and Lagrangians from experimental data. Their result was widely interpreted as evidence that symbolic regression extracts natural laws without domain knowledge. Hillar and Sommer (2012) subsequently demonstrated that the operator set and fitness structure implicitly encoded physical priors. The “laws” were partially baked into the search space. This critique parallels our own injection confound (Section 4.1). Seeding the initial population with the target formula created the illusion of discovery; the formula was merely preserved through elitism.</p>
+<p>Modern symbolic regression systems span several paradigms. PySR (Cranmer, 2023) uses multi-population evolutionary search with a Pareto front trading accuracy against complexity. SymbolicGPT (Valipour et al., 2021) uses transformers to predict symbolic expressions. DySymNet (Li et al., 2023) combines neural networks with symbolic search. GFlowNet-based methods (Li et al., 2023) frame symbolic regression as a generative flow problem. MCTS approaches (Kamienny et al., 2023; Shojaee et al., 2023) use tree search with learned value functions. EGG-SR (Jiang et al., 2025) applies equality saturation for canonicalization.</p>
+<p>All of these systems optimize pointwise fitness: they minimize error between predicted and observed values at discrete (x, y) pairs. None address the problem class we consider, evaluating convergence properties of an infinite-horizon generating process against a known limit.</p>
+</section>
+<section id="fitness-design-for-convergent-processes" class="level2">
+<h2 class="anchored" data-anchor-id="fitness-design-for-convergent-processes">2.2 Fitness Design for Convergent Processes</h2>
+<p>The standard symbolic regression fitness is root-mean-square error between predicted and observed outputs. Pareto-based approaches add complexity as a second objective. Parsimony pressure, penalizing expression size, is the simplest form.</p>
+<p>For infinite-horizon convergent processes, pointwise fitness is insufficient. A series that sums to 0.7851 (close to π/4 ≈ 0.7854) at T=10,000 terms would score well on pointwise accuracy but has no structural relationship to Leibniz. The fitness must instead evaluate how partial sums <em>behave</em> across evaluation depth. Does error decrease monotonically? Is the rate of improvement sustained? Does the precision gain follow a predictable scaling law?</p>
+<p>To our knowledge, no prior work designs fitness functions for this objective class. The closest analog is time-series forecasting, where models are evaluated on multi-step-ahead prediction quality rather than single-point accuracy. The Leibniz problem differs in that it requires evaluation at geometrically spaced depths (5, 10, 20, 50, …, 10000 terms), not sequential future steps.</p>
+</section>
+<section id="wrong-limit-attractors" class="level2">
+<h2 class="anchored" data-anchor-id="wrong-limit-attractors">2.3 Wrong-Limit Attractors</h2>
+<p>The symbolic regression literature extensively discusses <em>bloat</em>: the tendency of GP to produce increasingly complex expressions that overfit without improving generalization. Our failure mode is distinct. Wrong-limit attractors are structurally <em>simpler</em> than the correct answer and converge to a finite limit. They score well because their limit happens to fall near π/4 within the evaluation horizon.</p>
+<p>Wrong-limit attractors exploit a fundamental asymmetry. Infinitely many rational functions P(k)/Q(k) have partial sums converging to finite values near any target. Only one expression is Leibniz. As the terminal set grows, the density of accessible wrong-limit attractors increases combinatorially. The correct answer remains a single point in the expression space. The fitness function correctly ranks Leibniz above any wrong-limit attractor when both are present. However, the search must first assemble the correct building blocks, and this becomes exponentially less likely as the search space expands. To our knowledge, no prior work analyzes this failure mode as distinct from bloat or overfitting in symbolic regression.</p>
+</section>
+<section id="the-evaluation-horizon-trap" class="level2">
+<h2 class="anchored" data-anchor-id="the-evaluation-horizon-trap">2.4 The Evaluation Horizon Trap</h2>
+<p>Any finite evaluation horizon T_max creates a class of expressions indistinguishable from the correct answer within that horizon. Extending T_max does not eliminate this class; it shifts the attractor landscape. At T_max = 10,000, an expression converging to 0.7854 (vs.&nbsp;π/4 ≈ 0.78540) scores nearly identically to Leibniz. At T_max = 100,000, that expression would be distinguishable. New attractors converging to values even closer to π/4 would take its place.</p>
+<p>The evaluation horizon trap is not a limitation of our specific fitness function. The trap is a structural property of any finite evaluation of infinite-horizon processes. We document it as a constraint on fitness-guided search in this problem class.</p>
+</section>
+</section>
+<section id="methods" class="level1">
+<h1>3. Methods</h1>
+<section id="expression-representation" class="level2">
+<h2 class="anchored" data-anchor-id="expression-representation">3.1 Expression Representation</h2>
+<p>Candidate series are represented as expression trees over a set of operators and terminals. Each tree defines a function f(k) that maps the integer index k to a term value. The partial sum at depth T is:</p>
+<p><span class="math display">\[S(T) = \sum_{k=0}^{T-1} f(k)\]</span></p>
+<p>For Leibniz, f(k) = (-1)^k / (2k+1), and S(T) → π/4 as T → ∞.</p>
+<p><em>Operators.</em> Binary operators {+, -, ×, ÷, ^} and unary negation. Division by zero returns 1.0 (safe division). The power operator rounds its exponent to the nearest integer before evaluation, constraining the search to integer powers. Power overflow (|result| &gt; 10^6) returns 1.0.</p>
+<p><em>Terminals.</em> A configurable set always containing the variable k and constants. The minimal set is {k, 1, -1, 2}. Expanded sets add integers following a deterministic pattern described in Section 4.3.</p>
+<p>To make the search concrete, consider the target f(k) = (-1)^k / (2k+1). The GP must discover three structural components and compose them correctly. First, oscillation: (-1)^k produces the alternating sign, requiring the terminal -1, the variable k, and the power operator composed as pow(-1, k). Second, odd denominator: 2k+1 produces 1, 3, 5, 7, …, requiring the terminals 2 and 1, the variable k, and multiplication and addition composed as add(mul(2, k), 1). Third, division: the oscillating numerator divided by the growing denominator produces terms of decreasing magnitude with alternating sign.</p>
+<p>With the minimal terminal set {k, 1, -1, 2}, these are essentially the only building blocks available. The GP has limited options for constructing oscillation (only (-1)^k works with the available terminals) and limited options for the denominator (only 2k+1 uses all remaining terminals meaningfully). This constraint is why discovery succeeds: the correct answer is one of few well-formed expressions in the search space.</p>
+<p>With 15 terminals, the picture changes. Oscillation can be constructed from (-1)^k, (-3)^k, or various other bases. Denominators can be any polynomial or rational function of k. The number of structurally distinct well-formed expressions grows combinatorially, and most of them are wrong-limit attractors.</p>
+</section>
+<section id="evolutionary-search" class="level2">
+<h2 class="anchored" data-anchor-id="evolutionary-search">3.2 Evolutionary Search</h2>
+<p>We use standard GP with ramped half-and-half initialization (depths 2–5), tournament selection (k=7), subtree crossover (P=0.70), subtree mutation (P=0.20), reproduction (P=0.10), and elitism (top 5 preserved). Population sizes range from 1,000 to 10,000 depending on the experiment. Each seed runs for at most 360 seconds, with a 1,800-second total budget per configuration.</p>
+<p>Trees are constrained to at most 30 nodes. The depth limit of 6 applies during initialization; genetic operators enforce only the node count constraint. Mutation subtrees are generated with maximum depth 3. A diversity injection mechanism replaces the worst 100 individuals with fresh random trees when the top 20 fitness values become identical (to six decimal places), preventing premature convergence to a single attractor.</p>
+<p>No domain-specific operators (such as “alternating sign” or “odd number generator”) are included. The search must assemble oscillating convergent behavior from general-purpose arithmetic alone.</p>
+<p><em>Stopping criteria.</em> Each run terminates when the time budget is exhausted. The log-precision fitness also triggers early stopping after 100 generations of no improvement once the best expression exceeds 13.0 bits of precision with stable monotonicity. Time budgets vary by experiment: 360 seconds per seed for minimal terminal runs, 1,800 seconds per seed for the scaling grid (Section 4).</p>
+<p><em>Discovery criterion.</em> An expression counts as a discovery if its first 20 terms match the Leibniz series to within 10^-6 absolute error per term, verified at k = 0, 1, …, 19. This post-hoc criterion is applied after the run completes. During the run, the fitness function guides selection, but the discovery determination is independent of the fitness score.</p>
+</section>
+<section id="fitness-functions" class="level2">
+<h2 class="anchored" data-anchor-id="fitness-functions">3.3 Fitness Functions</h2>
+<section id="convergence-aware-fitness-first-order" class="level3">
+<h3 class="anchored" data-anchor-id="convergence-aware-fitness-first-order">3.3.1 Convergence-Aware Fitness (First-Order)</h3>
+<p>The convergence-aware fitness rewards expressions whose partial sums approach π/4 with decreasing error at successive evaluation checkpoints T ∈ {10, 50, 200, 1000, 5000}.</p>
+<p><span class="math display">\[\text{fitness}_{\text{conv}} = \text{accuracy} + \alpha \cdot \text{convergence\_bonus} - \lambda_p \cdot \text{nodes}\]</span></p>
+<p>where accuracy = -mean(|S(T) - π/4|) across checkpoints, convergence_bonus = fraction of consecutive checkpoint pairs where error decreases by at least 5%, and nodes is the expression tree size (parsimony pressure). Weights: α = 0.05, λ_p = 0.005.</p>
+<p>We label this a “first-order” fitness by analogy to reaction kinetics (Section 6.1): it asks whether error is shrinking, the simplest convergence question. Many processes exhibit shrinking error over some range. The convergence bonus rewards shrinkage across consecutive checkpoint pairs, but any monotonically converging series, regardless of its limit, can score well.</p>
+</section>
+<section id="log-precision-fitness-second-order" class="level3">
+<h3 class="anchored" data-anchor-id="log-precision-fitness-second-order">3.3.2 Log-Precision Fitness (Second-Order)</h3>
+<p>The log-precision fitness evaluates partial sums at 11 checkpoints spanning three decades: T ∈ {5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000}. The denser checkpoint set (compared to the five checkpoints used by the convergence-aware fitness) provides finer-grained measurement of precision gain rate and extends the evaluation horizon to T = 10,000. The fitness measures precision in bits:</p>
+<p><span class="math display">\[\text{prec}(T) = -\log_2 |S(T) - \pi/4|\]</span></p>
+<p>The quantity -log₂(|error|) has the same mathematical form as Shannon’s self-information, though it is not entropy in the information-theoretic sense: it measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=10 has precision approximately 4.4 bits; at T=10,000, approximately 15.3 bits.</p>
+<p>The design came from a chemical engineering perspective on process dynamics. The guiding analogy was crystallization: perfect order reconstructed from disorder along the slowest, most sustained path. Each step adds a small, constant increment of order. Leibniz does the same: each term adds a constant increment of precision about π/4, forever, at a rate that never accelerates or decelerates. The design question was not “which series converges fastest?” but “which series reduces uncertainty at the most constant rate?” That question led to measuring precision on a log scale and rewarding constant gain per decade. We later observed that -log₂(|error|) has the same mathematical structure as the integrated form of a second-order rate law. This connection is discussed in Section 6.1.</p>
+<p>The fitness combines three components:</p>
+<p><span class="math display">\[\text{fitness}_{\text{prec}} = w_1 \frac{\text{prec}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}\]</span></p>
+<p>where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005.</p>
+<p>By the same kinetics analogy, this asks a “second-order” question: <em>is precision gain sustained at a constant rate across scales?</em> Leibniz gains log₂(10) ≈ 3.32 bits per decade. On a log-log plot, this is a straight line. The constant rate is the signature of second-order kinetics (Section 6.1). Fewer processes satisfy this criterion than satisfy first-order error shrinkage.</p>
+</section>
+<section id="why-the-second-order-question-is-more-selective" class="level3">
+<h3 class="anchored" data-anchor-id="why-the-second-order-question-is-more-selective">3.3.3 Why the Second-Order Question Is More Selective</h3>
+<p>Many series exhibit decreasing error. Rational functions like 5/((6+4k)(k-2)) converge monotonically to a finite limit and score well on the convergence-aware fitness. Their precision gain rate is not constant across scales: it accelerates as the series approaches its limit, then plateaus.</p>
+<p>Leibniz is unusual: its precision gain rate is constant because its error decays as 1/(2T+1). Plotting 1/error vs T yields a straight line, the integrated form of a second-order rate law. The log-precision fitness selects for this specific convergence structure, making it more discriminating than the convergence-aware fitness. Empirically, the log-precision fitness discovers Leibniz at population 1,000 (1.0/5 seeds), while the convergence-aware fitness requires population 2,000 for the same reliability.</p>
+</section>
+</section>
+</section>
+<section id="experimental-design" class="level1">
+<h1>4. Experimental Design</h1>
+<section id="the-injection-confound" class="level2">
+<h2 class="anchored" data-anchor-id="the-injection-confound">4.1 The Injection Confound</h2>
+<p>Early experiments (v2) seeded the initial population with a copy of the Leibniz expression tree. Both fitness functions reported 1.0/5 discovery, but subsequent analysis showed this was an artifact. The injected tree survived through elitism, never being lost to selection pressure. The tree was <em>retained</em>, not <em>discovered</em>.</p>
+<p>We made this error, caught it, and corrected it. All results in this paper (v3 onward) use pure random initialization with no injection.</p>
+<p>We document the confound here because it mirrors a known failure mode. Hillar and Sommer (2012) showed that Schmidt and Lipson (2009) implicitly encoded the answer in the search structure, creating the illusion of emergent discovery. Our injection confound is the same class of error: when the target is present in the initial population, survival through elitism is indistinguishable from discovery.</p>
+</section>
+<section id="clean-protocol-v3" class="level2">
+<h2 class="anchored" data-anchor-id="clean-protocol-v3">4.2 Clean Protocol (v3)</h2>
+<p>All v3 experiments use ramped half-and-half initialization with no injection. Each configuration is evaluated across five seeds (42, 7, 137, 2718, 31415).</p>
+<p>The time budget per seed is 360 seconds for minimal terminal runs and 1,800 seconds for the scaling grid. An expression counts as a discovery if its first 20 terms match the Leibniz series to within 10^-6 absolute error per term (Section 3.2).</p>
+</section>
+<section id="terminal-set-construction" class="level2">
+<h2 class="anchored" data-anchor-id="terminal-set-construction">4.3 Terminal Set Construction</h2>
+<p>Terminal sets are constructed deterministically at each size N. The base set {k, 1, -1, 2} is always present, ensuring Leibniz is constructible regardless of N. Additional integers follow the pattern 3, -2, 4, -3, 5, -4, …, alternating positive and negative with no zero and no duplicates of base terminals.</p>
+<p>This construction controls for primitive availability. The experiment isolates the effect of search space expansion on discovery rate, not whether the correct building blocks exist.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th>Terminal Set</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4</td>
+<td>{k, 1, -1, 2}</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>{k, 1, -1, 2, 3, -2}</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>{k, 1, -1, 2, 3, -2, 4, -3}</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>{k, 1, -1, 2, 3, -2, 4, -3, 5, -4}</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>{k, 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5}</td>
+</tr>
+<tr class="even">
+<td>15</td>
+<td>{k, 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8}</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>{k, 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8, -7, 9, -8, 10, -9}</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="scaling-grid" class="level2">
+<h2 class="anchored" data-anchor-id="scaling-grid">4.4 Scaling Grid</h2>
+<p>The scaling grid crosses seven terminal counts (N = 4, 6, 8, 10, 12, 15, 20) with four population sizes (1,000, 2,000, 5,000, 10,000). Five seeds per cell yield 140 individual runs. All runs use log-precision fitness with a 1,800-second time budget per seed.</p>
+<p>The design answers two questions. First, can increasing population size compensate for expanding terminal sets? Second, where is the boundary beyond which no tested population size achieves reliable discovery?</p>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>5. Results</h1>
+<section id="discovery-under-minimal-terminals" class="level2">
+<h2 class="anchored" data-anchor-id="discovery-under-minimal-terminals">5.1 Discovery Under Minimal Terminals</h2>
+<p>With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision fitness achieves 1.0/5 discovery across five seeds. The convergence-aware fitness achieves 0.4/5 at population 1,000 and 1.0/5 at population 2,000. Total runtime for the 1.0/5 log-precision run across all five seeds was 369.9 seconds.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Fitness</th>
+<th>Pop</th>
+<th>Seeds Found</th>
+<th>Mean Generations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Log-precision</td>
+<td>1,000</td>
+<td>1.0/5</td>
+<td>2,981</td>
+</tr>
+<tr class="even">
+<td>Convergence-aware</td>
+<td>1,000</td>
+<td>0.4/5</td>
+<td>n/a</td>
+</tr>
+<tr class="odd">
+<td>Convergence-aware</td>
+<td>2,000</td>
+<td>1.0/5</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p>All discovered expressions are algebraically equivalent to (-1)^k / (2k+1), verified identical at k=100,000 with zero divergence. Table 2 shows the structural variants that appear across seeds.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Seed</th>
+<th>Expression</th>
+<th>Nodes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>42</td>
+<td>(-(-1^k)) / ((-k) - (k - -1))</td>
+<td>11</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>(-(-1^k)) / ((-1 - k) - k)</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>2718</td>
+<td>(-1^k) / (k + (1 + k))</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td>31415</td>
+<td>(-1^k) / ((k × 2) - -1)</td>
+<td>9</td>
+</tr>
+</tbody>
+</table>
+<p>The canonical 9-node form (-1)^k / (2k+1) is not always found: bloated algebraic equivalents appear in 3/5 seeds. Parsimony pressure at λ_p = 0.005 is insufficient to drive canonical form but does not impair discovery. Increasing parsimony to λ_p ≥ 0.01 destroys discovery entirely (Section 5.4).</p>
+</section>
+<section id="failure-under-expanded-terminals" class="level2">
+<h2 class="anchored" data-anchor-id="failure-under-expanded-terminals">5.2 Failure Under Expanded Terminals</h2>
+<p>With 15 terminals at population 1,000, no seeds find Leibniz: 0.0/5. The dominant failure mode is wrong-limit attractors, rational functions whose partial sums converge to finite values near π/4.</p>
+<p>Seed 42 found the expression 5/((6+4k)(k-2)), which achieves 15.93 bits of precision at T=10,000, exceeding Leibniz’s 15.29 bits, with perfect monotonicity. This expression is not Leibniz. Its partial sums converge to a value that appears closer to π/4 than Leibniz within the evaluation horizon, but at T→∞, Leibniz converges exactly while this attractor converges to a different value.</p>
+</section>
+<section id="the-scaling-boundary" class="level2">
+<h2 class="anchored" data-anchor-id="the-scaling-boundary">5.3 The Scaling Boundary</h2>
+<p>The 7 × 4 scaling grid reveals a phase transition between t=8 and t=10 for population sizes up to 5,000. Discovery results across the full grid are as follows.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>t (terminals)</th>
+<th>pop=1000</th>
+<th>pop=2000</th>
+<th>pop=5000</th>
+<th>pop=10000</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4</td>
+<td>5/5</td>
+<td>4/5</td>
+<td>5/5</td>
+<td>5/5</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1/5</td>
+<td>2/5</td>
+<td>1/5</td>
+<td>1/5</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>1/5</td>
+<td>1/5</td>
+<td>1/5</td>
+<td>0/5</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>0/5</td>
+<td>0/5</td>
+<td>0/5</td>
+<td>0/5</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>0/5</td>
+<td>0/5</td>
+<td>0/5</td>
+<td>0/5</td>
+</tr>
+<tr class="even">
+<td>15</td>
+<td>0/5</td>
+<td>0/5</td>
+<td>0/5</td>
+<td>2/5</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>0/5</td>
+<td>0/5</td>
+<td>0/5</td>
+<td>0/5</td>
+</tr>
+</tbody>
+</table>
+<p>At t=4, discovery is reliable across all population sizes. At t=6 and t=8, success drops but remains nonzero. At t=10 and above, discovery fails completely except for one anomaly: at t=15 with pop=10,000, 2/5 seeds succeed. This partial recovery is absent at t=10, t=12, and t=20.</p>
+<p>We do not have a confirmed mechanistic account of this non-monotonicity. The most plausible explanation is that at t=15 the search space contains fewer wrong-limit attractors than at t=10 or t=12, allowing a large population to occasionally maintain sufficient structural coverage.</p>
+<p>The boundary between t=8 and t=10 holds for populations up to 5,000. Increasing population from 1,000 to 10,000 does not shift this boundary: it provides marginal gains at t=6 and t=8 and produces the anomalous partial recovery at t=15, but the t=10 wall remains intact. This confirms that coverage, not fitness landscape quality, limits discovery.</p>
+</section>
+<section id="parsimony-pressure" class="level2">
+<h2 class="anchored" data-anchor-id="parsimony-pressure">5.4 Parsimony Pressure</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>λ_p</th>
+<th>Seeds Found</th>
+<th>Dominant Form</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.005 (baseline)</td>
+<td>5/5</td>
+<td>9–11 node Leibniz equivalents</td>
+<td>Working</td>
+</tr>
+<tr class="even">
+<td>0.01</td>
+<td>0/5</td>
+<td>3-node zero constants (k-k, 1+-1)</td>
+<td>Penalty dominates</td>
+</tr>
+<tr class="odd">
+<td>0.02</td>
+<td>0/5</td>
+<td>1-node constant (-1)</td>
+<td>Leibniz ejected from top 10%</td>
+</tr>
+<tr class="even">
+<td>0.05</td>
+<td>0/5</td>
+<td>1-node constant (-1)</td>
+<td>Fitness ordering inverted</td>
+</tr>
+</tbody>
+</table>
+<p>The transition is sharp. At λ_p = 0.005, the 9-node Leibniz tree scores approximately 0.021 fitness. At λ_p = 0.01, the same tree scores approximately -0.024. The score is still nominally better than the zero-constant attractor at approximately -0.030, but the margin is too small for selection pressure to overcome the initialization disadvantage within the time budget.</p>
+<p>The log-precision fitness components (w_1·ti + w_2·mono + w_3·rate) sum to at most approximately 0.07 for Leibniz, placing a hard ceiling on viable parsimony: λ_p × 9 &lt; 0.07, so λ_p &lt; 0.008. The baseline operates near but below this ceiling.</p>
+</section>
+<section id="fitness-modifications-cannot-rescue-large-terminal-sets" class="level2">
+<h2 class="anchored" data-anchor-id="fitness-modifications-cannot-rescue-large-terminal-sets">5.5 Fitness Modifications Cannot Rescue Large Terminal Sets</h2>
+<p>We tested seven modifications to the log-precision fitness on the 15-terminal configuration. None achieved reliable discovery.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Modification</th>
+<th>Seeds Found</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Extended checkpoints</td>
+<td>0/5</td>
+<td>Additional T values beyond 10,000</td>
+</tr>
+<tr class="even">
+<td>Large-T penalty w=0.1</td>
+<td>0.2/5</td>
+<td>Penalizes series that plateau before T_max</td>
+</tr>
+<tr class="odd">
+<td>Large-T penalty w=0.5</td>
+<td>0/5</td>
+<td>Penalty too heavy, kills borderline expressions</td>
+</tr>
+<tr class="even">
+<td>Rate consistency</td>
+<td>0/5</td>
+<td>Penalizes deviation from constant bits/decade</td>
+</tr>
+<tr class="odd">
+<td>Pure gradient magnitude</td>
+<td>0/5</td>
+<td>Rewards only information rate, ignores terminal value</td>
+</tr>
+<tr class="even">
+<td>Hybrid scalar×uniformity</td>
+<td>0/5</td>
+<td>Combined rate and uniformity signal</td>
+</tr>
+<tr class="odd">
+<td>Min-component bottleneck</td>
+<td>0/5</td>
+<td>Requires all fitness components above threshold</td>
+</tr>
+</tbody>
+</table>
+<p>The alpha parameter sweep (reducing α from 1.0 to 0.5 in the convergence-aware fitness) produced 0.8/5 on the minimal terminal set, comparable to the baseline. No modification achieved better than 1/5 on 15 terminals.</p>
+<p>The consistent failure confirms the diagnosis: the bottleneck is coverage, not fitness landscape quality. The fitness correctly ranks Leibniz as optimal when Leibniz-equivalent subtrees are present in the population. Presence requires the population to contain the right building blocks, and the probability of assembling them decreases sharply with terminal set size.</p>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1>6. Discussion</h1>
+<section id="second-order-kinetics-connection" class="level2">
+<h2 class="anchored" data-anchor-id="second-order-kinetics-connection">6.1 Second-Order Kinetics Connection</h2>
+<p>Leibniz’s error decays as 1/(2T+1), algebraically 1/T behavior. Plotting 1/error versus T yields a straight line. In chemical kinetics, this is the signature of a second-order reaction: the rate depends on the product of two concentrations, or the square of one.</p>
+<p>The analogy is structural. Each Leibniz term’s correction depends on two interacting quantities: the position k, which determines the magnitude 1/(2k+1), and the alternating sign (-1)^k, which determines the direction. A process depending on only one quantity would exhibit exponential (first-order) convergence. The interaction of two quantities produces 1/T convergence, fundamentally slower but with a distinctive constant-rate signature on a log scale.</p>
+<p>The log-precision fitness measures precision(T) = log₂(2T+1), which grows logarithmically. The rate d(precision)/d(log T) is constant: log₂(10) ≈ 3.32 bits per decade. The constant rate is the integrated form of the second-order rate law. The convergence-aware fitness asks a first-order question: “is error shrinking between checkpoints?” The log-precision fitness asks a second-order question: “is 1/error growing linearly?” Fewer processes satisfy the second-order criterion. Leibniz is the simplest among them in the minimal terminal set.</p>
+<p>We present this as a structural observation recognized after the experiment, not a design input or proven result. The kinetics analogy is productive for intuition. The mathematical correspondence should not be taken beyond the specific decay-rate relationship described here.</p>
+<p>The design intuition and the kinetics mathematics arrived at the same place by independent routes. The fitness was designed to reward constant-rate precision gain along the slowest, most sustained path. The second-order kinetics framework independently characterizes that same convergence structure as a 1/T rate law. That convergence, engineering intuition and mathematical characterization reaching the same criterion, provides stronger grounds for the fitness design than either would alone.</p>
+</section>
+<section id="discovery-fitness-quality-coverage-search-space" class="level2">
+<h2 class="anchored" data-anchor-id="discovery-fitness-quality-coverage-search-space">6.2 Discovery = Fitness Quality × Coverage / Search Space</h2>
+<p>The unifying result across all experiments can be stated as a proportionality: P(discovery) scales with fitness quality times coverage, divided by search space size.</p>
+<p><span class="math display">\[P(\text{discovery}) \propto \frac{\text{fitness quality} \times \text{coverage}}{\text{search space size}}\]</span></p>
+<p>Fitness quality is fixed: the log-precision fitness correctly identifies Leibniz as optimal in all tested configurations. Improving the fitness function, through extended checkpoints, gradient-based selection, or rate consistency penalties, does not improve discovery rates at 15 terminals. The gradient-based selection variant was the most direct expression of the thermodynamic design intuition. It minimized the gradient norm across fitness dimensions to find the most uniformly balanced process in fitness space, the point closest to steady state in all dimensions simultaneously. It produced 0/5 discovery at 15 terminals. That failure confirmed the coverage diagnosis: the fitness landscape was not the bottleneck, the correct building blocks were absent from the population.</p>
+<p>Coverage scales linearly with population size. Doubling the population roughly doubles the initial coverage. Search space scales combinatorially with terminal count: adding one terminal multiplies the number of distinct expressions at each tree size. The space grows much faster than coverage.</p>
+<p>The phase transition occurs where coverage/search_space drops below the threshold needed for the correct building blocks to appear in the initial population and survive long enough for selection to assemble them. The scaling grid confirms this quantitatively: the t=10 boundary holds across all tested population sizes, and larger populations produce only marginal improvements at t=6 and t=8.</p>
+</section>
+<section id="the-confabulation-analogy" class="level2">
+<h2 class="anchored" data-anchor-id="the-confabulation-analogy">6.3 The Confabulation Analogy</h2>
+<p>The project uses wrong-limit attractors as an analogy for confabulation in language models: outputs that appear correct within a finite evaluation horizon but fail under asymptotic scrutiny.</p>
+<p><em>Non-GP approaches.</em> In preliminary experiments with reinforcement learning and ant colony optimization (not reported here), these methods produced outputs that pattern-matched superficially to series convergence behavior but diverged under scrutiny. The failure mode is analogous to confabulation: generating plausible outputs that do not correspond to correct knowledge.</p>
+<p><em>GP with convergence-aware fitness.</em> This produced miscalibration: outputs that approached a plausible value and stopped improving, analogous to a model that gives a confident answer without the capacity for further refinement.</p>
+<p><em>Leibniz.</em> This exhibits calibrated behavior: infinite improvement at a constant rate, never fully confident, always refining. The constant-rate precision gain is the series-domain analog of a well-calibrated probability estimate that updates appropriately with evidence.</p>
+<p>The analogy is imperfect but productive. Both phenomena arise from optimization against finite evaluation: a fitness function or loss function that rewards local plausibility without the capacity to verify global correctness. The remedy in both cases is not better loss functions but better questions, evaluating process properties (sustained improvement, calibration) rather than output properties (proximity to a target).</p>
+</section>
+<section id="implications-for-symbolic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="implications-for-symbolic-regression">6.4 Implications for Symbolic Regression</h2>
+<p>Three findings extend beyond the Leibniz problem, each pointing toward a different aspect of fitness-guided search over infinite-horizon processes.</p>
+<p><em>Process-level fitness design.</em> Standard symbolic regression evaluates pointwise accuracy. For problems involving infinite-horizon behavior, such as convergence, stability, or asymptotic scaling, process-level fitness functions that evaluate behavior across evaluation depths may be necessary. The log-precision approach demonstrated here is one such instantiation.</p>
+<p><em>Wrong-limit attractors are a distinct failure mode.</em> They are not bloat: they are simpler than the correct answer. They are not overfitting: they genuinely converge. They are not fitness function errors: the fitness ranks them correctly when the correct answer is present. They are coverage failures exploiting the evaluation horizon, and they require a different diagnosis and response than the failure modes typically discussed in symbolic regression.</p>
+<p><em>The evaluation horizon trap is fundamental.</em> Any finite evaluation horizon creates exploitable wrong-limit attractors. This constraint applies to any fitness-guided search over infinite-horizon processes, not just GP-based symbolic regression. Extending the horizon shifts the attractor landscape but does not eliminate it.</p>
+</section>
+<section id="design-provenance-and-disciplinary-lens" class="level2">
+<h2 class="anchored" data-anchor-id="design-provenance-and-disciplinary-lens">6.5 Design Provenance and Disciplinary Lens</h2>
+<p>The log-precision fitness was motivated by thinking about entropy in the thermodynamic sense: the second law, the arrow from order to disorder, and the reverse process of reconstructing precision along the slowest sustainable path. The crystallization analogy shaped the design question before any experiments ran. The fitness is not entropy, and it does not measure any thermodynamic quantity. But the thinking that produced it was thermodynamic. The inspiration is honest; the mathematical claim would not be.</p>
+<p>This distinction matters for transfer. A researcher approaching the same problem through information theory would likely design a different fitness: one optimizing pointwise log-error minimization or mutual information. A researcher approaching it through optimization theory might design a Pareto front over accuracy and complexity. The chemical engineering lens produced a process-dynamics question: what is the rate order, and is it constant? That question, not the specific mathematical form of the fitness, is the transferable contribution. Fitness design is a form of domain knowledge encoding, and the domain that matters here is the dynamics of the process being searched for, not the search algorithm that finds it.</p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>7. Conclusion</h1>
+<p>The Leibniz series is discoverable by genetic programming from arithmetic primitives and a log-precision fitness function. The fitness need not mention π, alternating signs, or odd denominators: these emerge as the simplest structure satisfying sustained constant-rate precision gain. Discovery at population 1,000 on the minimal 4-terminal set succeeded in all 1.0/5 trials within 369.9 seconds total.</p>
+<p>Discovery is reliable under constrained search spaces and fails sharply as the search space expands. The scaling grid (t = 4 through t = 20, populations 1,000 through 10,000) places the phase transition boundary between t=8 and t=10 for all tested populations. At t=4, success is reliable. At t=10 and above, no population size up to 10,000 achieves consistent discovery. The anomalous partial recovery at t=15 with pop=10,000 (2/5 seeds) does not contradict this pattern. The anomaly suggests that sufficiently large populations can occasionally maintain the coverage needed to escape wrong-limit attractor basins, but cannot do so reliably.</p>
+<p>The failure is not in the fitness landscape. Leibniz sits at or near the global optimum of the log-precision fitness in all tested configurations. The fitness correctly ranks Leibniz above every wrong-limit attractor when both are present. The question is harder than the answer: whether the search can cover enough of the space for correct building blocks to appear before wrong-limit attractors occupy and hold the population.</p>
+<p>This framing, that discovery is governed by the ratio of coverage to search space rather than by fitness quality, has consequences for symbolic regression on infinite-horizon problems generally. Richer terminal sets, larger search spaces, and more expressive operators all increase the density of exploitable wrong-limit attractors faster than any population increase can compensate. Fitness engineering alone cannot solve the coverage problem.</p>
+<p>The core finding suggests three directions for future work. First, building block initialization: instead of random trees, a pre-pass over the terminal set could identify structurally promising subtrees (oscillating signs, growing denominators) and seed the population with their recombinations. Seeding subtrees is not injecting the answer; it is injecting vocabulary. Second, automated terminal set pruning: a short GP pre-pass could identify which terminals appear in high-fitness expressions, then prune the rest before the full search. This automates the constraint that our experiments show matters most. Third, island migration models: running multiple independent small populations with periodic migration of top individuals could allow successful seeds to share building blocks with unsuccessful ones, addressing the coverage bottleneck directly. Each of these directions attacks the actual bottleneck identified by our experiments: not the fitness landscape, but the initial coverage of correct building blocks in an expanding search space.</p>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

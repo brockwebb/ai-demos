@@ -38,7 +38,7 @@ The convergence-aware fitness rewards expressions whose partial sums approach π
 
 $$\text{fitness}_{\text{conv}} = \text{accuracy} + \alpha \cdot \text{convergence\_bonus} - \lambda_p \cdot \text{nodes}$$
 
-where accuracy = -mean(|S(T) - π/4|) across checkpoints, convergence_bonus = fraction of consecutive checkpoint pairs where error decreases by at least 5%, and nodes is the expression tree size (parsimony pressure). Weights: α = 0.05, λ_p = 0.005.
+where accuracy = -mean(|S(T) - π/4|) across checkpoints, convergence_bonus = fraction of consecutive checkpoint pairs where error decreases by at least 5%, and nodes is the expression tree size (parsimony pressure — λ_p, a size penalty on expression trees). Weights: α = 0.05, λ_p = 0.005.
 
 We label this a "first-order" fitness by analogy to reaction kinetics (Section 6.1): it asks whether error is shrinking, the simplest convergence question. Many processes exhibit shrinking error over some range. The convergence bonus rewards shrinkage across consecutive checkpoint pairs, but any monotonically converging series, regardless of its limit, can score well.
 
