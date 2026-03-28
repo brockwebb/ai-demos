@@ -1,0 +1,56 @@
+---
+title: "Wrong-Limit Attractors: Why Constraining the Search Space Dominates Fitness Engineering for Discovery of Convergent Processes"
+author:
+  - name: Brock Webb
+date: "March 2026"
+thanks: "The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce."
+keywords:
+  - genetic programming
+  - symbolic regression
+  - wrong-limit attractors
+  - convergent series
+  - search space
+  - fitness engineering
+format:
+  pdf:
+    documentclass: article
+    papersize: letter
+    fontsize: 11pt
+    pdf-engine: xelatex
+    geometry:
+      - margin=1in
+    number-sections: true
+    toc: false
+    colorlinks: true
+    linkcolor: "blue"
+    linestretch: 1.25
+    mainfont: "Source Sans Pro"
+    sansfont: "Source Sans Pro"
+    monofont: "Source Code Pro"
+    include-in-header:
+      text: |
+        \usepackage{booktabs}
+        \usepackage{needspace}
+        \usepackage{longtable}
+        \usepackage{array}
+        \renewcommand{\arraystretch}{1.4}
+        \widowpenalty=10000
+        \clubpenalty=10000
+        \usepackage{caption}
+        \captionsetup{justification=raggedright,singlelinecheck=false}
+        \hyphenpenalty=10000
+        \exhyphenpenalty=10000
+        \raggedbottom
+        \usepackage{pdflscape}
+        \usepackage{float}
+        \floatplacement{figure}{htbp}
+        \renewcommand{\floatpagefraction}{0.85}
+        \renewcommand{\topfraction}{0.85}
+        \renewcommand{\textfraction}{0.1}
+  html:
+    toc: false
+    number-sections: false
+bibliography: references.bib
+csl: apa.csl
+link-citations: true
+---
