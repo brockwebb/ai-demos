@@ -32,42 +32,6 @@
   url     = {https://arxiv.org/abs/2305.01582}
 }
 
-@article{Brunton2016SINDy,
-  title   = {Discovering governing equations from data by sparse identification of nonlinear dynamical systems},
-  author  = {Brunton, Steven L and Proctor, Joshua L and Kutz, J Nathan},
-  journal = {Proceedings of the National Academy of Sciences},
-  volume  = {113},
-  number  = {15},
-  pages   = {3932--3937},
-  year    = {2016},
-  doi     = {10.1073/pnas.1517384113}
-}
-
-% ═══════════════════════════════════════════════════════════════
-% SINDy / data-driven discovery follow-ups
-% ═══════════════════════════════════════════════════════════════
-
-@article{Rudy2017DataDriven,
-  title   = {Data-driven discovery of partial differential equations},
-  author  = {Rudy, Samuel H and Brunton, Steven L and Proctor, Joshua L and Kutz, J Nathan},
-  journal = {Science Advances},
-  volume  = {3},
-  number  = {4},
-  pages   = {e1602614},
-  year    = {2017},
-  doi     = {10.1126/sciadv.1602614}
-}
-
-@article{deSilva2020Discovery,
-  title   = {Discovery of physics from data: Universal laws and discrepancies},
-  author  = {de Silva, Brian M and Brunton, Steven L and Clark, Jr, Richard W and others},
-  journal = {Frontiers in Artificial Intelligence},
-  volume  = {3},
-  pages   = {25},
-  year    = {2020},
-  doi     = {10.3389/frai.2020.00025}
-}
-
 % ═══════════════════════════════════════════════════════════════
 % Neural / transformer symbolic regression
 % ═══════════════════════════════════════════════════════════════
@@ -80,45 +44,56 @@
   url     = {https://arxiv.org/abs/2106.14131}
 }
 
+@inproceedings{Li2023GFlowNet,
+  title     = {{GFN-SR}: Symbolic Regression with Generative Flow Networks},
+  author    = {Li, Sida and Marinescu, Ioana and Musslick, Sebastian},
+  booktitle = {NeurIPS 2023 AI for Science Workshop},
+  year      = {2023},
+  url       = {https://arxiv.org/abs/2312.00396}
+}
+
+@inproceedings{Kamienny2023MCTS,
+  title     = {Deep Generative Symbolic Regression with {Monte-Carlo-Tree-Search}},
+  author    = {Kamienny, Pierre-Alexandre and Lample, Guillaume and Lamprier, Sylvain and Virgolin, Marco},
+  booktitle = {Proceedings of the 40th International Conference on Machine Learning (ICML)},
+  pages     = {15655--15668},
+  year      = {2023},
+  publisher = {PMLR}
+}
+
+@inproceedings{Shojaee2023TPSR,
+  title     = {Transformer-based Planning for Symbolic Regression},
+  author    = {Shojaee, Parshin and Meidani, Kazem and Barati Farimani, Amir and Reddy, Chandan},
+  booktitle = {Advances in Neural Information Processing Systems 36 (NeurIPS)},
+  pages     = {45907--45919},
+  year      = {2023}
+}
+
+@article{Jiang2025EGGSR,
+  title   = {{EGG-SR}: Embedding Symbolic Equivalence into Symbolic Regression via Equality Graph},
+  author  = {Jiang, Nan and Wang, Ziyi and Xue, Yexiang},
+  journal = {arXiv preprint arXiv:2511.05849},
+  year    = {2025},
+  url     = {https://arxiv.org/abs/2511.05849}
+}
+
+% ═══════════════════════════════════════════════════════════════
+% Asymptotic SR — adjacent to process-level fitness design
+% ═══════════════════════════════════════════════════════════════
+
+@article{Abdusalamov2023Asymptotic,
+  title   = {Discovering asymptotic expansions for problems in mechanics using symbolic regression},
+  author  = {Abdusalamov, Rasul and Kaplunov, Julius and Itskov, Mikhail},
+  journal = {Mechanics Research Communications},
+  volume  = {133},
+  pages   = {104197},
+  year    = {2023},
+  doi     = {10.1016/j.mechrescom.2023.104197}
+}
+
 % ═══════════════════════════════════════════════════════════════
 % Deceptive landscapes and finite-evaluation problems
 % ═══════════════════════════════════════════════════════════════
-
-@incollection{Keijzer2011ScalingDeceptive,
-  title     = {Improving Symbolic Regression with Affine Arithmetic},
-  author    = {Keijzer, Maarten and others},
-  booktitle = {Genetic Programming Theory and Practice IX},
-  publisher = {Springer},
-  year      = {2011},
-  pages     = {151--167}
-}
-
-@inproceedings{Haghighat2015AvoidingOverfitting,
-  title     = {Avoiding Overfitting in Symbolic Regression Using the First Order Derivative},
-  author    = {Haghighat, Behzad and others},
-  booktitle = {Proceedings of the 2015 Genetic and Evolutionary Computation Conference (GECCO 2015)},
-  year      = {2015},
-  pages     = {1441--1448},
-  publisher = {ACM}
-}
-
-@article{Durasevic2020Fitness,
-  title   = {Fitness Landscape Analysis of Dimensionally-Aware Genetic Programming Featuring {Feynman} Equations},
-  author  = {Durasevic, Marko and Jakobovic, Domagoj and Ribeiro Martins, Marcella Scoczynski and Picek, Stjepan and Wagner, Markus},
-  journal = {arXiv preprint arXiv:2004.12762},
-  year    = {2020},
-  url     = {https://arxiv.org/abs/2004.12762}
-}
-
-@inproceedings{Muldoon2023ErrorCorrelation,
-  title     = {Error and Correlation as Fitness Functions for Scaled Symbolic Regression},
-  author    = {Muldoon, Conor and O'Neill, Michael and Brabazon, Anthony},
-  booktitle = {GECCO 2023 Companion},
-  year      = {2023},
-  pages     = {607--610},
-  publisher = {ACM},
-  doi       = {10.1145/3583133.3590633}
-}
 
 @book{Goldberg1989GA,
   title     = {Genetic Algorithms in Search, Optimization and Machine Learning},
@@ -127,16 +102,78 @@
   year      = {1989}
 }
 
+@inproceedings{Deb1993Deceptive,
+  title     = {Analyzing Deception in Trap Functions},
+  author    = {Deb, Kalyanmoy and Goldberg, David E.},
+  booktitle = {Foundations of Genetic Algorithms},
+  volume    = {2},
+  pages     = {93--108},
+  year      = {1993},
+  publisher = {Morgan Kaufmann}
+}
+
 % ═══════════════════════════════════════════════════════════════
-% GP convergence and scalability
+% Parsimony pressure and population sizing
 % ═══════════════════════════════════════════════════════════════
 
-@article{Langdon2002GPConvergence,
-  title   = {Genetic Programming Convergence},
-  author  = {Langdon, William B.},
-  journal = {Genetic Programming and Evolvable Machines},
-  year    = {2002},
-  note    = {UCL CS technical report, also available at http://www0.cs.ucl.ac.uk/staff/wlangdon/}
+@inproceedings{Poli2008ParsimonyEasy,
+  title     = {Parsimony Pressure Made Easy},
+  author    = {Poli, Riccardo and Langdon, William B. and McPhee, Nicholas Freitag},
+  booktitle = {Proceedings of the 10th Annual Conference on Genetic and Evolutionary Computation (GECCO 2008)},
+  pages     = {1267--1274},
+  year      = {2008},
+  publisher = {ACM},
+  doi       = {10.1145/1389095.1389340}
+}
+
+@article{Soule1998CodeGrowth,
+  title   = {Effects of Code Growth and Parsimony Pressure on Populations in Genetic Programming},
+  author  = {Soule, Terence and Foster, James A.},
+  journal = {Evolutionary Computation},
+  volume  = {6},
+  number  = {4},
+  pages   = {293--309},
+  year    = {1998},
+  doi     = {10.1162/evco.1998.6.4.293}
+}
+
+@article{Sastry2005PopulationSizing,
+  title   = {Population Sizing for Genetic Programming Based Upon Decision Making},
+  author  = {Sastry, Kumara},
+  journal = {arXiv preprint cs/0502020},
+  year    = {2005},
+  url     = {https://arxiv.org/abs/cs/0502020}
+}
+
+% ═══════════════════════════════════════════════════════════════
+% Cross-domain: reward hacking, confabulation, AI safety
+% ═══════════════════════════════════════════════════════════════
+
+@article{Amodei2016ConcreteProblems,
+  title   = {Concrete Problems in {AI} Safety},
+  author  = {Amodei, Dario and Olah, Chris and Steinhardt, Jacob and Christiano, Paul and Schulman, John and Man\'{e}, Dan},
+  journal = {arXiv preprint arXiv:1606.06565},
+  year    = {2016},
+  url     = {https://arxiv.org/abs/1606.06565}
+}
+
+@article{Ji2023Hallucination,
+  title   = {Survey of Hallucination in Natural Language Generation},
+  author  = {Ji, Ziwei and Lee, Nayeon and Frieske, Rita and Yu, Tiezheng and Su, Dan and Xu, Yan and Ishii, Etsuko and Bang, Ye Jin and Madotto, Andrea and Fung, Pascale},
+  journal = {ACM Computing Surveys},
+  volume  = {55},
+  number  = {12},
+  pages   = {248},
+  year    = {2023},
+  doi     = {10.1145/3571730}
+}
+
+@techreport{NIST2024AI600,
+  title       = {Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile},
+  institution = {National Institute of Standards and Technology},
+  number      = {NIST AI 600-1},
+  year        = {2024},
+  doi         = {10.6028/NIST.AI.600-1}
 }
 
 % ═══════════════════════════════════════════════════════════════
@@ -149,12 +186,4 @@
   publisher = {Lulu Enterprises},
   year      = {2008},
   note      = {Freely available at http://www.gp-field-guide.org.uk/}
-}
-
-@inproceedings{LaCasse2022BayesianBloat,
-  title     = {Bayesian Model Selection for Reducing Bloat and Overfitting in Genetic Programming Symbolic Regression},
-  author    = {La Casse, Christopher and others},
-  booktitle = {Proceedings of the Genetic and Evolutionary Computation Conference (GECCO 2022)},
-  year      = {2022},
-  publisher = {ACM}
 }

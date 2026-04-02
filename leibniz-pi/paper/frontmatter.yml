@@ -1,9 +1,9 @@
 ---
-title: "Wrong-Limit Attractors: Why Constraining the Search Space Dominates Fitness Engineering for Discovery of Convergent Processes"
+title: "The Evaluation Horizon Trap: Why Search Space Structure Dominates Fitness Design"
 author:
   - name: Brock Webb
 date: "March 2026"
-thanks: "The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce."
+thanks: "The views expressed are the author's own and do not necessarily represent the views of the U.S. Census Bureau or the U.S. Department of Commerce. AI writing and research tools were used in the preparation of this paper."
 keywords:
   - genetic programming
   - symbolic regression
@@ -24,8 +24,7 @@ format:
     colorlinks: true
     linkcolor: "blue"
     linestretch: 1.25
-    mainfont: "Source Sans Pro"
-    sansfont: "Source Sans Pro"
+    mainfont: "Palatino"
     monofont: "Source Code Pro"
     include-in-header:
       text: |

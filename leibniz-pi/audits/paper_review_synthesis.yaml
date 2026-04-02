@@ -1,0 +1,246 @@
+review_synthesis:
+  file: "paper (all sections)"
+  date: "2026-04-02"
+  pipeline: "AD-020 (dogfood run)"
+  document_type: academic_paper
+
+  # ═══════════════════════════════════════════════════════════════
+  # Clustered findings, ordered by convergence (number of lenses
+  # that flagged each cluster). Each cluster is self-contained.
+  # ═══════════════════════════════════════════════════════════════
+
+  clusters:
+    - id: 1
+      name: "t=15 overstatement in abstract and conclusion"
+      convergence: 4
+      sources: ["Tier 1 CS-01", "Tier 2a Q1", "Tier 2b CWE-01", "Tier 2b OC-01", "Tier 2b OC-02"]
+      summary: >
+        The abstract says 'With 15, none did.' The conclusion says 'With fifteen,
+        none did.' Table 5 shows 2/5 discovery at t=15/pop=10000. The appendix
+        documents 3 total discoveries at t=15 across fitness functions. This is
+        the single most likely point of reviewer rejection.
+      affected_sections: ["00_abstract.md", "07_conclusion.md"]
+      suggested_scope: >
+        Two options. (A) Qualify: 'With 15 terminals at populations up to 5,000,
+        none did. At pop=10,000, a partial recovery (2/5) appeared at t=15 but
+        not at t=10, t=12, or t=20.' (B) Reframe: focus the abstract on the
+        phase transition boundary (t=8 to t=10) rather than the t=15 failure.
+        Option A is more honest; option B is more narrative-clean. Both require
+        updating the abstract and conclusion.
+
+    - id: 2
+      name: "Cross-domain claims (RL, LLM) lack citations"
+      convergence: 3
+      sources: ["Tier 1 CC-01", "Tier 1 CC-02", "Tier 2a Q7", "Tier 3 motivation"]
+      summary: >
+        The introduction asserts that wrong-limit attractors manifest as reward
+        hacking in RL and confabulation in LLMs. These are substantive claims
+        that currently have zero citations. The discussion (6.3) develops the
+        confabulation analogy but remains abstract. The conclusion proposes only
+        GP-specific future directions, missing the opportunity to connect to the
+        broader AI safety community.
+      affected_sections: ["01_introduction.md", "06_discussion.md", "07_conclusion.md"]
+      suggested_scope: >
+        (1) Add 2-3 citations to Introduction paragraph 5: reward hacking
+        (Amodei et al. 2016 or Skalse et al. 2022), confabulation/hallucination
+        (Ji et al. 2023 or Huang et al. 2023), and NIST AI 600-1 for the
+        'confabulation' terminology choice. (2) Add one concrete LLM example
+        to Discussion 6.3. (3) Add one non-GP future direction to the conclusion
+        (e.g., detecting wrong-limit attractors in RL reward learning).
+
+    - id: 3
+      name: "Wrong-limit attractor dominance is overstated relative to evidence"
+      convergence: 3
+      sources: ["Tier 2a Q4", "Tier 2b EWC-01", "Tier 2b EWC-02"]
+      summary: >
+        The paper frames wrong-limit attractors as THE failure mode, but at
+        t=15/pop=1000 (the stress test), 4/5 seeds collapsed to trivial constants
+        and only 1/5 produced a wrong-limit attractor. The strongest evidence for
+        systematic wrong-limit attractor dominance is at t=20/pop=10000 (all 5
+        seeds), but this is relegated to the appendix. The Grandi-Leibniz attractor
+        (A.2.3) is the most mechanistically interesting finding and is also
+        appendix-only. Meanwhile, the population inversion effect (t=8) supports
+        the coverage argument but is not mentioned in the main text.
+      affected_sections: ["05_results.md", "06_discussion.md", "09_appendix_expressions.md"]
+      suggested_scope: >
+        (1) In Section 5.2, clarify that trivial collapse is the more common
+        failure at t=15/pop=1000; wrong-limit attractors dominate at larger
+        populations and terminal counts. (2) Reference the t=20 power-law
+        family from the appendix as the strongest systematic evidence.
+        (3) Consider promoting the Grandi-Leibniz attractor analysis or the
+        population inversion effect into the main text — both are more
+        illuminating than the current stress test presentation.
+
+    - id: 4
+      name: "Evidence map and result reference gaps"
+      convergence: 2
+      sources: ["Tier 1 CR-01 through CR-08", "Tier 1 EM-01 through EM-04"]
+      summary: >
+        8 result references used in the paper are not listed in evidence_map.md.
+        The evidence map's figure inventory says 'TBD' and its table count is
+        stale (lists 5, paper has 8). These are bookkeeping issues that don't
+        affect the paper's content but leave the evidence map incomplete as a
+        provenance document.
+      affected_sections: ["evidence_map.md"]
+      suggested_scope: >
+        (1) Add all 8 missing results to evidence_map.md with provenance.
+        (2) Update figure inventory (remove TBD, add generation scripts).
+        (3) Update table inventory to match current paper (8 tables).
+        Mechanical work, no prose changes needed.
+
+    - id: 5
+      name: "Kinetics analogy scope and placement"
+      convergence: 2
+      sources: ["Tier 2a Q5", "Tier 3 clarity (forward reference)", "Tier 3 narrative (discussion arc)"]
+      summary: >
+        The first-order/second-order labeling is introduced in Methods before
+        the kinetics analogy is developed in Discussion 6.1. This creates a
+        forward reference that may confuse non-GP readers. Separately, the
+        analogy currently explains but does not predict — a reviewer will ask
+        whether it has predictive power for other series structures.
+      affected_sections: ["03_methods.md", "06_discussion.md"]
+      suggested_scope: >
+        Two independent fixes. (1) Either add a brief kinetics primer in Methods
+        (1-2 sentences explaining the analogy before using it) or defer the
+        labels to Discussion. (2) In Discussion 6.1, explicitly scope the analogy:
+        'The parallel is structural; we do not claim the kinetics framework
+        predicts convergence rates for arbitrary series.' This preempts the
+        reviewer question.
+
+    - id: 6
+      name: "Scaling grid needs a figure"
+      convergence: 2
+      sources: ["Tier 3 visual (heatmap)", "Tier 3 visual (separator)"]
+      summary: >
+        The scaling grid (Table 5) is the paper's most important experimental
+        result. It currently exists only as a table. A heatmap visualization
+        would communicate the phase transition pattern instantly. The paper
+        already has 3 figures (precision trajectories, parsimony collapse,
+        second-order kinetics) but none for the central result.
+      affected_sections: ["05_results.md"]
+      suggested_scope: >
+        Generate a heatmap figure for the scaling grid. Color code by discovery
+        rate (0/5 to 5/5). This figure should be Figure 1, ahead of the current
+        Figure 1 (precision trajectories), because the scaling grid result is
+        the paper's primary contribution.
+
+    - id: 7
+      name: "Population scaling argument could be stronger"
+      convergence: 2
+      sources: ["Tier 2a Q3", "Tier 2a Q9", "Tier 2b LG-01"]
+      summary: >
+        The paper tests populations up to 10,000 and concludes that population
+        scaling doesn't help. GP literature routinely uses 100K+. The paper cites
+        Sastry's population-sizing theory but does not compute the predicted
+        population for t=10. Similarly, diversity injection is described but not
+        ablated. Both of these are experiments the paper could do to strengthen
+        its argument from 'we tried and it didn't work' to 'theory predicts
+        it can't work at feasible scales.'
+      affected_sections: ["05_results.md", "06_discussion.md"]
+      suggested_scope: >
+        (1) Compute the Sastry population-sizing estimate for t=10 and report it.
+        If the predicted population is impractically large (>1M), that's a
+        strong argument. (2) Consider whether a diversity injection ablation is
+        feasible. If not, add a sentence explaining why the ablation wasn't
+        performed. (3) If neither computation nor ablation is feasible, add a
+        sentence acknowledging the population range limitation.
+
+    - id: 8
+      name: "Discovery equation rigor"
+      convergence: 2
+      sources: ["Tier 2a Q10", "Tier 2b LG-03"]
+      summary: >
+        Section 6.2 presents P(discovery) ~ fitness_quality * coverage / search_space
+        in an equation block, implying more rigor than the verbal argument provides.
+        No derivation is given. The equation is a useful organizing principle but
+        could be dismissed as hand-waving.
+      affected_sections: ["06_discussion.md"]
+      suggested_scope: >
+        Either (A) derive the proportionality from Sastry's framework (making it
+        a contribution), or (B) present it as a verbal summary ('the scaling grid
+        data are consistent with the proportionality...') without the equation
+        block. Option B is safer for a workshop paper; option A is stronger for
+        a full paper.
+
+  unclustered:
+    - source: "Tier 2a Q2"
+      finding: "Terminal set construction is a single design — no alternative constructions tested (random reals, domain constants)."
+      severity: low-medium
+      note: "A valid reviewer concern but a new experiment. Flag as limitation."
+
+    - source: "Tier 2a Q6"
+      finding: "Discovery criterion (20-term check + sympy + k=100000 verification) is thorough."
+      severity: none
+      note: "Paper handles this well. No action needed."
+
+    - source: "Tier 2a Q8"
+      finding: "Parsimony threshold sensitivity to node-counting convention is not discussed."
+      severity: low
+      note: "Minor gap. Acknowledge in one sentence if space permits."
+
+    - source: "Tier 1 CS-03"
+      finding: "'19 of 20' counting could be clarified (log-precision only vs both fitness functions)."
+      severity: low
+      note: "Add '(log-precision fitness)' parenthetical to the abstract claim."
+
+    - source: "Tier 1 TM-01"
+      finding: "Shannon self-information mention in Methods 3.3.2 could confuse despite disclaimer."
+      severity: low
+      note: "The disclaimer is adequate. No change needed unless a reviewer flags it."
+
+    - source: "Tier 3 narrative (abstract)"
+      finding: "Abstract introduces 'wrong-limit attractors' before reader has intuition."
+      severity: low
+      note: "The current structure works. The term is defined in the next sentence."
+
+    - source: "Tier 3 narrative (discussion roadmap)"
+      finding: "Discussion lacks a 1-2 sentence roadmap connecting its four subsections."
+      severity: low
+      note: "Would improve readability. Quick fix."
+
+    - source: "Tier 3 clarity (deceptive attractors)"
+      finding: "Background contrasts wrong-limit vs deceptive attractors without defining the latter."
+      severity: low
+      note: "Add one sentence primer on deceptive attractors."
+
+    - source: "Tier 3 clarity (fitness weights)"
+      finding: "Log-precision fitness weights (w1=0.02, w2=0.04, w3=0.03) appear without justification."
+      severity: low
+      note: "Add one sentence on weight provenance."
+
+  # ═══════════════════════════════════════════════════════════════
+  # Calibration Questions (meta — for AD-020 itself)
+  # ═══════════════════════════════════════════════════════════════
+
+  calibration:
+    most_useful_gate: >
+      Tier 2a (Reviewer Stress Test). It produced the highest-impact findings:
+      the t=15 overstatement (Q1), the population scaling gap (Q3), the wrong-limit
+      attractor dominance question (Q4), and the cross-domain evidence gap (Q7).
+      These are the issues most likely to cause rejection. The stress test format
+      forces the auditor to think adversarially, which surfaces issues that the
+      content audit (Tier 1) misses because the content audit checks facts, not
+      arguments.
+
+    most_noise: >
+      Tier 1 automated tools (prose_qc.py). The 47 heuristic passive voice flags
+      are almost entirely false positives in an academic paper where passive voice
+      is standard in methods and background sections. The tool is calibrated for
+      general prose, not academic writing. For `academic_paper` document type,
+      passive voice heuristics should be suppressed in Background and Methods sections.
+
+    calibration_feel: >
+      The `academic_paper` calibration felt right for Tiers 2a and 2b. Tier 3 was
+      slightly over-broad — the [motivation] lens produced useful findings, but the
+      [narrative] lens mostly confirmed that the paper structure works. For a paper
+      this mature, the narrative lens could be compressed to 'does each section earn
+      its place?' rather than a full arc analysis. The [visual] lens was productive
+      because it identified the missing scaling grid heatmap, which is a clear gap.
+
+    clustering_useful: >
+      Yes. Clustering by topic rather than by gate made the synthesis actionable.
+      The t=15 overstatement cluster (Cluster 1) draws from four different gates,
+      and grouping them reveals that this is one issue, not four. Without clustering,
+      the author would encounter CS-01, Q1, CWE-01, and OC-01 as separate items
+      and might not realize they're all the same fix. The convergence count (4 gates
+      flagged it) correctly identifies it as the top priority.

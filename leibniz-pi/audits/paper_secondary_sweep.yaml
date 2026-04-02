@@ -1,0 +1,158 @@
+secondary_sweep:
+  file: "paper (all sections)"
+  date: "2026-04-02"
+
+  findings:
+    # ─── NARRATIVE ───
+
+    - lens: "narrative"
+      section: "00_abstract.md"
+      finding: >
+        The abstract opens with a general principle, narrows to the experiment, and
+        reports results — strong structure. However, it front-loads the concept
+        ('wrong-limit attractors') before the reader has any intuition for what
+        they are. The first sentence ('Finite evaluation of an infinite-horizon
+        process cannot distinguish a correct answer from one that merely appears
+        correct') is excellent and should remain the hook. The term 'wrong-limit
+        attractors' could be deferred to the second sentence.
+      suggested_scope: "Minor reorder within abstract paragraph 1. Low priority."
+
+    - lens: "narrative"
+      section: "01_introduction.md"
+      finding: >
+        The introduction has a strong rhetorical structure: general principle ->
+        definition -> concrete case -> results -> implications -> roadmap.
+        Paragraph 5 (RL/LLM analogies) is the weakest — it asserts cross-domain
+        relevance without citations (flagged in Tier 1) and reads as a list of
+        claims rather than an argument. This paragraph is doing heavy lifting
+        for the paper's broader relevance pitch but lacks the evidential
+        grounding the rest of the introduction provides.
+      suggested_scope: "Add 2-3 citations to paragraph 5. Consider restructuring as a single focused paragraph on the common structure, rather than listing three domains."
+
+    - lens: "narrative"
+      section: "04_experimental_design.md"
+      finding: >
+        Section 4.1 (injection confound) is a narrative strength — the 'we made
+        this error, caught it, and corrected it' framing builds credibility.
+        The parallel to Hillar & Sommer is well-placed. This section earns its
+        position.
+      suggested_scope: "No change needed. This is working."
+
+    - lens: "narrative"
+      section: "06_discussion.md"
+      finding: >
+        Discussion has four subsections but no explicit arc connecting them.
+        6.1 (kinetics) -> 6.2 (discovery equation) -> 6.3 (confabulation) -> 6.4
+        (symbolic regression implications). The reader needs a sentence at the
+        start explaining: 'We first analyze the convergence structure that makes
+        Leibniz detectable (6.1), then generalize the discovery mechanism (6.2),
+        draw the analogy to broader AI (6.3), and identify implications for the
+        symbolic regression community (6.4).'
+      suggested_scope: "Add 1-2 sentence roadmap at the start of Discussion."
+
+    # ─── CLARITY ───
+
+    - lens: "clarity"
+      section: "03_methods.md"
+      finding: >
+        Section 3.3.2 introduces the log-precision fitness with a careful
+        mathematical presentation, but the weights (w1=0.02, w2=0.04, w3=0.03)
+        appear without justification. Why these values? Were they tuned? The
+        threshold sensitivity analysis (Section 5.6) covers MIN_GAIN but not
+        the weights. A reader outside GP would wonder whether the results
+        depend on these specific weight choices.
+      suggested_scope: "Add one sentence explaining weight provenance (tuned? inherited from prior work? ablated?)."
+
+    - lens: "clarity"
+      section: "03_methods.md"
+      finding: >
+        The 'first-order / second-order' kinetics labeling is introduced in
+        Methods (3.3.1 and 3.3.2) before the kinetics analogy is developed in
+        Discussion (6.1). This creates a forward reference that may confuse
+        readers who are not already familiar with reaction kinetics. The labels
+        are used structurally ('first-order question,' 'second-order question')
+        without the reader having the framework to interpret them.
+      suggested_scope: "Either move the kinetics framing earlier (a paragraph in Methods explaining the analogy) or defer the labeling to Discussion and use neutral language in Methods."
+
+    - lens: "clarity"
+      section: "05_results.md"
+      finding: >
+        Section 5.3 (scaling boundary) presents the anomalous t=15/pop=10000
+        result but says 'We do not have a mechanistic account of this
+        non-monotonicity.' This honesty is good, but a reviewer will want at
+        least a hypothesis. The appendix offers one (lucky initialization), but
+        this is not surfaced in the main text.
+      suggested_scope: "Add one sentence from the appendix analysis: 'The two successful seeds are consistent with lucky initialization rather than systematic search (Appendix A.4).'"
+
+    - lens: "clarity"
+      section: "02_background.md"
+      finding: >
+        The distinction between wrong-limit attractors and deceptive attractors
+        (Goldberg, Deb) is important and well-stated: 'Deceptive attractors are
+        defined by misleading fitness gradients in genotype space. Wrong-limit
+        attractors are defined by indistinguishable behavior within a finite
+        evaluation horizon.' However, this distinction relies on the reader
+        knowing what deceptive attractors are. A one-sentence primer on
+        deceptive attractors before the contrast would help non-GP readers.
+      suggested_scope: "Add one sentence defining deceptive attractors before contrasting with wrong-limit attractors."
+
+    # ─── VISUAL ───
+
+    - lens: "visual"
+      section: "05_results.md"
+      finding: >
+        The scaling grid (Table 5) is the central experimental result. A heatmap
+        visualization of the 7x4 grid would communicate the phase transition more
+        immediately than the table. The figures referenced in the text (fig2, fig3)
+        cover precision trajectories and parsimony collapse, but there is no figure
+        for the scaling grid itself.
+      suggested_scope: "Add a heatmap figure for the scaling grid (Table 5). This is the paper's most important result and deserves a figure."
+
+    - lens: "visual"
+      section: "05_results.md"
+      finding: >
+        Table 5 uses Seldon result references ({{result:...}}) which will render
+        as numbers. The table is 7 rows x 5 columns and will be compact when
+        rendered. However, the phase transition pattern (all success -> all failure)
+        would be more visually obvious with color coding or a bold separator between
+        t=8 and t=10 rows.
+      suggested_scope: "Consider adding a horizontal rule or visual separator in Table 5 between t=8 and t=10 rows to highlight the phase transition boundary."
+
+    # ─── MOTIVATION ───
+
+    - lens: "motivation"
+      section: "01_introduction.md"
+      finding: >
+        The introduction makes the cross-domain connection (RL, LLMs, symbolic
+        regression) in paragraph 5, but the framing is symmetric — all three
+        are listed equally. The strongest connection is to symbolic regression
+        (the paper's own domain). The LLM/RL connections are the most novel
+        and broadest-impact, but they receive the least development. A reviewer
+        outside GP will be drawn by the LLM connection and disappointed by its
+        thinness.
+      suggested_scope: "In the introduction, either develop the LLM/RL connection with citations and a concrete example, or reduce its prominence and let the Discussion (6.3) carry that weight."
+
+    - lens: "motivation"
+      section: "06_discussion.md"
+      finding: >
+        Section 6.3 (confabulation analogy) develops the LLM connection but
+        remains abstract. It would benefit from a concrete example: 'An LLM
+        asked to summarize a paper may produce a plausible summary that
+        matches the paper's structure and tone within the context window but
+        introduces facts not present in the source — a wrong-limit attractor
+        in text space.' This kind of concrete mapping would make the analogy
+        tangible for the AI safety audience.
+      suggested_scope: "Add one concrete LLM confabulation example mapped to the wrong-limit attractor framework. Keep it brief (2-3 sentences)."
+
+    - lens: "motivation"
+      section: "07_conclusion.md"
+      finding: >
+        The conclusion's three future directions (building block initialization,
+        terminal pruning, island migration) are all GP-specific. The paper's
+        broadest contribution — the wrong-limit attractor concept as a cross-domain
+        phenomenon — gets one paragraph connecting to LLMs and then the conclusion
+        pivots back to GP techniques. If the paper wants to reach beyond GP,
+        the conclusion should include at least one non-GP future direction
+        (e.g., detecting wrong-limit attractors in RL reward learning, or
+        designing LLM evaluation protocols that test for convergence behavior).
+      suggested_scope: "Add one non-GP future direction to the conclusion. This signals to the broader AI community that the contribution extends beyond evolutionary computation."

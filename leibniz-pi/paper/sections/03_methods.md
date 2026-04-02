@@ -1,6 +1,6 @@
-# 3. Methods
+# Methods
 
-## 3.1 Expression Representation
+## Expression Representation
 
 Candidate series are represented as expression trees over a set of operators and terminals. Each tree defines a function f(k) that maps the integer index k to a term value. The partial sum at depth T is:
 
@@ -18,7 +18,7 @@ With the minimal terminal set {k, 1, -1, 2}, these are essentially the only buil
 
 With 15 terminals, the picture changes. Oscillation can be constructed from (-1)^k, (-3)^k, or various other bases. Denominators can be any polynomial or rational function of k. The number of structurally distinct well-formed expressions grows combinatorially, and most of them are wrong-limit attractors.
 
-## 3.2 Evolutionary Search
+## Evolutionary Search
 
 We use standard GP with ramped half-and-half initialization (depths 2–5), tournament selection (k=7), subtree crossover (P=0.70), subtree mutation (P=0.20), reproduction (P=0.10), and elitism (top 5 preserved). Population sizes range from 1,000 to 10,000 depending on the experiment. Time budgets vary by experiment (Section 4.2).
 
@@ -30,9 +30,9 @@ No domain-specific operators (such as "alternating sign" or "odd number generato
 
 *Discovery criterion.* An expression counts as a discovery if, for each k = 0, 1, ..., 19, the candidate term f(k) matches the precomputed Leibniz value (-1)^k/(2k+1) to within 10^-6 absolute error. The tolerance accommodates floating-point arithmetic. The question is whether the expression produces the same term sequence as Leibniz, not whether it achieves a fitness threshold. This criterion is applied post-hoc after each run completes, independent of the fitness score.
 
-## 3.3 Fitness Functions
+## Fitness Functions
 
-### 3.3.1 Convergence-Aware Fitness (First-Order)
+### Convergence-Aware Fitness (First-Order)
 
 The convergence-aware fitness rewards expressions whose partial sums approach π/4 with decreasing error at successive evaluation checkpoints T ∈ {10, 50, 200, 1000, 5000}.
 
@@ -40,11 +40,11 @@ $$\text{fitness}_{\text{conv}} = \text{accuracy} + \alpha \cdot \text{convergenc
 
 where accuracy = -mean(|S(T) - π/4|) across checkpoints, convergence_bonus = fraction of consecutive checkpoint pairs where error decreases by at least 5%, and nodes is the expression tree size (parsimony pressure, λ_p, a size penalty on expression trees). Weights: α = 0.05, λ_p = 0.005.
 
-We label this a "first-order" fitness by analogy to reaction kinetics (Section 6.1): it asks whether error is shrinking, the simplest convergence question. Many processes exhibit shrinking error over some range. The convergence bonus rewards shrinkage across consecutive checkpoint pairs, but any monotonically converging series, regardless of its limit, can score well.
+We label this a "first-order" fitness by analogy to chemical reaction kinetics: first-order asks whether error is shrinking, second-order asks whether the rate of precision gain is sustained across scales. Section 6.1 develops this parallel. The label reflects the simplest convergence question. Many processes exhibit shrinking error over some range. The convergence bonus rewards shrinkage across consecutive checkpoint pairs, but any monotonically converging series, regardless of its limit, can score well.
 
-### 3.3.2 Log-Precision Fitness (Second-Order)
+### Log-Precision Fitness (Second-Order)
 
-The log-precision fitness evaluates partial sums at 11 checkpoints spanning three decades: T ∈ {5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000}. The denser checkpoint set (compared to the five checkpoints used by the convergence-aware fitness) provides finer-grained measurement of precision gain rate and extends the evaluation horizon to T = 10,000. The fitness measures precision in bits:
+The log-precision fitness evaluates partial sums at 11 checkpoints spanning three decades: T ∈ {5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000}. The denser checkpoint set (compared to the five checkpoints used by the convergence-aware fitness) provides finer-grained measurement of precision gain rate and extends the evaluation horizon to T = 10,000. The specific checkpoint values influence which attractors are detectable. An attractor that matches the target at most checkpoints but diverges at others can appear competitive (Appendix A.2.3). The fitness measures precision in bits:
 
 $$\text{prec}(T) = -\log_2 |S(T) - \pi/4|$$
 
@@ -54,13 +54,11 @@ The fitness combines three terms:
 
 $$\text{fitness}_{\text{prec}} = w_1 \frac{\text{prec}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}$$
 
-where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005.
-
-The design came from a chemical engineering perspective on process dynamics. The guiding analogy was crystallization: perfect order reconstructed from disorder along the slowest, most sustained path. Each step adds a small, constant increment of order. Leibniz does the same: each term adds a constant increment of precision about π/4, forever, at a rate that never accelerates or decelerates. The design question was not "which series converges fastest?" but "which series reduces uncertainty at the most constant rate?" That question led to measuring precision on a log scale and rewarding constant gain per decade. We later observed that -log₂(|error|) has the same mathematical structure as the integrated form of a second-order rate law. This connection is discussed in Section 6.1.
+where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. The 0.5 bit gain threshold is calibrated to Leibniz's natural gain rate (see Section 5.6). Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005. These weights were set by hand to balance the three fitness terms; Section 5.6 tests sensitivity to the monotonicity threshold but not to the weights themselves.
 
 By the same kinetics analogy, this asks a "second-order" question: *is precision gain sustained at a constant rate across scales?* Leibniz gains log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade. On a log-log plot, this is a straight line. The constant rate is the signature of second-order kinetics (Section 6.1). Fewer processes satisfy this criterion than satisfy first-order error shrinkage.
 
-### 3.3.3 Why the Second-Order Question Is More Selective
+### Why the Second-Order Question Is More Selective
 
 Many series exhibit decreasing error. Rational functions like 5/((6+4k)(k-2)) converge monotonically to a finite limit and score well on the convergence-aware fitness. Their precision gain rate is not constant across scales: it accelerates as the series approaches its limit, then plateaus.
 

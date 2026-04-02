@@ -1,0 +1,204 @@
+content_audit:
+  file: "paper (all sections)"
+  document_type: academic_paper
+  date: "2026-04-02"
+  automated_tool_results:
+    check_glossary: "No banned synonym violations. 4 unused glossary headings (Design provenance, First-order/second-order, Parsimony pressure (lambda_p), Precision (bits)) — concepts are used in text but exact heading strings do not appear. Acceptable per glossary rules (shorthand permitted after first mention)."
+    prose_qc: "1 Tier 2 (single-sentence paragraph in Introduction line 11), 47 heuristic flags (passive voice, ambiguous pronouns), 0 Tier 3. Passive voice flags are predominantly in Background and Experimental Design where passive is appropriate for describing prior work and protocol."
+
+  # ═══════════════════════════════════════════════════════════════
+  # A. Result Reference Coverage
+  # ═══════════════════════════════════════════════════════════════
+
+  result_references_missing_from_evidence_map:
+    - id: CR-01
+      reference: "leibniz_prec_t5"
+      used_in: "03_methods.md (Section 3.3.2)"
+      severity: medium
+      note: "Used as Leibniz precision at T=5. Not listed in evidence_map.md. Add to evidence map with provenance."
+
+    - id: CR-02
+      reference: "gp_extended_t10_p5000_1_5"
+      used_in: "04_experimental_design.md (Section 4.2), 05_results.md (Section 5.5)"
+      severity: medium
+      note: "Extended-time result (1/5 seeds at t=10, pop=5000, 7200s). Not in evidence map. Add with provenance."
+
+    - id: CR-03
+      reference: "threshold_mingain_0.1_t4"
+      used_in: "05_results.md (Section 5.6)"
+      severity: medium
+      note: "Threshold sensitivity sweep result. Not in evidence map."
+
+    - id: CR-04
+      reference: "threshold_mingain_1.0_t4"
+      used_in: "05_results.md (Section 5.6)"
+      severity: medium
+      note: "Threshold sensitivity sweep result. Not in evidence map."
+
+    - id: CR-05
+      reference: "threshold_mingain_2.0_t4"
+      used_in: "05_results.md (Section 5.6)"
+      severity: medium
+      note: "Threshold sensitivity sweep result. Not in evidence map."
+
+    - id: CR-06
+      reference: "threshold_mingain_0.1_t6"
+      used_in: "05_results.md (Section 5.6)"
+      severity: medium
+      note: "Threshold sensitivity at phase transition boundary. Not in evidence map."
+
+    - id: CR-07
+      reference: "grandi_leibniz_ti_t5_0_07"
+      used_in: "09_appendix_expressions.md (Section A.2.3)"
+      severity: low
+      note: "Grandi-Leibniz attractor precision at T=5. Not in evidence map. Appendix-only usage."
+
+    - id: CR-08
+      reference: "grandi_leibniz_mean_rate_4_61"
+      used_in: "09_appendix_expressions.md (Section A.2.3)"
+      severity: low
+      note: "Grandi-Leibniz attractor mean rate. Not in evidence map. Appendix-only usage."
+
+  # ═══════════════════════════════════════════════════════════════
+  # B. Cross-Section Consistency
+  # ═══════════════════════════════════════════════════════════════
+
+  cross_section_issues:
+    - id: CS-01
+      severity: high
+      sections: ["00_abstract.md", "07_conclusion.md", "05_results.md"]
+      issue: "Abstract and Conclusion overstate failure at t=15"
+      detail: >
+        Abstract: 'With 15, none did.' Conclusion: 'With fifteen, none did.'
+        But Table 5 (Section 5.3) shows 2/5 discovery at t=15/pop=10000, and Section 5.3
+        explicitly discusses this anomalous partial recovery. The appendix documents 3 total
+        Leibniz discoveries at t=15 (1 convergence-aware at pop=5000, 2 log-precision at pop=10000).
+        The abstract and conclusion are factually incorrect as written. They should say
+        'With 15 at standard populations, none did' or acknowledge the t=15/pop=10000 anomaly.
+
+    - id: CS-02
+      severity: low
+      sections: ["03_methods.md", "05_results.md"]
+      issue: "Section 5.6 cross-reference is fragile"
+      detail: >
+        Methods 3.3.2 says 'see Section 5.6' for threshold calibration. Section numbering in
+        05_results.md uses ## headings without explicit numbers. The threshold sensitivity
+        content is the 6th subsection, so '5.6' is correct by counting, but this depends on
+        the Quarto renderer assigning section numbers in order. Not wrong, but brittle.
+
+    - id: CS-03
+      severity: low
+      sections: ["00_abstract.md", "01_introduction.md", "05_results.md"]
+      issue: "'19 of 20 seeds' aggregation should be explicit"
+      detail: >
+        Abstract and Introduction state '19 of 20 seeds discovered Leibniz.' This is correct
+        (log-precision scaling grid at t=4: 5+4+5+5=19 across 4 population sizes). But the
+        appendix reports '28 of 30 seeds (93%)' at t=4 including both fitness functions. A
+        reviewer might wonder why the numbers differ. Consider adding '(log-precision fitness)'
+        to the 19/20 claim in the abstract, or explaining the counting in a footnote.
+
+  # ═══════════════════════════════════════════════════════════════
+  # C. Citation Coverage
+  # ═══════════════════════════════════════════════════════════════
+
+  uncited_claims:
+    - id: CC-01
+      severity: high
+      section: "01_introduction.md"
+      line: 23
+      claim: "In reinforcement learning, policies optimized over finite episodes can exploit the reward structure within the evaluation horizon without learning genuinely reliable behavior."
+      classification: fact
+      note: "Core claim connecting wrong-limit attractors to RL reward hacking. Needs at least one citation. Amodei et al. (2016) 'Concrete Problems in AI Safety' or Skalse et al. (2022) 'Defining and Characterizing Reward Hacking' would fit."
+
+    - id: CC-02
+      severity: high
+      section: "01_introduction.md"
+      line: 23
+      claim: "In large language models, training against finite context windows creates the conditions for confabulation."
+      classification: judgment
+      note: "Substantive claim about LLM confabulation mechanism. Needs citation. Ji et al. (2023) 'Survey of Hallucination in Natural Language Generation' or Huang et al. (2023) 'A Survey on Hallucination in Large Language Models' would be appropriate. NIST AI 600-1 (mentioned in glossary for 'confabulation' terminology) should also be formally cited here."
+
+    - id: CC-03
+      severity: medium
+      section: "00_abstract.md"
+      line: 1
+      claim: "in reinforcement learning as reward hacking, in language models as confabulation, in symbolic regression as spurious convergence"
+      classification: judgment
+      note: "Abstract makes the cross-domain connection without citations. Acceptable in abstract, but the Introduction version (CC-01, CC-02) needs support."
+
+    - id: CC-04
+      severity: medium
+      section: "06_discussion.md"
+      line: 29
+      claim: "Preliminary experiments with reinforcement learning and ant colony optimization (not reported here) produced outputs that pattern-matched to convergence behavior but diverged under extended evaluation"
+      classification: fact
+      note: "Claims about unreported experiments. Acceptable as authored claim, but a footnote or supplementary reference to the EDA/ directory would strengthen provenance."
+
+    - id: CC-05
+      severity: low
+      section: "07_conclusion.md"
+      line: 7
+      claim: "A specific prompt constrains an LLM's search space, fewer plausible-looking wrong answers survive the completion process."
+      classification: conjecture
+      note: "Analogical claim about prompt engineering. No citation. Acceptable as speculative in a conclusion, but a reviewer may push back."
+
+  # ═══════════════════════════════════════════════════════════════
+  # D. Terminology
+  # ═══════════════════════════════════════════════════════════════
+
+  terminology_issues:
+    - id: TM-01
+      severity: low
+      section: "03_methods.md"
+      line: 47
+      issue: "Methods uses 'information' and 'self-information' when discussing the log-precision fitness"
+      detail: >
+        The text carefully disclaims the Shannon connection: 'it is not entropy in the
+        information-theoretic sense.' But the variable name 'prec(T)' is preceded by a
+        paragraph describing '-log2(|error|)' as having 'the same mathematical form as
+        Shannon's self-information.' The glossary bans 'information-theoretic fitness.'
+        The current phrasing is technically correct but a reviewer might flag the Shannon
+        mention as confusing given the explicit ban on information-theoretic framing.
+
+    - id: TM-02
+      severity: low
+      section: "07_conclusion.md"
+      line: 5
+      issue: "Conclusion uses 'regularization' as an analogy for parsimony pressure"
+      detail: >
+        'Parsimony pressure, the evolutionary equivalent of regularization' — the glossary
+        does not ban this analogy, and it is useful for the ML audience. No action needed,
+        but flagging for awareness.
+
+  # ═══════════════════════════════════════════════════════════════
+  # E. Evidence Map Completeness
+  # ═══════════════════════════════════════════════════════════════
+
+  evidence_map_issues:
+    - id: EM-01
+      severity: medium
+      issue: "Evidence map 'Key Figures' section still shows 'TBD' for Generated By column"
+      detail: "All four key figures have 'TBD' in the Generated By column. If figures exist (fig2, fig3, fig4 are referenced in the text), update the evidence map with the actual generation scripts."
+
+    - id: EM-02
+      severity: medium
+      issue: "Evidence map 'Key Tables' section numbering is stale"
+      detail: >
+        Evidence map lists Tables 1-5 but the paper now has Tables 1-8 (operator set,
+        terminal construction, discovery rates, structural variants, scaling grid,
+        parsimony sweep, fitness modifications, threshold sensitivity). Update the
+        evidence map table inventory.
+
+    - id: EM-03
+      severity: medium
+      issue: "8 result references in paper not listed in evidence map"
+      detail: "See result_references_missing_from_evidence_map above. All 8 should be added with provenance to maintain the evidence map as a complete inventory."
+
+    - id: EM-04
+      severity: low
+      issue: "Population inversion effect documented only in appendix"
+      detail: >
+        Appendix A (t=8 section) introduces 'population inversion effect' — larger populations
+        find strong attractors faster, hurting discovery. This is a substantive finding not
+        mentioned in the main text (Section 5 or 6). Consider whether it belongs in the
+        evidence map and/or main discussion.

@@ -1,0 +1,163 @@
+argument_check:
+  file: "paper (all sections)"
+  date: "2026-04-02"
+
+  # ═══════════════════════════════════════════════════════════════
+  # Claims without adequate evidence
+  # ═══════════════════════════════════════════════════════════════
+
+  claims_without_evidence:
+    - id: CWE-01
+      claim: "With 15, none did"
+      sections: ["00_abstract.md", "07_conclusion.md"]
+      issue: >
+        Factually contradicted by Table 5 (2/5 at t=15/pop=10000) and appendix
+        (3 total discoveries at t=15). This is not a missing-evidence problem;
+        it is a claim that conflicts with the paper's own evidence.
+
+    - id: CWE-02
+      claim: "In reinforcement learning, policies optimized over finite episodes can exploit the reward structure"
+      sections: ["01_introduction.md"]
+      issue: "No citation. Cross-domain claim requires external support."
+
+    - id: CWE-03
+      claim: "In large language models, training against finite context windows creates the conditions for confabulation"
+      sections: ["01_introduction.md"]
+      issue: "No citation. The causal mechanism (finite context windows -> confabulation) is stated as fact but is the paper's own framing, not established literature."
+
+    - id: CWE-04
+      claim: "A specific prompt constrains an LLM's search space"
+      sections: ["07_conclusion.md"]
+      issue: "Speculative analogy stated without qualification or citation. Minor — in conclusion — but could draw pushback."
+
+  # ═══════════════════════════════════════════════════════════════
+  # Evidence without claims (findings not integrated into argument)
+  # ═══════════════════════════════════════════════════════════════
+
+  evidence_without_claims:
+    - id: EWC-01
+      evidence: "Population inversion effect at t=8"
+      location: "09_appendix_expressions.md (t=8 section)"
+      issue: >
+        The appendix documents that at t=8, pop=10000 finds 0/5 Leibniz while
+        smaller populations each find 1/5. The interpretation — 'larger populations
+        find strong attractors faster' — is substantive and directly supports the
+        coverage argument. Not mentioned in main text.
+
+    - id: EWC-02
+      evidence: "Grandi-Leibniz attractor (Section A.2.3)"
+      location: "09_appendix_expressions.md"
+      issue: >
+        Detailed analysis of how the Grandi-Leibniz attractor exploits checkpoint
+        parity (10/11 even checkpoints). This is the most direct demonstration of
+        the evaluation horizon trap's mechanism. Not referenced from main text.
+        The finding that a different checkpoint grid (more odd values) would
+        immediately detect the attractor has design implications.
+
+    - id: EWC-03
+      evidence: "Convergence-aware fitness discovers at t=10 and t=15 (seeds 7, 137)"
+      location: "09_appendix_expressions.md (t>=10 section)"
+      issue: >
+        The appendix documents convergence-aware fitness succeeding where
+        log-precision fails at t=10/pop=5000 (seed 7) and t=15/pop=5000 (seed 137).
+        Table 5 only shows log-precision results. The convergence-aware results
+        at large terminal sets are not discussed in the main text.
+
+  # ═══════════════════════════════════════════════════════════════
+  # Logical gaps (evidence does not fully support claim)
+  # ═══════════════════════════════════════════════════════════════
+
+  logical_gaps:
+    - id: LG-01
+      claim: "The bottleneck is coverage, not fitness landscape quality"
+      evidence: "7 fitness modifications all fail at t=15"
+      gap: >
+        The argument is: we tried 7 modifications and none worked, therefore fitness
+        isn't the bottleneck. This is inductive, not deductive. A reviewer could argue
+        that the 7 modifications are all variations on the same theme (threshold/weight
+        adjustments) and that a fundamentally different fitness approach (e.g.,
+        multi-objective Pareto, novelty search, semantic fitness) might succeed.
+        The paper should acknowledge this limitation explicitly.
+      severity: medium
+
+    - id: LG-02
+      claim: "The evaluation horizon trap is a structural property of any finite evaluation of infinite-horizon processes"
+      evidence: "One GP experiment on one target series"
+      gap: >
+        The claim is broader than the evidence. The paper demonstrates the trap for
+        GP searching for Leibniz. The structural argument (Section 2.4) is sound in
+        principle, but the generalization to 'any finite evaluation of infinite-horizon
+        processes' rests on the structural argument, not on experimental demonstration.
+        The paper should distinguish between what is demonstrated and what is argued.
+      severity: medium
+
+    - id: LG-03
+      claim: "P(discovery) ~ fitness_quality * coverage / search_space"
+      evidence: "Scaling grid results"
+      gap: >
+        Presented with an equation but no derivation. The scaling grid shows discovery
+        dropping as terminal count increases, which is consistent with the proportionality.
+        But consistency is not derivation. The equation implies quantitative predictive
+        power (e.g., given coverage and search space size, predict discovery probability)
+        that is not demonstrated.
+      severity: low
+
+  # ═══════════════════════════════════════════════════════════════
+  # Overstated claims
+  # ═══════════════════════════════════════════════════════════════
+
+  overstated_claims:
+    - id: OC-01
+      claim: "With 15, none did"
+      actual: "0/5 at pop<=5000 for log-precision; 2/5 at pop=10000 for log-precision; 1/5 at pop=5000 for convergence-aware"
+      sections: ["00_abstract.md", "07_conclusion.md"]
+      severity: high
+      note: "Same as CWE-01. The most important issue in the paper."
+
+    - id: OC-02
+      claim: "No amount of fitness engineering, computation time, or population scaling compensates"
+      actual: "Population scaling to 10,000 achieved 2/5 at t=15 (anomalous but real)"
+      sections: ["00_abstract.md"]
+      severity: medium
+      note: "The abstract's 'no amount' is contradicted by the pop=10000 result at t=15."
+
+    - id: OC-03
+      claim: "wrong-limit attractors [...] Cannot be eliminated by fitness engineering"
+      actual: "Wrong-limit attractors are eliminated when coverage is sufficient (t<=8). The claim is about elimination at large terminal counts."
+      sections: ["glossary.md"]
+      severity: low
+      note: "Glossary definition is slightly imprecise. The claim should be 'cannot be eliminated by fitness engineering alone when coverage is insufficient.'"
+
+  # ═══════════════════════════════════════════════════════════════
+  # Cross-section consistency
+  # ═══════════════════════════════════════════════════════════════
+
+  cross_section_inconsistencies:
+    - id: XS-01
+      sections: ["00_abstract.md", "01_introduction.md"]
+      issue: >
+        Abstract: 'Two fitness functions evaluate convergence across depths rather
+        than pointwise accuracy.' Introduction: 'We develop two fitness functions that
+        evaluate convergence behavior across evaluation depths rather than pointwise
+        accuracy, motivated by an analogy to reaction kinetics developed in Section 6.1.'
+        These are consistent. No issue.
+
+    - id: XS-02
+      sections: ["00_abstract.md", "07_conclusion.md"]
+      issue: >
+        Abstract mentions 'Seven fitness modifications, extended time, and 10x population
+        increases all failed.' Conclusion mentions 'Not log-precision, not convergence-aware,
+        not gradient-based, not extended checkpoints, not heavier penalties' (5 items, not 7).
+        The conclusion lists categories, not individual modifications, so this is not a
+        contradiction, but the conclusion undersells the breadth of the search.
+
+    - id: XS-03
+      sections: ["01_introduction.md", "05_results.md"]
+      issue: >
+        Introduction: 'discovery is reliable: 19 of 20 seeds found Leibniz across all
+        tested population sizes.' Results Table 3 shows log-precision 5/5 and
+        convergence-aware 2/5 at pop=1000 and 5/5 at pop=2000. The '19 of 20'
+        refers to the scaling grid (log-precision only), not 'all tested population
+        sizes' across both fitness functions. The phrase 'across all tested population
+        sizes' is accurate for log-precision but could be misread as including
+        convergence-aware results.

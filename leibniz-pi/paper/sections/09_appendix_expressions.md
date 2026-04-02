@@ -1,16 +1,20 @@
-# Appendix A: Expression Catalog
+# Appendix A: Expression Catalog {.unnumbered}
 
 This appendix documents all Leibniz-equivalent expressions discovered across 52 experiment files,
 alongside the most notable wrong-limit attractors. The full machine-readable catalog is in
 `paper/expression_catalog.json` (260 records; 52 Leibniz-equivalent, 179 wrong-limit attractors,
 29 trivial).
 
-## A.1 Leibniz-Equivalent Expressions
+## Leibniz-Equivalent Expressions {.unnumbered}
 
 All 52 expressions below verified equivalent to (-1)^k / (2k+1) at k=100,000 with zero divergence.
 Sympy simplification confirms every raw form reduces to -1/(2*k+1), which equals (-1)^k/(2k+1)
 up to the sign convention absorbed into the alternating factor.
 The canonical 9-node form appears in 42 of 52 cases; remaining 10 cases carry one extra negation node.
+
+```{=latex}
+\begin{landscape}
+```
 
 | Seed | Raw Form | Nodes | Fitness | Fitness Function | t | Pop | Experiment |
 |------|----------|-------|---------|-----------------|---|-----|------------|
@@ -67,14 +71,22 @@ The canonical 9-node form appears in 42 of 52 cases; remaining 10 cases carry on
 | 31415 | `((-1 ^ k) / ((2 * k) + 1))` | 9 | 0.02102 | log-precision | ~42 | 1000 | entropy\_v1\_wide |
 | 137 | `(-1 / (((-1 - k) - k) / (-1 ^ k)))` | 11 | 0.01102 | log-precision | ~4 | 1000 | fitness\_approach2\_w0.1 |
 
+```{=latex}
+\end{landscape}
+```
+
 Note: entropy\_v1\_wide (v2-era experiment) used a 42-terminal set and injected Leibniz at generation 0.
 Results are valid as "recognition" tests but not as discovery tests. See Section 4 for the injection confound.
 The fitness\_approach2\_w0.1 experiment used the minimal terminal set with a modified log-precision weight.
 
-## A.2 Notable Wrong-Limit Attractors
+## Notable Wrong-Limit Attractors {.unnumbered}
 
 The table shows the 10 highest-fitness wrong-limit attractors plus the canonical `5/((6+4k)(k-2))`
 attractor from the stress test. Section A.2.1 discusses the canonical attractor in detail.
+
+```{=latex}
+\begin{landscape}
+```
 
 | Seed | Raw Form | Nodes | Fitness | t | Experiment | Simplified | Notes |
 |------|----------|-------|---------|---|------------|------------|-------|
@@ -91,7 +103,11 @@ attractor from the stress test. Section A.2.1 discusses the canonical attractor 
 | 42 | `(((k + -4) / -4) ^ -9)` | 7 | 0.0157 | 20 | scaling\_heatmap\_t20\_p5000 | `-262144/(k-4)^9` | Power-law decay family |
 | 42 | `(5 / (((1 + 5) + (k * 4)) * (k + -2)))` | 13 | 0.0073 | 15 | stress\_L1 | `5/(2(k-2)(2k+3))` | Canonical 5/((6+4k)(k-2)) attractor |
 
-### A.2.1 The 5/((6+4k)(k-2)) Attractor
+```{=latex}
+\end{landscape}
+```
+
+### The 5/((6+4k)(k-2)) Attractor {.unnumbered}
 
 The expression `5/((6+4k)(k-2))` found by seed 42 in the stress test (15-terminal set) achieves
 {{result:wrong_limit_ti_15_93:value}} bits of precision at T=10,000, exceeding Leibniz's
@@ -109,7 +125,7 @@ are present. The failure at 15 terminals is a coverage failure, not a fitness la
 The 15-terminal search space is large enough that strong attractors appear before Leibniz building
 blocks assemble.
 
-### A.2.2 Power-Law Decay Family (t=20)
+### Power-Law Decay Family (t=20) {.unnumbered}
 
 At t=20 with log-precision fitness, the dominant attractor family is `((k-4)/(-4))^-9` and
 variants. This expression has 7 nodes and converges monotonically to zero, not pi/4. Within the
@@ -117,7 +133,7 @@ evaluation horizon, its partial-sum curve looks like rapid convergence to a smal
 All five seeds at pop=10000 converged to this family. The power-law attractor dominated before
 Leibniz building blocks could be assembled in the 20-terminal search space.
 
-### A.2.3 The Grandi-Leibniz Attractor (t=4, seed=31415)
+### The Grandi-Leibniz Attractor (t=4, seed=31415) {.unnumbered}
 
 The most structurally interesting wrong-limit attractor in the dataset is `(((-1 ^ k) * (-k)) / ((1 / 2) - (-k)))`, found by seed 31415 at t=4 and pop=2000. The expression has 13 nodes and fitness 0.00877 under the log-precision function. The GP discovered this expression from random initialization; no Leibniz encoding was present.
 
@@ -145,9 +161,9 @@ The single odd checkpoint (T=5) records {{result:grandi_leibniz_ti_t5_0_07:value
 
 The Grandi-Leibniz attractor is the most direct instance of the evaluation horizon trap in the dataset. The trap exploits not just the finiteness of the evaluation horizon but the specific parity structure of the checkpoint grid. A checkpoint grid with more odd values would have identified the divergence immediately.
 
-## A.3 Expressions by Terminal Count
+## Expressions by Terminal Count {.unnumbered}
 
-### A.3.1 t=4 (Minimal Terminal Set)
+### t=4 (Minimal Terminal Set) {.unnumbered}
 
 With four terminals {k, 1, -1, 2}, (-1)^k is the only oscillating structure constructible from
 the available primitives. This makes the fitness landscape nearly unimodal: the single basin of
@@ -159,7 +175,7 @@ All 28 successful t=4 expressions simplify to -1/(2k+1) under sympy. Node count 
 and 10 or 11 in the remaining 7 cases, reflecting how many negation nodes the GP included in the
 final tree.
 
-### A.3.2 t=6
+### t=6 {.unnumbered}
 
 With six terminals, the search space expands but (-1)^k remains the easiest oscillating structure.
 We found 10 of 30 seeds (33%) discovered Leibniz across the t=6 population and fitness-function
@@ -168,7 +184,7 @@ fitness functions succeeded at pop=10000: 4 seeds convergence-aware, 1 seed log-
 1 seed log-precision at pop=5000. The remaining 20 seeds converged to wrong-limit attractors.
 The dominant family was rational expressions with a pole near k=0 or small constants.
 
-### A.3.3 t=8
+### t=8 {.unnumbered}
 
 Only 3 of 30 seeds (10%) discovered Leibniz at t=8, all from the log-precision fitness. The
 dominant wrong-limit attractor at t=8 is `((4-((4--3)^-2) - k/(-3))^-2)` and its variants,
@@ -177,7 +193,7 @@ appearing in 8 of 30 seeds. This attractor achieves ~20.66 bits of precision at 
 pop=10000, 0/5 seeds found Leibniz while smaller populations each found 1/5. Larger populations
 find strong attractors faster, which illustrates the population inversion effect.
 
-### A.3.4 t>=10 (Failure Regime)
+### t>=10 (Failure Regime) {.unnumbered}
 
 We found 5 Leibniz-equivalent expressions at t>=10, all anomalous. Two appeared at t=10 with
 convergence-aware fitness (same seed 7 in two overlapping experiments). One appeared at t=15 with
@@ -189,7 +205,7 @@ search. At t=10, seed 7 appears twice because `gp_extended_t10_p5000` and `gp_sc
 ran the same seed with the same engine. Both found `((-1 ^ k) / ((1 + k) + k))`.
 The t=15/p=10000 result (2/5 seeds) is discussed in Section 5.
 
-## A.4 Trivial and Parsimony-Collapsed Expressions
+## Trivial and Parsimony-Collapsed Expressions {.unnumbered}
 
 Several experimental conditions produced trivial expressions: either the constant zero or
 small numerical constants with no k dependence. These appeared primarily in three contexts.
@@ -204,6 +220,10 @@ The stress\_L1 file (15-terminal set, single stress level) produced zero in two 
 the canonical 5/((6+4k)(k-2)) attractor in one seed, and small rational constants in the
 remaining two seeds. None found Leibniz. The 15-terminal failure persists across fitness
 formulations tested here, confirming it is not specific to the original log-precision fitness.
+
+```{=latex}
+\begin{landscape}
+```
 
 | Seed | Raw Form | Nodes | Fitness | t | Experiment |
 |------|----------|-------|---------|---|------------|
@@ -222,3 +242,7 @@ formulations tested here, confirming it is not specific to the original log-prec
 | 137 | `((-5 ^ -5) / -4)` | 5 | -0.00411 | 15 | stress\_L1 |
 | 7 | `((-5 ^ -5) / -4)` | 5 | -0.00558 | n/a | fitness\_approach2\_w0.1 |
 | 2718 | `(4 / ((3 * -5) ^ 4))` | 7 | -0.01098 | n/a | fitness\_approach2\_w0.1 |
+
+```{=latex}
+\end{landscape}
+```

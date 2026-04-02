@@ -1,0 +1,76 @@
+stress_test:
+  file: "paper (all sections)"
+  document_type: academic_paper
+  persona: "Reviewer 2 — GP/EC venue (GECCO workshop)"
+  date: "2026-04-02"
+
+  questions:
+    - id: 1
+      question: "You claim discovery fails completely at t>=10, but Table 5 shows 2/5 at t=15/pop=10000 and the appendix documents discoveries at t=10 and t=15. Your abstract says 'With 15, none did.' Which is it?"
+      answerable: "partially"
+      answer_from_material: "Section 5.3 acknowledges the t=15/pop=10000 anomaly and says 'We do not have a mechanistic account of this non-monotonicity.' The appendix documents 5 total Leibniz discoveries at t>=10. The abstract and conclusion, however, state the failure as absolute."
+      gap: "The abstract and conclusion contradict the results section. The paper needs to either qualify these claims ('at standard populations' or 'at pop<=5000') or explain why the anomalous recoveries don't invalidate the general claim. This is the most likely point of reviewer rejection."
+      affected_sections: ["00_abstract.md", "05_results.md", "07_conclusion.md"]
+
+    - id: 2
+      question: "Your terminal set construction adds integers in a specific alternating pattern. How do you know the phase transition isn't an artifact of this particular construction? What if you added random reals, or domain-relevant constants like pi, e, or 1/2?"
+      answerable: "partially"
+      answer_from_material: "Section 4.3 explains the construction is deterministic and controls for primitive availability. The paper argues that additional terminals 'provide alternative construction paths for the oscillating numerator and odd denominator, not inert noise.'"
+      gap: "The paper does not test alternative terminal set constructions. The alternating-integer pattern is a design choice that could systematically affect the results. If the added terminals are 'not inert noise' (as stated), then different non-inert terminals could shift the phase transition boundary. One additional terminal set design (e.g., random reals) would substantially strengthen the claim that the boundary is fundamental rather than construction-specific."
+      affected_sections: ["04_experimental_design.md", "06_discussion.md"]
+
+    - id: 3
+      question: "You test populations up to 10,000. GP literature routinely uses 100,000+ for hard problems. Did you try larger populations? Your own citation (Sastry 2005) suggests the required population grows with building block count — have you estimated the predicted population for t=10?"
+      answerable: "partially"
+      answer_from_material: "Section 6.2 references Sastry's population-sizing theory and argues coverage grows more slowly than search space. The paper says '10x population increases all failed to shift this boundary.'"
+      gap: "10x is from 1,000 to 10,000. The paper does not test 50,000 or 100,000, which are routine in GP literature. More critically, it does not compute the Sastry population-sizing estimate for t=10 to show that the required population is impractically large. This would transform the argument from 'we tried and it didn't work' to 'theory predicts it can't work at feasible scales,' which is much stronger."
+      affected_sections: ["05_results.md", "06_discussion.md"]
+
+    - id: 4
+      question: "The wrong-limit attractor 5/((6+4k)(k-2)) appeared in only 1 of 5 seeds at t=15. You present it as the canonical failure mode, but 2 seeds collapsed to zero and 2 produced weak constants. Is the wrong-limit attractor really the dominant failure mode, or is it an interesting outlier?"
+      answerable: "partially"
+      answer_from_material: "Section 5.2 explicitly acknowledges 'The wrong-limit attractor failure mode was seed-specific at this configuration, not universal.' The appendix shows power-law decay family as dominant at t=20 (all 5 seeds at pop=10000)."
+      gap: "The paper is honest about seed-specificity at t=15/pop=1000, but the overall framing (abstract, introduction, discussion) presents wrong-limit attractors as THE failure mode. The data shows that at t=15/pop=1000, 'collapse to trivial constants' is actually more common (4/5 seeds) than wrong-limit attractors (1/5). The t=20/pop=10000 data from the appendix provides stronger evidence of systematic wrong-limit attractor dominance, but this is relegated to the appendix."
+      affected_sections: ["00_abstract.md", "05_results.md", "06_discussion.md", "09_appendix_expressions.md"]
+
+    - id: 5
+      question: "The kinetics analogy — 'second-order rate law' — is this just a coincidental mathematical form, or does it predict something? Can you use it to derive what the precision gain rate should be for a given series structure?"
+      answerable: "partially"
+      answer_from_material: "Section 6.1 presents the analogy as structural: '1/T convergence is the integrated form of a second-order rate law.' The glossary marks it as 'analogy/observation, not proven result.' The paper identifies that two interacting quantities (position k and alternating sign) produce the 1/T behavior."
+      gap: "The analogy currently explains why Leibniz has 1/T convergence but does not predict anything for other series. A reviewer would ask: does the kinetics framework predict that series with three interacting quantities would show 1/T^2 convergence? Can it classify series by their 'reaction order'? Without predictive power, the analogy is decorative rather than scientific. The paper should either develop the analogy further or explicitly scope it as a 'suggestive parallel' and move on."
+      affected_sections: ["06_discussion.md"]
+
+    - id: 6
+      question: "Your discovery criterion checks 20 terms against Leibniz to tolerance 10^-6. Many algebraically distinct expressions could match Leibniz for 20 terms but diverge later. How do you know these are truly Leibniz-equivalent and not wrong-limit attractors with very good early agreement?"
+      answerable: "fully"
+      answer_from_material: "Section 5.1 states: 'All discovered expressions are algebraically equivalent to (-1)^k / (2k+1), verified identical at k=100,000 with zero divergence.' The appendix confirms: 'Sympy simplification confirms every raw form reduces to -1/(2k+1).' The 20-term check is the automated discovery criterion; the algebraic verification is performed post-hoc."
+      gap: "None — the paper handles this well. The two-stage verification (numerical at k=0-19, then symbolic via sympy plus numerical at k=100,000) is thorough."
+      affected_sections: []
+
+    - id: 7
+      question: "You claim this generalizes to RL and LLMs, but your experiment is on a deterministic, exact-arithmetic system with a known target. Real RL and LLMs have stochastic training, approximate objectives, and unknown ground truth. Why should your findings transfer?"
+      answerable: "partially"
+      answer_from_material: "Section 6.3 frames the connection as an analogy: 'The analogy is imperfect but productive. Both phenomena arise from optimization against finite evaluation.' Section 1 uses 'structural property' language. The conclusion says 'This is not specific to genetic programming.'"
+      gap: "The paper asserts generalization but provides only the analogy, no formal argument or additional experiment in a non-GP setting. The EDA/ directory contains preliminary RL/ACO experiments (mentioned in Section 6.3 as 'not reported here'), but these are unreported. Even a brief supplementary report on the RL experiments would strengthen the cross-domain claim substantially. Without it, the generalization rests entirely on structural analogy."
+      affected_sections: ["01_introduction.md", "06_discussion.md", "07_conclusion.md"]
+
+    - id: 8
+      question: "The parsimony threshold (lambda_p < 0.0073 for discovery) seems to be a narrow window. How robust is this to implementation details like the node count definition? If you counted operators differently (e.g., counting unary operators as half-weight), would the threshold shift substantially?"
+      answerable: "not"
+      answer_from_material: "Section 5.4 documents the threshold quantitatively but treats node count as fixed. The paper does not discuss sensitivity to the node-counting convention."
+      gap: "The parsimony analysis is clean for the specific node-count definition used. But parsimony pressure depends on the complexity metric. If the paper claims the threshold is 'narrow' and 'near the ceiling,' a reviewer would ask whether a different complexity metric (depth-weighted, operator-type-weighted) would widen or narrow the viable range. This is a minor gap — the paper's point (that parsimony has a narrow effective range) is consistent with prior literature."
+      affected_sections: ["05_results.md"]
+
+    - id: 9
+      question: "You mention 'diversity injection' replaces worst 100 individuals when top-20 fitness values converge. This is a significant design choice that could affect whether wrong-limit attractors dominate. Did you test without diversity injection? How does it interact with the phase transition?"
+      answerable: "not"
+      answer_from_material: "Section 3.2 describes the mechanism. No ablation is reported."
+      gap: "Diversity injection directly affects the coverage mechanism the paper identifies as the bottleneck. If diversity injection helps maintain coverage, removing it should make the phase transition sharper (shift to smaller terminal sets). If it doesn't affect the transition, that's evidence the bottleneck is truly in initialization coverage, not ongoing coverage. This ablation would strengthen the paper's argument either way."
+      affected_sections: ["03_methods.md", "06_discussion.md"]
+
+    - id: 10
+      question: "The formula P(discovery) ~ fitness_quality * coverage / search_space is presented as an equation but has no derivation. Is this a formal result or a verbal summary? What are the units? How does it relate to Sastry's population-sizing theory?"
+      answerable: "partially"
+      answer_from_material: "Section 6.2 presents it as 'a proportionality' and says 'All experimental results follow from this relationship.' The section discusses Sastry but does not formally derive the relationship from Sastry's framework."
+      gap: "The proportionality is presented with an equation block, which implies more rigor than is present. It is a verbal summary, not a derived result. The paper should either derive it formally (connecting to Sastry's building-block framework) or present it clearly as a conceptual organizing principle rather than an equation. The current presentation risks a reviewer dismissing it as hand-waving dressed up as math."
+      affected_sections: ["06_discussion.md"]
