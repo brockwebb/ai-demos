@@ -30,7 +30,7 @@ The canonical 9-node form (-1)^k / (2k+1) is not always found: bloated algebraic
 
 With 15 terminals at population 1,000, no seeds find Leibniz ({{result:logprec_stress_l1_0_5:value}}/5). The failure modes split into two categories: trivial collapse to constants (4/5 seeds) and convergence to a wrong-limit attractor (1/5 seeds). Seeds 7 and 31415 collapsed to the constant 0, seed 137 to a small constant expression, and seed 2718 to a low-precision rational function (4.80 bits at T=10,000). Wrong-limit attractors become the dominant failure mode at larger terminal counts and populations. At t=20 with pop=10,000, all five seeds converged to a power-law decay family (Appendix A.3).
 
-Seed 42 produced the strongest wrong-limit attractor: 5/((6+4k)(k-2)), which achieves {{result:wrong_limit_ti_15_93:value}} bits of precision at T=10,000, exceeding Leibniz's {{result:leibniz_ti_15_29:value}} bits, with perfect monotonicity. This expression is not Leibniz. Its partial sums converge to a value that appears closer to π/4 than Leibniz within the evaluation horizon, but at T→∞, Leibniz converges exactly while this attractor converges to a different value.
+Seed 42 produced the strongest wrong-limit attractor: 5/((6+4k)(k-2)), which achieves {{result:wrong_limit_ti_15_93:value}} bits of precision at T=10,000, exceeding Leibniz's {{result:leibniz_ti_15_29:value}} bits, with perfect monotonicity. This expression is not Leibniz. Within the evaluation horizon, its partial sums converge to a value that appears closer to π/4 than Leibniz. At T→∞, Leibniz converges exactly while this attractor converges to a different value.
 
 ![Log-precision trajectories for the Leibniz series and the strongest wrong-limit attractor](figures/fig2_precision_vs_T.png)
 
@@ -54,7 +54,7 @@ The 7 × 4 scaling grid reveals a phase transition between t=8 and t=10 for all 
 
 At t=4, discovery is reliable across all population sizes. At t=6 and t=8, success drops but remains nonzero. At t=10 and above, discovery fails completely except for one anomaly: at t=15 with pop=10,000, 2/5 seeds succeed. This partial recovery is absent at t=10, t=12, and t=20. We do not have a mechanistic account of this non-monotonicity.
 
-The boundary between t=8 and t=10 holds for all population sizes tested. Increasing population from 1,000 to 10,000 does not shift this boundary: it provides marginal gains at t=6 and t=8 and produces the anomalous partial recovery at t=15, but the t=10 wall remains intact. This pattern is consistent with a coverage limitation rather than a fitness landscape limitation.
+The boundary between t=8 and t=10 holds for all population sizes tested. Increasing population from 1,000 to 10,000 does not shift this boundary. Larger populations provide marginal gains at t=6 and t=8 and produce the anomalous partial recovery at t=15, but the t=10 wall remains intact. This pattern is consistent with a coverage limitation rather than a fitness landscape limitation.
 
 ## Size Penalty
 
@@ -118,4 +118,4 @@ The threshold is not a free parameter. It must be set below the target process's
 
 The convergence-aware fitness threshold (5% error reduction between checkpoints) is less sensitive. Varying the threshold from 1% to 20% produced discovery rates between 2/5 and 3/5, within noise for a five-seed sample.
 
-The threshold must be set below the target process's natural gain rate. It is constrained by the problem, not freely tunable.
+The threshold must be set below the target process's natural gain rate. The threshold is constrained by the problem, not freely tunable.

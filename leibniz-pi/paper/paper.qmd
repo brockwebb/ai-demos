@@ -62,7 +62,7 @@ abstract: |
 
 # Introduction
 
-Every AI system is evaluated within a finite horizon. Training runs end. Test sets have boundaries. Context windows close. This is not a defect in any particular architecture. It is a structural property of how we build and test all of them. Any search process evaluated within a finite horizon will find outputs that look correct inside that horizon. Whether those outputs remain correct beyond it is a question that finite evaluation cannot answer.
+Every AI system is evaluated within a finite horizon. Training runs end, test sets have boundaries, and context windows close. This is not a defect in any particular architecture. The constraint is structural, arising from how we build and test all of them. Any search process evaluated within a finite horizon will find outputs that look correct inside that horizon. Whether those outputs remain correct beyond it is a question that finite evaluation cannot answer.
 
 You cannot close that gap by designing a better test. You can only manage it by constraining the search space. This paper demonstrates that mechanism, gives it a name, and shows through a controlled experiment what works and what does not.
 
@@ -82,7 +82,7 @@ The bottleneck is not the fitness landscape, which places Leibniz at its global 
 
 This failure mode is not specific to genetic programming or to the Leibniz problem. Any system that evaluates process behavior within a finite horizon faces the same structural constraint.
 
-In reinforcement learning, policies optimized over finite episodes can exploit the reward structure within the evaluation horizon without learning genuinely reliable behavior [@Amodei2016ConcreteProblems]. In large language models, training against finite context windows creates the conditions for confabulation [@Ji2023Hallucination; @NIST2024AI600]: outputs that appear well-formed and plausible within the training distribution but do not correspond to truth. In symbolic regression, pointwise fitness creates wrong-limit attractors for any problem involving convergence, stability, or asymptotic behavior. The common structure is that finite evaluation of infinite-horizon processes creates a space of outputs that are indistinguishable from the correct answer within the evaluation horizon. The lever that matters is not a better evaluation function but a more constrained search space.
+In reinforcement learning, policies optimized over finite episodes can exploit the reward structure within the evaluation horizon without learning genuinely reliable behavior [@Amodei2016ConcreteProblems]. In large language models, training against finite context windows creates the conditions for confabulation [@Ji2023Hallucination; @NIST2024AI600]. The resulting outputs appear well-formed and plausible within the training distribution but do not correspond to truth. In symbolic regression, pointwise fitness creates wrong-limit attractors for any problem involving convergence, stability, or asymptotic behavior. The common structure is that finite evaluation of infinite-horizon processes creates a space of outputs that are indistinguishable from the correct answer within the evaluation horizon. The lever that matters is not a better evaluation function but a more constrained search space.
 
 Section 2 reviews related work on symbolic regression and process-level fitness design. Sections 3 and 4 describe the GP engine, fitness functions, and experimental design, including terminal set construction and the scaling grid. Section 5 presents results: the phase transition, wrong-limit attractor families, parsimony effects, and threshold sensitivity. Sections 6 and 7 discuss the kinetics connection, the confabulation analogy, implications for symbolic regression, and conclude.
 
@@ -147,13 +147,13 @@ With 15 terminals, the picture changes. Oscillation can be constructed from (-1)
 
 We use standard GP with ramped half-and-half initialization (depths 2–5), tournament selection (k=7), subtree crossover (P=0.70), subtree mutation (P=0.20), reproduction (P=0.10), and elitism (top 5 preserved). Population sizes range from 1,000 to 10,000 depending on the experiment. Time budgets vary by experiment (Section 4.2).
 
-Trees are constrained to at most 30 nodes. The depth limit of 6 applies during initialization; genetic operators enforce only the node count constraint. Mutation subtrees are generated with maximum depth 3. A diversity injection mechanism replaces the worst 100 individuals with fresh random trees when the top 20 fitness values become identical (to six decimal places), preventing premature convergence to a single attractor.
+Trees are constrained to at most 30 nodes. The depth limit of 6 applies during initialization; genetic operators enforce only the node count constraint. Mutation subtrees are generated with maximum depth 3. A diversity injection mechanism replaces the worst 100 individuals with fresh random trees when the top 20 fitness values become identical to six decimal places. This prevents premature convergence to a single attractor.
 
 No domain-specific operators (such as "alternating sign" or "odd number generator") are included. The search must assemble oscillating convergent behavior from general-purpose arithmetic alone.
 
 *Stopping criteria.* Each run terminates when the time budget is exhausted. The log-precision fitness also triggers early stopping after 100 generations of no improvement once the best expression exceeds 13.0 bits of precision with stable monotonicity. Time budgets vary by experiment (Section 4.2).
 
-*Discovery criterion.* An expression counts as a discovery if, for each k = 0, 1, ..., 19, the candidate term f(k) matches the precomputed Leibniz value (-1)^k/(2k+1) to within 10^-6 absolute error. The tolerance accommodates floating-point arithmetic. The question is whether the expression produces the same term sequence as Leibniz, not whether it achieves a fitness threshold. This criterion is applied post-hoc after each run completes, independent of the fitness score.
+*Discovery criterion.* An expression counts as a discovery if each term matches the Leibniz series to within 10^-6 absolute error. We evaluate f(k) for k = 0, 1, ..., 19 and compare against the precomputed Leibniz values (-1)^k/(2k+1). The tolerance accommodates floating-point arithmetic. The question is whether the expression produces the same term sequence as Leibniz, not whether it achieves a fitness threshold. This criterion is applied post-hoc after each run completes, independent of the fitness score.
 
 ## Fitness Functions
 
@@ -173,13 +173,13 @@ The log-precision fitness evaluates partial sums at 11 checkpoints spanning thre
 
 $$\text{prec}(T) = -\log_2 |S(T) - \pi/4|$$
 
-The quantity -log₂(|error|) has the same mathematical form as Shannon's self-information, though it is not entropy in the information-theoretic sense: it measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=5 has precision 4.34 bits; at T=10,000, 15.29 bits.
+The quantity -log₂(|error|) has the same mathematical form as Shannon's self-information, but it is not entropy in the information-theoretic sense. The quantity measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=5 has precision 4.34 bits; at T=10,000, 15.29 bits.
 
 The fitness combines three terms:
 
 $$\text{fitness}_{\text{prec}} = w_1 \frac{\text{prec}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}$$
 
-where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. The 0.5 bit gain threshold is calibrated to Leibniz's natural gain rate (see Section 5.6). Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005. These weights were set by hand to balance the three fitness terms; Section 5.6 tests sensitivity to the monotonicity threshold but not to the weights themselves.
+where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. The 0.5 bit gain threshold is calibrated to Leibniz's natural gain rate (see Section 5.6). Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005. These weights were set by hand to balance the three fitness terms. Section 5.6 tests sensitivity to the monotonicity threshold but not to the weights themselves.
 
 By the same kinetics analogy, this asks a "second-order" question: *is precision gain sustained at a constant rate across scales?* Leibniz gains log₂(10) ≈ 3.32 bits per decade. On a log-log plot, this is a straight line. The constant rate is the signature of second-order kinetics (Section 6.1). Fewer processes satisfy this criterion than satisfy first-order error shrinkage.
 
@@ -277,7 +277,7 @@ The canonical 9-node form (-1)^k / (2k+1) is not always found: bloated algebraic
 
 With 15 terminals at population 1,000, no seeds find Leibniz (0/5). The failure modes split into two categories: trivial collapse to constants (4/5 seeds) and convergence to a wrong-limit attractor (1/5 seeds). Seeds 7 and 31415 collapsed to the constant 0, seed 137 to a small constant expression, and seed 2718 to a low-precision rational function (4.80 bits at T=10,000). Wrong-limit attractors become the dominant failure mode at larger terminal counts and populations. At t=20 with pop=10,000, all five seeds converged to a power-law decay family (Appendix A.3).
 
-Seed 42 produced the strongest wrong-limit attractor: 5/((6+4k)(k-2)), which achieves 15.93 bits of precision at T=10,000, exceeding Leibniz's 15.29 bits, with perfect monotonicity. This expression is not Leibniz. Its partial sums converge to a value that appears closer to π/4 than Leibniz within the evaluation horizon, but at T→∞, Leibniz converges exactly while this attractor converges to a different value.
+Seed 42 produced the strongest wrong-limit attractor: 5/((6+4k)(k-2)), which achieves 15.93 bits of precision at T=10,000, exceeding Leibniz's 15.29 bits, with perfect monotonicity. This expression is not Leibniz. Within the evaluation horizon, its partial sums converge to a value that appears closer to π/4 than Leibniz. At T→∞, Leibniz converges exactly while this attractor converges to a different value.
 
 ![Log-precision trajectories for the Leibniz series and the strongest wrong-limit attractor](figures/fig2_precision_vs_T.png)
 
@@ -301,7 +301,7 @@ The 7 × 4 scaling grid reveals a phase transition between t=8 and t=10 for all 
 
 At t=4, discovery is reliable across all population sizes. At t=6 and t=8, success drops but remains nonzero. At t=10 and above, discovery fails completely except for one anomaly: at t=15 with pop=10,000, 2/5 seeds succeed. This partial recovery is absent at t=10, t=12, and t=20. We do not have a mechanistic account of this non-monotonicity.
 
-The boundary between t=8 and t=10 holds for all population sizes tested. Increasing population from 1,000 to 10,000 does not shift this boundary: it provides marginal gains at t=6 and t=8 and produces the anomalous partial recovery at t=15, but the t=10 wall remains intact. This pattern is consistent with a coverage limitation rather than a fitness landscape limitation.
+The boundary between t=8 and t=10 holds for all population sizes tested. Increasing population from 1,000 to 10,000 does not shift this boundary. Larger populations provide marginal gains at t=6 and t=8 and produce the anomalous partial recovery at t=15, but the t=10 wall remains intact. This pattern is consistent with a coverage limitation rather than a fitness landscape limitation.
 
 ## Size Penalty
 
@@ -365,11 +365,11 @@ The threshold is not a free parameter. It must be set below the target process's
 
 The convergence-aware fitness threshold (5% error reduction between checkpoints) is less sensitive. Varying the threshold from 1% to 20% produced discovery rates between 2/5 and 3/5, within noise for a five-seed sample.
 
-The threshold must be set below the target process's natural gain rate. It is constrained by the problem, not freely tunable.
+The threshold must be set below the target process's natural gain rate. The threshold is constrained by the problem, not freely tunable.
 
 # Discussion
 
-We first analyze the convergence structure that makes Leibniz detectable (6.1), then generalize the discovery mechanism (6.2), draw the analogy to broader AI systems (6.3), and identify implications for the symbolic regression community (6.4).
+We first analyze the convergence structure that makes Leibniz detectable (6.1), then generalize the discovery mechanism (6.2). Sections 6.3 and 6.4 draw the analogy to broader AI systems and identify implications for symbolic regression.
 
 ## Second-Order Kinetics Connection
 
@@ -389,23 +389,23 @@ The unifying result across all experiments is consistent with a proportionality:
 
 $$P(\text{discovery}) \propto \frac{\text{fitness quality} \times \text{coverage}}{\text{search space size}}$$
 
-Fitness quality is fixed: the log-precision fitness correctly identifies Leibniz as optimal in all tested configurations. Improving the fitness function, through extended checkpoints, gradient-based selection, or rate consistency penalties, does not improve discovery rates at 15 terminals. The gradient-based selection variant minimized the gradient norm across fitness dimensions (precision, monotonicity, rate, and parsimony balance), selecting for expressions where perturbing the tree produced the smallest change across all dimensions. It produced 0/5 discovery at 15 terminals. That failure confirmed the coverage diagnosis: the fitness landscape was not the bottleneck, the correct building blocks were absent from the population.
+Fitness quality is fixed: the log-precision fitness correctly identifies Leibniz as optimal in all tested configurations. Improving the fitness function, through extended checkpoints, gradient-based selection, or rate consistency penalties, does not improve discovery rates at 15 terminals. The gradient-based selection variant minimized the gradient norm across fitness dimensions (precision, monotonicity, rate, and parsimony balance). It selected for expressions where perturbing the tree produced the smallest change across all dimensions. It produced 0/5 discovery at 15 terminals. That failure confirmed the coverage diagnosis: the fitness landscape was not the bottleneck, the correct building blocks were absent from the population.
 
-Coverage increases with population size, but the relationship is not simple. @Sastry2005PopulationSizing derived a population-sizing relationship for GP from building-block decision-making theory, showing that the required population grows with the number of building blocks that must be simultaneously present and the difficulty of distinguishing them under selection. Search space scales combinatorially with terminal count: adding one terminal multiplies the number of distinct expressions at each tree size. The space grows much faster than coverage.
+Coverage increases with population size, but the relationship is not simple. @Sastry2005PopulationSizing derived a population-sizing relationship for GP from building-block decision-making theory. The required population grows with the number of building blocks that must be simultaneously present and the difficulty of distinguishing them under selection. Search space scales combinatorially with terminal count: adding one terminal multiplies the number of distinct expressions at each tree size. The space grows much faster than coverage.
 
-The phase transition occurs where coverage/search_space drops below the threshold needed for the correct building blocks to appear in the initial population and survive long enough for selection to assemble them. The scaling grid confirms this quantitatively: the t=10 boundary holds across all tested population sizes, and larger populations produce only marginal improvements at t=6 and t=8. Our population range (1,000 to 10,000) does not reach the scales tested in some GP studies; however, the sharpness of the transition between t=8 and t=10, which holds across a 10x population range, suggests the bottleneck is structural rather than computational.
+The phase transition occurs where the coverage-to-search-space ratio drops below the critical threshold. Below it, the correct building blocks rarely appear in the initial population and rarely survive long enough for selection to assemble them. The scaling grid confirms this quantitatively: the t=10 boundary holds across all tested population sizes, and larger populations produce only marginal improvements at t=6 and t=8. Our population range (1,000 to 10,000) does not reach the scales tested in some GP studies. The sharpness of the transition between t=8 and t=10, holding across a 10x population range, suggests the bottleneck is structural rather than computational.
 
 ## The Confabulation Analogy
 
 The project uses wrong-limit attractors as an analogy for confabulation in language models: outputs that appear correct within a finite evaluation horizon but fail under asymptotic scrutiny.
 
-*Non-GP approaches.* Preliminary experiments with reinforcement learning and ant colony optimization (not reported here) produced outputs that pattern-matched to convergence behavior but diverged under extended evaluation, a failure mode analogous to confabulation.
+*Non-GP approaches.* Preliminary experiments with reinforcement learning and ant colony optimization (not reported here) produced outputs that pattern-matched to convergence behavior but diverged under extended evaluation. This failure mode is analogous to confabulation.
 
-*GP with convergence-aware fitness.* This produced miscalibration: outputs that approached a plausible value and stopped improving, analogous to a model that gives a confident answer without the capacity for further refinement.
+*GP with convergence-aware fitness.* This produced miscalibration: outputs that approached a plausible value and stopped improving. The behavior is analogous to a model that gives a confident answer without the capacity for further refinement.
 
 *Leibniz.* This exhibits sustained refinement: precision improves at a constant rate without bound, never plateauing, each term contributing a measurable correction. The open-ended precision gain is the series-domain analog of a model that continues to incorporate new evidence without converging prematurely.
 
-A language model that generates a plausible citation to a paper that does not exist exhibits the same structure: the output is locally consistent within the generation horizon (correct formatting, topically relevant author names, reasonable year) but false under verification. The generated citation is a wrong-limit attractor in text space.
+A language model that generates a plausible citation to a paper that does not exist exhibits the same structure. The output is locally consistent within the generation horizon (correct formatting, topically relevant author names, reasonable year) but false under verification. The generated citation is a wrong-limit attractor in text space.
 
 The analogy is imperfect but productive. Both phenomena arise from optimization against finite evaluation: a fitness function or loss function that rewards local plausibility without the capacity to verify global correctness. The remedy in both cases is not better loss functions but better questions, evaluating process properties (sustained improvement, calibration) rather than output properties (proximity to a target).
 

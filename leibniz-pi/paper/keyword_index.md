@@ -30,7 +30,7 @@ Shows which glossary terms appear in which sections (with line counts).
 
 **Injection confound**: 02_background (1), 04_experimental_design (2), 09_appendix_expressions (1)
 
-**Leibniz series**: 00_abstract (1), 01_introduction (1), 04_experimental_design (1), 05_results (3), 06_discussion (2)
+**Leibniz series**: 00_abstract (1), 01_introduction (1), 03_methods (1), 04_experimental_design (1), 05_results (3), 06_discussion (2)
 
 **Log-precision fitness**: 00_abstract (1), 03_methods (4), 04_experimental_design (1), 05_results (4), 06_discussion (2), 07_conclusion (1), 09_appendix_expressions (7)
 

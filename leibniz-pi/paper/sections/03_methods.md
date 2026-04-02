@@ -22,13 +22,13 @@ With 15 terminals, the picture changes. Oscillation can be constructed from (-1)
 
 We use standard GP with ramped half-and-half initialization (depths 2–5), tournament selection (k=7), subtree crossover (P=0.70), subtree mutation (P=0.20), reproduction (P=0.10), and elitism (top 5 preserved). Population sizes range from 1,000 to 10,000 depending on the experiment. Time budgets vary by experiment (Section 4.2).
 
-Trees are constrained to at most 30 nodes. The depth limit of 6 applies during initialization; genetic operators enforce only the node count constraint. Mutation subtrees are generated with maximum depth 3. A diversity injection mechanism replaces the worst 100 individuals with fresh random trees when the top 20 fitness values become identical (to six decimal places), preventing premature convergence to a single attractor.
+Trees are constrained to at most 30 nodes. The depth limit of 6 applies during initialization; genetic operators enforce only the node count constraint. Mutation subtrees are generated with maximum depth 3. A diversity injection mechanism replaces the worst 100 individuals with fresh random trees when the top 20 fitness values become identical to six decimal places. This prevents premature convergence to a single attractor.
 
 No domain-specific operators (such as "alternating sign" or "odd number generator") are included. The search must assemble oscillating convergent behavior from general-purpose arithmetic alone.
 
 *Stopping criteria.* Each run terminates when the time budget is exhausted. The log-precision fitness also triggers early stopping after 100 generations of no improvement once the best expression exceeds 13.0 bits of precision with stable monotonicity. Time budgets vary by experiment (Section 4.2).
 
-*Discovery criterion.* An expression counts as a discovery if, for each k = 0, 1, ..., 19, the candidate term f(k) matches the precomputed Leibniz value (-1)^k/(2k+1) to within 10^-6 absolute error. The tolerance accommodates floating-point arithmetic. The question is whether the expression produces the same term sequence as Leibniz, not whether it achieves a fitness threshold. This criterion is applied post-hoc after each run completes, independent of the fitness score.
+*Discovery criterion.* An expression counts as a discovery if each term matches the Leibniz series to within 10^-6 absolute error. We evaluate f(k) for k = 0, 1, ..., 19 and compare against the precomputed Leibniz values (-1)^k/(2k+1). The tolerance accommodates floating-point arithmetic. The question is whether the expression produces the same term sequence as Leibniz, not whether it achieves a fitness threshold. This criterion is applied post-hoc after each run completes, independent of the fitness score.
 
 ## Fitness Functions
 
@@ -48,13 +48,13 @@ The log-precision fitness evaluates partial sums at 11 checkpoints spanning thre
 
 $$\text{prec}(T) = -\log_2 |S(T) - \pi/4|$$
 
-The quantity -log₂(|error|) has the same mathematical form as Shannon's self-information, though it is not entropy in the information-theoretic sense: it measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=5 has precision {{result:leibniz_prec_t5:value}} bits; at T=10,000, {{result:leibniz_ti_15_29:value}} bits.
+The quantity -log₂(|error|) has the same mathematical form as Shannon's self-information, but it is not entropy in the information-theoretic sense. The quantity measures precision of a single estimate, not uncertainty over a distribution. Leibniz at T=5 has precision {{result:leibniz_prec_t5:value}} bits; at T=10,000, {{result:leibniz_ti_15_29:value}} bits.
 
 The fitness combines three terms:
 
 $$\text{fitness}_{\text{prec}} = w_1 \frac{\text{prec}(T_{\max})}{50} + w_2 \cdot \text{monotonicity} + w_3 \frac{\text{mean\_rate}}{5} - \lambda_p \cdot \text{nodes}$$
 
-where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. The 0.5 bit gain threshold is calibrated to Leibniz's natural gain rate (see Section 5.6). Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005. These weights were set by hand to balance the three fitness terms; Section 5.6 tests sensitivity to the monotonicity threshold but not to the weights themselves.
+where monotonicity = fraction of consecutive checkpoints with ≥ 0.5 bit gain, and mean_rate = precision gain in bits per decade of summation depth. The 0.5 bit gain threshold is calibrated to Leibniz's natural gain rate (see Section 5.6). Weights: w_1 = 0.02, w_2 = 0.04, w_3 = 0.03, λ_p = 0.005. These weights were set by hand to balance the three fitness terms. Section 5.6 tests sensitivity to the monotonicity threshold but not to the weights themselves.
 
 By the same kinetics analogy, this asks a "second-order" question: *is precision gain sustained at a constant rate across scales?* Leibniz gains log₂(10) ≈ {{result:info_rate_3_32:value}} bits per decade. On a log-log plot, this is a straight line. The constant rate is the signature of second-order kinetics (Section 6.1). Fewer processes satisfy this criterion than satisfy first-order error shrinkage.
 
