@@ -250,8 +250,8 @@ window.Quarto = {
 <section id="terminal-set-construction" class="level2">
 <h2 class="anchored" data-anchor-id="terminal-set-construction">Terminal Set Construction</h2>
 <p>The GP primitive set is held constant across all experiments. The table below lists operators and their safe-evaluation behavior.</p>
-<p><strong>Table 1:</strong> GP operator set and safe-evaluation behavior. Safe division and power overflow return implicit constant terminals.</p>
 <table class="caption-top table">
+<caption>Table 1: GP operator set and safe-evaluation behavior. Safe division and power overflow return implicit constant terminals.</caption>
 <colgroup>
 <col style="width: 44%">
 <col style="width: 28%">
@@ -295,8 +295,8 @@ window.Quarto = {
 <p>Safe division returns 1.0 when the denominator is at or below 10^-10. Power overflow returns 1.0 when the result magnitude exceeds 10^6. Both values act as implicit additional terminals in the search space. An expression that triggers either condition at certain k values uses 1.0 as a fallback constant. Researchers counting available terminals should account for these implicit constants. Because 1.0 is already in the base terminal set at all sizes, the implicit constants from safe division and power overflow do not increase the effective terminal count.</p>
 <p>At each size N, terminal sets are constructed deterministically. The base set {k, 1, -1, 2} is always present, ensuring Leibniz is constructible regardless of the terminal count. Additional integers follow the pattern 3, -2, 4, -3, 5, -4, …, alternating positive and negative with no zero and no duplicates of base terminals. The alternating sign pattern ensures both positive and negative values are available at every terminal count. Additional terminals provide alternative construction paths for the oscillating numerator and odd denominator, not inert noise.</p>
 <p>This construction controls for primitive availability. The experiment isolates the effect of search space expansion on discovery rate, not whether the correct building blocks exist.</p>
-<p><strong>Table 2:</strong> Terminal set construction at each size N. The base set {k, 1, -1, 2} is always present.</p>
 <table class="caption-top table">
+<caption>Table 2: Terminal set construction at each size N. The base set {k, 1, -1, 2} is always present.</caption>
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
@@ -350,8 +350,8 @@ window.Quarto = {
 <section id="discovery-under-minimal-terminals" class="level2">
 <h2 class="anchored" data-anchor-id="discovery-under-minimal-terminals">Discovery Under Minimal Terminals</h2>
 <p>With the minimal terminal set {k, 1, -1, 2} and no injection, the log-precision fitness achieves 5/5 discovery across five seeds. The convergence-aware fitness achieves 2/5 at population 1,000 and 5/5 at population 2,000. Total runtime for the complete log-precision run across all five seeds was 369.9 seconds.</p>
-<p><strong>Table 3:</strong> Discovery rates under minimal terminals (N=4) by fitness function and population size.</p>
 <table class="caption-top table">
+<caption>Table 3: Discovery rates under minimal terminals (N=4) by fitness function and population size.</caption>
 <thead>
 <tr class="header">
 <th>Fitness</th>
@@ -382,8 +382,8 @@ window.Quarto = {
 </tbody>
 </table>
 <p>All discovered expressions are algebraically equivalent to (-1)^k / (2k+1), verified identical at k=100,000 with zero divergence. The structural variants that appear across seeds are shown below.</p>
-<p><strong>Table 4:</strong> Structural variants of the Leibniz series discovered across five seeds.</p>
 <table class="caption-top table">
+<caption>Table 4: Structural variants of the Leibniz series discovered across five seeds.</caption>
 <thead>
 <tr class="header">
 <th>Seed</th>
@@ -442,8 +442,8 @@ window.Quarto = {
 <section id="the-scaling-boundary" class="level2">
 <h2 class="anchored" data-anchor-id="the-scaling-boundary">The Scaling Boundary</h2>
 <p>The 7 × 4 scaling grid reveals a phase transition between t=8 and t=10 for all population sizes tested. Discovery results across the full grid are as follows.</p>
-<p><strong>Table 5:</strong> Discovery rate (seeds found / 5) across terminal set sizes and population sizes. The phase transition between t=8 and t=10 holds across all population sizes.</p>
 <table class="caption-top table">
+<caption>Table 5: Discovery rate (seeds found / 5) across terminal set sizes and population sizes. The phase transition between t=8 and t=10 holds across all population sizes.</caption>
 <thead>
 <tr class="header">
 <th>t (terminals)</th>
@@ -511,8 +511,8 @@ window.Quarto = {
 <section id="size-penalty" class="level2">
 <h2 class="anchored" data-anchor-id="size-penalty">Size Penalty</h2>
 <p>GP parsimony pressure penalizes larger expression trees by subtracting λ_p × (node count) from fitness. This size penalty keeps solutions simple but creates a ceiling on viable tree complexity.</p>
-<p><strong>Table 6:</strong> Effect of parsimony pressure on discovery. The transition from full discovery to complete failure occurs between lambda_p = 0.005 and lambda_p = 0.01.</p>
 <table class="caption-top table">
+<caption>Table 6: Effect of parsimony pressure on discovery. The transition from full discovery to complete failure occurs between lambda_p = 0.005 and lambda_p = 0.01.</caption>
 <thead>
 <tr class="header">
 <th>λ_p</th>
@@ -562,8 +562,8 @@ window.Quarto = {
 <section id="fitness-modifications-cannot-rescue-large-terminal-sets" class="level2">
 <h2 class="anchored" data-anchor-id="fitness-modifications-cannot-rescue-large-terminal-sets">Fitness Modifications Cannot Rescue Large Terminal Sets</h2>
 <p>We tested seven modifications to the log-precision fitness on the 15-terminal configuration. None achieved reliable discovery.</p>
-<p><strong>Table 7:</strong> Fitness function modifications tested on the 15-terminal configuration. No modification achieved reliable discovery.</p>
 <table class="caption-top table">
+<caption>Table 7: Fitness function modifications tested on the 15-terminal configuration. No modification achieved reliable discovery.</caption>
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
@@ -621,8 +621,8 @@ window.Quarto = {
 <section id="threshold-sensitivity" class="level2">
 <h2 class="anchored" data-anchor-id="threshold-sensitivity">Threshold Sensitivity</h2>
 <p>The log-precision fitness uses a monotonicity threshold (MIN_GAIN) that defines how many bits of precision gain a checkpoint pair must show to count as monotonically improving. The baseline value of 0.5 bits was a design choice. We tested whether discovery rates depend on this threshold.</p>
-<p><strong>Table 8:</strong> Log-precision monotonicity threshold sensitivity at t=4, pop=1,000. Leibniz gains approximately 1.0 bit per checkpoint step.</p>
 <table class="caption-top table">
+<caption>Table 8: Log-precision monotonicity threshold sensitivity at t=4, pop=1,000. Leibniz gains approximately 1.0 bit per checkpoint step.</caption>
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">

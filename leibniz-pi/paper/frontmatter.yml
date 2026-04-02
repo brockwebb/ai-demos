@@ -37,6 +37,7 @@ format:
         \clubpenalty=10000
         \usepackage{caption}
         \captionsetup{justification=raggedright,singlelinecheck=false}
+        \captionsetup[table]{position=above}
         \hyphenpenalty=10000
         \exhyphenpenalty=10000
         \raggedbottom

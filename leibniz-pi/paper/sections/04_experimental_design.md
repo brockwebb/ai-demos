@@ -20,8 +20,6 @@ An expression counts as a discovery if its terms match the Leibniz series term b
 
 The GP primitive set is held constant across all experiments. The table below lists operators and their safe-evaluation behavior.
 
-**Table 1:** GP operator set and safe-evaluation behavior. Safe division and power overflow return implicit constant terminals.
-
 | Component | Value | Notes |
 |-----------|-------|-------|
 | Binary operators | +, -, ×, ÷, ^ | Standard arithmetic |
@@ -30,13 +28,13 @@ The GP primitive set is held constant across all experiments. The table below li
 | Power overflow (\|result\| > 10^6) | returns 1.0 | Implicit constant; acts as additional terminal |
 | Power exponent | Rounded to nearest integer | Constrains search to integer powers |
 
+: Table 1: GP operator set and safe-evaluation behavior. Safe division and power overflow return implicit constant terminals.
+
 Safe division returns 1.0 when the denominator is at or below 10^-10. Power overflow returns 1.0 when the result magnitude exceeds 10^6. Both values act as implicit additional terminals in the search space. An expression that triggers either condition at certain k values uses 1.0 as a fallback constant. Researchers counting available terminals should account for these implicit constants. Because 1.0 is already in the base terminal set at all sizes, the implicit constants from safe division and power overflow do not increase the effective terminal count.
 
 At each size N, terminal sets are constructed deterministically. The base set {k, 1, -1, 2} is always present, ensuring Leibniz is constructible regardless of the terminal count. Additional integers follow the pattern 3, -2, 4, -3, 5, -4, ..., alternating positive and negative with no zero and no duplicates of base terminals. The alternating sign pattern ensures both positive and negative values are available at every terminal count. Additional terminals provide alternative construction paths for the oscillating numerator and odd denominator, not inert noise.
 
 This construction controls for primitive availability. The experiment isolates the effect of search space expansion on discovery rate, not whether the correct building blocks exist.
-
-**Table 2:** Terminal set construction at each size N. The base set {k, 1, -1, 2} is always present.
 
 | N | Terminal Set |
 |---|---|
@@ -47,6 +45,8 @@ This construction controls for primitive availability. The experiment isolates t
 | 12 | {k, 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5} |
 | 15 | {k, 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8} |
 | 20 | {k, 1, -1, 2, 3, -2, 4, -3, 5, -4, 6, -5, 7, -6, 8, -7, 9, -8, 10, -9} |
+
+: Table 2: Terminal set construction at each size N. The base set {k, 1, -1, 2} is always present.
 
 ## Scaling Grid
 
