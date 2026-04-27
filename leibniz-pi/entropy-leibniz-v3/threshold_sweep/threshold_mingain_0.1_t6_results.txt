@@ -1,0 +1,12 @@
+========================================================================
+THRESHOLD SWEEP: LOG-PRECISION MIN_GAIN=0.1, t=6 TERMINALS (BOUNDARY TEST)
+========================================================================
+
+MIN_GAIN = 0.1 (baseline = 0.5)
+Terminal set: ['k', 1, -1, 2, 3, -2]  (t=6, baseline is t=4)
+pop_size=1000, n_seeds=5, max_seed=1800.0s, max_total=9000.0s
+
+Purpose: Test whether lowering MIN_GAIN improves discovery at t=6,
+         where baseline (MIN_GAIN=0.5) achieves ~1/5 seeds.
+Leibniz fitness=0.021021  GP-v1 fitness=-0.021223  Leibniz>GP-v1: True
+Seeds finding Leibniz: 1/5

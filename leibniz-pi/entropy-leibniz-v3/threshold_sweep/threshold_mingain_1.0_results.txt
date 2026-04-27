@@ -1,0 +1,13 @@
+========================================================================
+THRESHOLD SWEEP: LOG-PRECISION MIN_GAIN=1.0
+Minimal terminal set {k, 1, -1, 2}, no injection, 30-min budget
+========================================================================
+
+Threshold parameter: MIN_GAIN = 1.0 (baseline = 0.5)
+  pop_size=1000, n_seeds=5, max_total=1800.0s, max_seed=360.0s
+  W1=0.02, W2=0.04, W3=0.03, lambda_p=0.005
+
+Fitness: W1*(total_info/50) + W2*monotonicity + W3*(mean_rate/5) - lambda_p*nodes
+  monotonicity = fraction of consecutive checkpoints with >= 1.0 bit gain
+Leibniz fitness=-0.006979  GP-v1 fitness=-0.025223  Leibniz>GP-v1: True
+Seeds finding Leibniz: 1/5

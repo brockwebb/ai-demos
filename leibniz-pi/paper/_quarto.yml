@@ -1,0 +1,45 @@
+project:
+  type: default
+
+format:
+  pdf:
+    documentclass: article
+    papersize: letter
+    fontsize: 11pt
+    geometry:
+      - margin=1in
+    number-sections: true
+    toc: false
+    pdf-engine: xelatex
+    latex-max-runs: 4
+    mainfont: "Palatino"
+    monofont: "Source Code Pro"
+    linestretch: 1.25
+    colorlinks: true
+    bibliography: references.bib
+    csl: apa.csl
+    link-citations: true
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{needspace}
+          \usepackage{longtable}
+          \usepackage{array}
+          \renewcommand{\arraystretch}{1.4}
+          \widowpenalty=10000
+          \clubpenalty=10000
+          \usepackage{caption}
+          \captionsetup{justification=raggedright,singlelinecheck=false}
+          \hyphenpenalty=10000
+          \exhyphenpenalty=10000
+          \raggedbottom
+          \usepackage{pdflscape}
+          \usepackage{float}
+          \floatplacement{figure}{htbp}
+          \renewcommand{\floatpagefraction}{0.85}
+          \renewcommand{\topfraction}{0.85}
+          \renewcommand{\textfraction}{0.1}
+  html:
+    toc: false
+    number-sections: false
+    bibliography: references.bib

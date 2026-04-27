@@ -1,0 +1,15 @@
+========================================================================
+THRESHOLD SWEEP: CONVERGENCE-AWARE, THRESHOLD=0.20 (20%)
+Minimal terminal set {k, 1, -1, 2}, no injection, 30-min budget
+========================================================================
+
+Threshold parameter: CONV_THRESHOLD = 0.8 (20% reduction required)
+  Baseline: 0.95 (5% reduction required)
+  Higher threshold is more selective — fewer consecutive pairs qualify
+  pop_size=1000, n_seeds=5, max_total=1800.0s, max_seed=360.0s
+  alpha=0.05, lambda_p=0.005
+
+Fitness: accuracy + alpha*conv_bonus - lambda*nodes
+  conv_bonus = fraction of T-pairs with errors[i+1] < errors[i] * 0.8
+Leibniz fitness=-0.001298  GP-v1 fitness=-0.030360  Leibniz>GP-v1: True
+Seeds finding Leibniz: 2/5

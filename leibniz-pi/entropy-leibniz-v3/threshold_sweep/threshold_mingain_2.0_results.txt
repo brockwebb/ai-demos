@@ -1,0 +1,11 @@
+========================================================================
+THRESHOLD SWEEP: LOG-PRECISION MIN_GAIN=2.0
+Minimal terminal set {k, 1, -1, 2}, no injection, 30-min budget
+========================================================================
+
+Threshold parameter: MIN_GAIN = 2.0 (baseline = 0.5)
+  NOTE: Leibniz gains ~1.0 bit/step, so monotonicity will be ~0 with this threshold
+  pop_size=1000, n_seeds=5, max_total=1800.0s, max_seed=360.0s
+  W1=0.02, W2=0.04, W3=0.03, lambda_p=0.005
+Leibniz fitness=-0.018979  GP-v1 fitness=-0.025223  Leibniz>GP-v1: True  Leibniz monotonicity=0.000 (with MIN_GAIN=2.0)
+Seeds finding Leibniz: 0/5
