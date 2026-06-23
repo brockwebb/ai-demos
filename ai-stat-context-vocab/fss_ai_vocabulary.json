@@ -1,0 +1,1933 @@
+{
+  "schema_version": "1.0",
+  "title": "FSS AI Vocabulary",
+  "description": "Authoritative, FSS-contextualized definitions of AI terms for the Federal Statistical System. Built for an audience expert in federal statistics and new to AI: every record carries a plain-language translation and, where the corpus speaks, an FSS-specific note and false-friend flag. Definitions are sourced to NIST, statutes, and OMB guidance; where no authoritative definition was in hand, needs_source=true rather than a non-authoritative cite.",
+  "generated": "2026-06-22",
+  "task": "cc_tasks/2026-06-22_fss_ai_vocabulary_build.md",
+  "grounding_kg": "fss-policy-kg (read-only)",
+  "source_priority": [
+    "NIST CSRC glossary export",
+    "NIST AIRC / AI 100-3 (beta)",
+    "OMB memoranda & primary statute text",
+    "fss-policy-kg corpus definitions"
+  ],
+  "source_quality_values": [
+    "federal_primary",
+    "federal_beta",
+    "academic",
+    "international_government",
+    "industry",
+    "none"
+  ],
+  "source_policy": "Public, freely-accessible authority only. No paywalled sources (e.g. ISO/IEC standards behind a paywall are NOT used). Priority: US federal (NIST/OMB/statute) > open standards > open foreign-government or open industry/academic references > needs_source. A free, open definition always beats a gatekept one. source_quality is tagged honestly: where no US-federal definition exists, the record says so rather than dressing a foreign/industry source as federal.",
+  "status_values": [
+    "active",
+    "beta",
+    "superseded",
+    "contested"
+  ],
+  "term_count": 42,
+  "terms": [
+    {
+      "term": "artificial intelligence",
+      "surface_forms": [
+        "artificial intelligence",
+        "AI"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "A machine-based system that can, for a given set of human-defined objectives, make predictions, recommendations, or decisions influencing real or virtual environments.",
+        "source": "NIST SP 800-218A (per 15 U.S.C. § 9401(3))",
+        "source_url": "https://doi.org/10.6028/NIST.SP.800-218A",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [
+        {
+          "text": "Any artificial system that performs tasks under varying and unpredictable circumstances without significant human oversight, or that can learn from experience and improve performance when exposed to data sets; ... designed to think or act like a human ... or that is designed to act rationally.",
+          "source": "Sec. 238(g), John S. McCain NDAA for FY2019 (10 U.S.C. § 2358 note)",
+          "source_url": "https://www.govinfo.gov/app/details/PLAW-115publ232",
+          "source_quality": "federal_primary",
+          "status": "active"
+        }
+      ],
+      "plain_language": "An umbrella term for software that does tasks we used to think needed a human — predicting, classifying, recommending, generating text — by finding patterns in data rather than following hand-written rules. There is no single legal definition; the statutory one (15 U.S.C. § 9401) is the federal anchor.",
+      "fss_note": "Covers any automated analytical system a statistical agency runs — imputation models, record linkage, automated coding, disclosure-avoidance engines. The label matters because OMB AI guidance (M-25-21) attaches obligations to 'AI' use.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Covers any automated analytical system a statistical agency runs — imputation models, record linkage, automated coding, disclosure-avoidance engines. The label matters because OMB AI guidance (M-25-21) attaches obligations to 'AI' use.",
+        "citations": [
+          {
+            "source_doc": "eo_13859",
+            "node_id": "eo_13859#s116",
+            "snippet": "artificial intelligence' :: (a) the term ''artificial intelligence'' means the full extent of Fede…"
+          },
+          {
+            "source_doc": "eo_14110",
+            "node_id": "eo_14110#s866",
+            "snippet": "…nvironment and in collaboration with developers of AI. Artificial Intelligence red-teaming is most often performed by dedicated ''red teams'' tha…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "m_24_10#s507",
+            "snippet": "artificial intelligence :: Artificial Intelligence (AI): The term 'artificial intelligence' has th…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "AI system",
+      "surface_forms": [
+        "AI system",
+        "artificial intelligence system"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "An engineered or machine-based system that can, for a given set of objectives, generate outputs such as predictions, recommendations, or decisions influencing real or virtual environments. AI systems are designed to operate with varying levels of autonomy.",
+        "source": "NIST AI 100-1 (AI Risk Management Framework 1.0)",
+        "source_url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The whole working setup — the data pipeline, the model, and the output logic — not just the model file. When you evaluate AI risk, you evaluate the system, because harms come from how the pieces fit together, not the model alone.",
+      "fss_note": "Distinguishes the full deployed tool (e.g., a record-linkage system: input data + model + match-decision logic + output) from the model component. OMB risk-management practices apply to the system in use.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Distinguishes the full deployed tool (e.g., a record-linkage system: input data + model + match-decision logic + output) from the model component. OMB risk-management practices apply to the system in use.",
+        "citations": [
+          {
+            "source_doc": "eo_14110",
+            "node_id": "eo_14110#s866",
+            "snippet": "…ting effort to find flaws and vulnerabilities in an AI system, often in a controlled environment and in collaboration with developers of…"
+          },
+          {
+            "source_doc": "nist_ai_rmf_100_1",
+            "node_id": "a26bf7cbec5242cc950e7e0ecfed4188",
+            "snippet": "…methodologies used by the organization developing the AI system may not align with the risk metrics or methodologies uses by the organizat…"
+          },
+          {
+            "source_doc": "m_24_18",
+            "node_id": "ca79ac79951b4f33b0cdae423d3d5634",
+            "snippet": "…agency collaboration to ensure that acquisition of an AI system or service will have the appropriate controls in place to comply with the…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "AI model",
+      "surface_forms": [
+        "AI model",
+        "model"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "A component of an AI system that implements AI technology and uses computational, statistical, or machine-learning techniques to produce outputs from a given set of inputs.",
+        "source": "OMB M-24-10 / NTIA AI Accountability Policy Report glossary",
+        "source_url": "https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The trained mathematical object inside an AI system — the thing that turns inputs into outputs. Think of it like a fitted statistical model, but usually far larger and learned from data rather than specified by a methodologist.",
+      "fss_note": "In the FSS, 'AI models' include imputation models, disclosure-avoidance noise mechanisms, and predictive coding tools used in survey processing.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "fitted statistical model / estimator",
+        "relation": "analog_of",
+        "note": "Both map inputs to outputs from data. Disanalogy: a statistical estimator has an explicit, documented functional form and known sampling properties; an AI model's form is learned and often opaque, so its error properties are empirical, not derived."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "In the FSS, 'AI models' include imputation models, disclosure-avoidance noise mechanisms, and predictive coding tools used in survey processing.",
+        "citations": [
+          {
+            "source_doc": "eo_14319",
+            "node_id": "eo_14319#s69",
+            "snippet": "…'' means a large language model, which is a generative AI model trained on vast, diverse datasets that enable the model to generate natura…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "m_24_10#s521",
+            "snippet": "AI model :: AI Model: The term 'AI model' has the meaning provided in Section 3(c)…"
+          },
+          {
+            "source_doc": "m_24_18",
+            "node_id": "m_24_18#s588",
+            "snippet": "AI model :: AI Model: The term 'AI model' has the meaning provided in Section 3(c)…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "machine learning",
+      "surface_forms": [
+        "machine learning",
+        "ML"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "The development and use of computer systems that adapt and learn from data with the goal of improving accuracy.",
+        "source": "NIST SP 800-55v1",
+        "source_url": "https://doi.org/10.6028/NIST.SP.800-55v1",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "A way of building models by letting an algorithm find patterns in data and improve with more examples, instead of a person writing the rules. Most of what people call 'AI' today is machine learning.",
+      "fss_note": "Increasingly used in federal surveys for donor selection in imputation, nonresponse adjustment, and automated industry/occupation coding.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Increasingly used in federal surveys for donor selection in imputation, nonresponse adjustment, and automated industry/occupation coding.",
+        "citations": [
+          {
+            "source_doc": "m_24_18",
+            "node_id": "m_24_18#s600",
+            "snippet": "…re 'the parameters that are used to either configure a machine learning model (e.g., the penalty parameter C in a support vector machine, and the…"
+          },
+          {
+            "source_doc": "eo_14110",
+            "node_id": "55835fdc71234aa9be15f38f644cc1d0",
+            "snippet": "The term ''machine learning'' means a set of techniques that can be used to train AI algorithms to imp…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "a469769f144f4f97bbe977538ddef329",
+            "snippet": "…engineers, data governance specialists, statisticians, machine learning engineers, applied scientists, designers, economists, operations researche…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "generative AI",
+      "surface_forms": [
+        "generative AI",
+        "GenAI",
+        "generative artificial intelligence"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "The class of AI models that emulate the structure and characteristics of input data in order to generate derived synthetic content such as images, videos, audio, text, and other digital content.",
+        "source": "EO 14110 §3(p)",
+        "source_url": "https://www.federalregister.gov/documents/2023/11/01/2023-24283",
+        "source_quality": "federal_primary",
+        "status": "superseded"
+      },
+      "alt_definitions": [],
+      "plain_language": "AI that produces new content — text, images, code, synthetic data — that looks like its training data but is newly generated, not retrieved from a database. Large language models are the most familiar kind.",
+      "fss_note": "Introduces confabulation risk when drafting statistical narratives or metadata, and is an emerging tool for synthetic-data generation for privacy-protective dissemination.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Introduces confabulation risk when drafting statistical narratives or metadata, and is an emerging tool for synthetic-data generation for privacy-protective dissemination.",
+        "citations": [
+          {
+            "source_doc": "eo_14319",
+            "node_id": "eo_14319#s69",
+            "snippet": "…term ''LLM'' means a large language model, which is a generative AI model trained on vast, diverse datasets that enable the model to generate…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "m_24_10#s533",
+            "snippet": "generative AI :: Generative AI: The term 'generative AI' has the meaning provided in Sec…"
+          },
+          {
+            "source_doc": "m_24_18",
+            "node_id": "m_24_18#s596",
+            "snippet": "…rms 'hallucination' and 'fabrication' anthropomorphize generative AI, which itself is a risk related to generative AI systems as it can inappro…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "large language model",
+      "surface_forms": [
+        "large language model",
+        "LLM"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "a class of language models that use deep-learning algorithms and are trained on extremely large textual datasets that can be multiple terabytes in size. LLMs can be classed into two types: generative or discriminatory.",
+        "source": "AI Assurance (2022), via NIST AI 100-3 (AIRC glossary)",
+        "source_url": "https://airc.nist.gov/glossary/",
+        "source_quality": "academic",
+        "status": "beta"
+      },
+      "alt_definitions": [],
+      "plain_language": "A generative-AI model trained on very large amounts of text that predicts likely next words, letting it answer questions, summarize, translate, and draft. It is a fluent pattern-matcher over language, not a database of verified facts — which is why it can state wrong things confidently (see confabulation).",
+      "fss_note": "The tool most FSS staff will actually touch. Useful for drafting and summarizing; unsafe for producing statistics or facts without verification. NIST AI 600-1 (Generative AI Profile) is the governing risk reference — pull its exact definition before formal use.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The tool most FSS staff will actually touch. Useful for drafting and summarizing; unsafe for producing statistics or facts without verification. NIST AI 600-1 (Generative AI Profile) is the governing risk reference — pull its exact definition before formal use.",
+        "citations": [
+          {
+            "source_doc": "eo_14319",
+            "node_id": "eo_14319#s69",
+            "snippet": "LLM' :: (c) The term ''LLM'' means a large language model, which is a generative AI model trained on vast, diverse datasets that ena…"
+          },
+          {
+            "source_doc": "eo_14110",
+            "node_id": "2e16c80a7fba4ddc9656a8134245d26e",
+            "snippet": "…I offerings that have the primary purpose of providing large language model-based chat interfaces, code-generation and debugging tools, and associated…"
+          },
+          {
+            "source_doc": "americas_ai_action_plan_2025",
+            "node_id": "americas_ai_action_plan_2025#s72",
+            "snippet": "…nsure that the government only contracts with frontier large language model (LLM) developers who ensure that their systems are objective and free from…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "foundation model",
+      "surface_forms": [
+        "foundation model",
+        "frontier model"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "In generative AI, models trained on broad data using self-supervised learning that can be adapted such as through fine-tuning for a variety of down­stream tasks.",
+        "source": "NIST AI 100-2e2025",
+        "source_url": "https://doi.org/10.6028/NIST.AI.100-2e2025",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "A very large model pre-trained on broad data that serves as a reusable base others adapt (fine-tune) for specific tasks. Most commercial LLMs are foundation models.",
+      "fss_note": "When an agency adopts a vendor foundation model, it inherits that model's training data, biases, and limitations — a value-chain risk that can collide with CIPSEA or SPD No. 15 category definitions.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "When an agency adopts a vendor foundation model, it inherits that model's training data, biases, and limitations — a value-chain risk that can collide with CIPSEA or SPD No. 15 category definitions.",
+        "citations": [
+          {
+            "source_doc": "m_24_10",
+            "node_id": "m_24_10#s530",
+            "snippet": "dual-use foundation model :: Dual-Use Foundation Model: The term 'dual-use foundation model' has the…"
+          },
+          {
+            "source_doc": "eo_14110",
+            "node_id": "2af50bc29d894141845350a34a0db54f",
+            "snippet": "The term ''dual-use foundation model'' means an AI model that is trained on broad data; generally uses self-sup…"
+          },
+          {
+            "source_doc": "m_24_18",
+            "node_id": "m_24_18#s210",
+            "snippet": "…in this memorandum to generative AI, in the form of a foundation model or other widely applicable generative AI system, that is acquired for gene…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "training data",
+      "surface_forms": [
+        "training data"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "A dataset from which a model is learned.",
+        "source": "AI Fairness 360, via NIST AI 100-3 (AIRC glossary)",
+        "source_url": "https://airc.nist.gov/glossary/",
+        "source_quality": "academic",
+        "status": "beta"
+      },
+      "alt_definitions": [],
+      "plain_language": "The examples a model learns from. The model's behavior, blind spots, and biases are inherited from this data — if a group is underrepresented in training data, the model tends to perform worse for that group.",
+      "fss_note": "Directly analogous to a sample frame's coverage: gaps in training data produce systematic errors the same way frame undercoverage does. FSS training data may come from administrative records or prior survey waves, each with CIPSEA and quality implications.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "sampling frame / sample coverage",
+        "relation": "analog_of",
+        "note": "Both determine who is represented in what the system 'knows.' Disanalogy: a frame's coverage is measurable against a known target population; training-data coverage often has no enumerable target, so its gaps are harder to quantify."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Directly analogous to a sample frame's coverage: gaps in training data produce systematic errors the same way frame undercoverage does. FSS training data may come from administrative records or prior survey waves, each with CIPSEA and quality implications.",
+        "citations": [
+          {
+            "source_doc": "nist_ai_rmf_100_1",
+            "node_id": "05c6ae61d4754deebd016a68a1165941",
+            "snippet": "Training data may also be subject to copyright and should follow applicable intellectual…"
+          },
+          {
+            "source_doc": "advancing_american_ai_act_2022",
+            "node_id": "advancing_american_ai_act_2022#s74",
+            "snippet": "(iv) include considerations for securing the training data, algorithms, and other components of any artificial intelligence system ag…"
+          },
+          {
+            "source_doc": "americas_ai_action_plan_2025",
+            "node_id": "americas_ai_action_plan_2025#s74",
+            "snippet": "…earch, which often relies on access to the weights and training data of a model to perform scientifically rigorous experiments."
+          }
+        ]
+      }
+    },
+    {
+      "term": "inference",
+      "surface_forms": [
+        "inference",
+        "model inference"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "The stage of ML in which a model is applied to a task. For example, a classifier model produces the classification of a test sample.",
+        "source": "NISTIR 8269 (draft), via NIST AI 100-3 (AIRC glossary)",
+        "source_url": "https://airc.nist.gov/glossary/",
+        "source_quality": "federal_primary",
+        "status": "beta"
+      },
+      "alt_definitions": [],
+      "plain_language": "In AI, 'inference' means running a trained model to get an output for a new input — the production step, after training. It does NOT mean drawing conclusions about a population.",
+      "fss_note": "A hard FALSE FRIEND. To a statistician, 'inference' means reasoning from a sample to a population (confidence intervals, hypothesis tests). To an ML engineer, 'inference' is just 'the model made a prediction.' Same word, different concept — confirm which sense is meant in any AI procurement or methods discussion.",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "statistical inference",
+        "relation": "false_friend",
+        "note": "Statistical inference quantifies uncertainty about a population parameter from a sample. ML inference is the forward pass of a fitted model on new inputs and carries no population-level uncertainty claim by itself."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "A hard FALSE FRIEND. To a statistician, 'inference' means reasoning from a sample to a population (confidence intervals, hypothesis tests). To an ML engineer, 'inference' is just 'the model made a prediction.' Same word, different concept — confirm which sense is meant in any AI procurement or methods discussion.",
+        "citations": [
+          {
+            "source_doc": "fcsm_20_04",
+            "node_id": "fe35ddd633c84fea92e7f1e529b6efc0",
+            "snippet": "…ata files to ensure confidentiality and any impacts on inference should be described. describe any changes made to data files to ensure con…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "174f53f432134940bedabc893f082631",
+            "snippet": "…mputing infrastructure specialized for AI training and inference, where necessary. ensure that their AI projects have access to adequate IT…"
+          },
+          {
+            "source_doc": "m_25_21",
+            "node_id": "4adea67cf491433cbc75b424cb5812a0",
+            "snippet": "…mputing infrastructure specialized for AI training and inference, where necessary. ensure that their AI projects have access to adequate IT…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "model drift",
+      "surface_forms": [
+        "model drift",
+        "drift",
+        "concept drift"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "[concept drift] an online supervised learning scenario when the relation between the input data and the target variable changes over time.",
+        "source": "Gama et al. (concept drift), via NIST AI 100-3 (AIRC glossary)",
+        "source_url": "https://airc.nist.gov/glossary/",
+        "source_quality": "academic",
+        "status": "beta"
+      },
+      "alt_definitions": [
+        {
+          "text": "Systems that classify or predict a concept (e.g., credit ratings or computer intrusion monitors) over time can suffer performance loss when the concept they are tracking changes.",
+          "source": "Raynor, via NIST AI 100-3 (AIRC glossary)",
+          "source_url": "https://airc.nist.gov/glossary/",
+          "source_quality": "academic",
+          "status": "beta"
+        },
+        {
+          "text": "Use of a system outside the planned domain of application, and a common cause of performance gaps between laboratory settings and the real world.",
+          "source": "NIST SP 1270, via NIST AI 100-3 (AIRC glossary)",
+          "source_url": "https://doi.org/10.6028/NIST.SP.1270",
+          "source_quality": "federal_primary",
+          "status": "beta"
+        }
+      ],
+      "plain_language": "When a deployed model's accuracy decays over time because the world it sees no longer matches the world it was trained on (populations shift, definitions change, behavior changes). It degrades silently unless you monitor for it.",
+      "fss_note": "Closely analogous to a sampling frame going stale or mode effects shifting across survey cycles — the instrument slowly stops measuring what it used to.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "temporal nonsampling error / frame obsolescence",
+        "relation": "analog_of",
+        "note": "Both are degradation of a fixed instrument as the target population moves. Disanalogy: frame obsolescence is auditable against updated frames; model drift needs explicit performance monitoring to detect."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Closely analogous to a sampling frame going stale or mode effects shifting across survey cycles — the instrument slowly stops measuring what it used to.",
+        "citations": [
+          {
+            "source_doc": "m_24_18",
+            "node_id": "m_24_18#s160",
+            "snippet": "…nducting corrective maintenance due to data, model, or concept drift.' NIST AI RMF, Appendix B:"
+          },
+          {
+            "source_doc": "nist_ai_rmf_100_1",
+            "node_id": "nist_ai_rmf_100_1#s1002",
+            "snippet": "…nducting corrective maintenance due to data, model, or concept drift."
+          },
+          {
+            "source_doc": "nist_ai_rmf_playbook",
+            "node_id": "nist_ai_rmf_playbook#s88",
+            "snippet": "…r the AI is deployed? How much distributional shift or model drift from baseline performance is acceptable?"
+          }
+        ]
+      }
+    },
+    {
+      "term": "synthetic data",
+      "surface_forms": [
+        "synthetic data",
+        "synthetic microdata"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "A process in which seed data are used to create artificial data that have some of the statistical characteristics of the seed data.",
+        "source": "NIST SP 800-188",
+        "source_url": "https://doi.org/10.6028/NIST.SP.800-188",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [
+        {
+          "text": "a process in which seed data is used to create artificial data that has some of the statistical characteristics as the seed data",
+          "source": "NISTIR 8053",
+          "source_url": "https://doi.org/10.6028/NIST.IR.8053",
+          "source_quality": "federal_primary",
+          "status": "active"
+        }
+      ],
+      "plain_language": "Artificially generated records that mimic the statistical properties of real data without being any real person's actual record. Used for privacy-protective sharing, testing, and model training.",
+      "fss_note": "An emerging disclosure-avoidance tool: synthetic microdata products let researchers work with statistically representative data while protecting Title 13 / CIPSEA confidentiality. Utility and disclosure risk must both be assessed.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "An emerging disclosure-avoidance tool: synthetic microdata products let researchers work with statistically representative data while protecting Title 13 / CIPSEA confidentiality. Utility and disclosure risk must both be assessed.",
+        "citations": [
+          {
+            "source_doc": "acdeb_final_report_2022",
+            "node_id": "acdeb_final_report_2022#s368",
+            "snippet": "…ionize evidence-building efforts. Approaches including synthetic data with validation servers and secure remote access are used by federal stati…"
+          },
+          {
+            "source_doc": "icsp_private_datasets_2023",
+            "node_id": "icsp_private_datasets_2023#s536",
+            "snippet": "The data will be used for modeling and the creation of synthetic data. We have yet to start this process. Creating synthetic data is not somethi…"
+          },
+          {
+            "source_doc": "nist_genai_profile_600_1",
+            "node_id": "nist_genai_profile_600_1#s105",
+            "snippet": "…l collapse can occur when model training overrelies on synthetic data, resulting in data points disappearing from the distribution of the new mo…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "differential privacy",
+      "surface_forms": [
+        "differential privacy",
+        "DP",
+        "formal privacy"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "A rigorous mathematical definition of disclosure that considers the risk that an individual's confidential data may be learned as a result of a mathematical analysis based on that data being made publicly available.",
+        "source": "NIST SP 800-188",
+        "source_url": "https://doi.org/10.6028/NIST.SP.800-188",
+        "source_quality": "federal_primary",
+        "status": "contested"
+      },
+      "alt_definitions": [
+        {
+          "text": "A mathematical framework that quantifies privacy risk to individuals as a consequence of data collection and subsequent data release.",
+          "source": "NIST SP 800-226",
+          "source_url": "https://doi.org/10.6028/NIST.SP.800-226",
+          "source_quality": "federal_primary",
+          "status": "contested"
+        }
+      ],
+      "plain_language": "A mathematical guarantee that adding or removing any one person's data barely changes what is published, so an attacker cannot reliably tell whether you were in the dataset. The protection is tunable by a 'privacy-loss budget' (epsilon): more privacy means more noise and less accuracy.",
+      "fss_note": "The Census Bureau's Disclosure Avoidance System applied formal differential privacy to 2020 Census products — the first nationwide federal use. NIST publishes two official definitions (SP 800-188 and SP 800-226); both are kept here. Politically contested inside Commerce (see DAO-216-26).",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "statistical disclosure limitation (formal)",
+        "relation": "instance_of",
+        "note": "DP is a formal, provable form of SDL with a quantified privacy-accuracy trade-off. Disanalogy: traditional SDL (cell suppression, swapping) gives heuristic protection with no formal bound; DP gives a provable bound at an explicit, debated accuracy cost."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The Census Bureau's Disclosure Avoidance System applied formal differential privacy to 2020 Census products — the first nationwide federal use. NIST publishes two official definitions (SP 800-188 and SP 800-226); both are kept here. Politically contested inside Commerce (see DAO-216-26).",
+        "citations": [
+          {
+            "source_doc": "eo_14110",
+            "node_id": "eo_14110#s880",
+            "snippet": "…wledge proofs, federated learning, secure enclaves, differential privacy, and synthetic-data-generation tools. This is also sometimes referred to a…"
+          },
+          {
+            "source_doc": "acdeb_final_report_2022",
+            "node_id": "03368175b00b4bddbe8a2eb7f4b4c772",
+            "snippet": "…omomorphic encryption, trusted execution environments, differential privacy, and zero knowledge proofs, most of which the Committee learned is already…"
+          },
+          {
+            "source_doc": "m_25_05",
+            "node_id": "aad92847d06f477e8af6582a9260ccb9",
+            "snippet": "…knowingly inaccurate data, such as noise injection or differential privacy, must be accompanied with: be accompanied with:"
+          }
+        ]
+      }
+    },
+    {
+      "term": "de-identification",
+      "surface_forms": [
+        "de-identification",
+        "de-identify"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "General term for any process of removing the association between a set of identifying data and the data subject.",
+        "source": "NIST SP 800-188 (De-Identifying Government Datasets)",
+        "source_url": "https://doi.org/10.6028/NIST.SP.800-188",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "Stripping or masking the parts of a record that point to a specific person, so the data can be used without exposing identities. Note: de-identified is not the same as re-identification-proof — combinations of remaining fields can still single someone out.",
+      "fss_note": "The umbrella practice under which suppression, swapping, noise injection, and differential privacy all sit. CIPSEA's 'identifiable form' standard (44 U.S.C. § 3561) is the legal target de-identification must defeat.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The umbrella practice under which suppression, swapping, noise injection, and differential privacy all sit. CIPSEA's 'identifiable form' standard (44 U.S.C. § 3561) is the legal target de-identification must defeat.",
+        "citations": [
+          {
+            "source_doc": "cipsea_2018",
+            "node_id": "31a55e7dbd1a4ff7bb12f6d5d4f2d058",
+            "snippet": "…any statistical and related techniques to protect and de-identify confidential data. designate the Chief Data Officer of an agency on the ba…"
+          },
+          {
+            "source_doc": "m_19_23",
+            "node_id": "6bebd4d05c0a4af186c25d6f2112b3d9",
+            "snippet": "…any statistical and related techniques to protect and de-identify confidential data. be designated on the basis of demonstrated training and…"
+          },
+          {
+            "source_doc": "pra_1995_uslm",
+            "node_id": "d7403a6b724f4897892fad84b26e0672",
+            "snippet": "…any statistical and related techniques to protect and de-identify confidential data. designate the Chief Data Officer of an agency on the ba…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "re-identification",
+      "surface_forms": [
+        "re-identification",
+        "re-identify"
+      ],
+      "tier": "ai_core",
+      "definition": {
+        "text": "''identifiable form'' means any representation of information that permits the identity of the respondent to whom the information applies to be reasonably inferred by either direct or indirect means.",
+        "source": "CIPSEA 2018 §3561(7) — 'identifiable form' (the re-identification standard)",
+        "source_url": "https://www.govinfo.gov/app/details/PLAW-115publ435",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The reverse of de-identification: using leftover fields, outside data, or clever attacks to figure out who a 'de-identified' record actually is. FSS law defines the line in terms of whether identity can be 'reasonably inferred' by direct OR indirect means.",
+      "fss_note": "The legal harm CIPSEA confidentiality protections exist to prevent; the 'reasonably inferred by direct or indirect means' test is what disclosure-avoidance methods are measured against.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The legal harm CIPSEA confidentiality protections exist to prevent; the 'reasonably inferred by direct or indirect means' test is what disclosure-avoidance methods are measured against.",
+        "citations": [
+          {
+            "source_doc": "sap_policy_m_23_04",
+            "node_id": "ce95720673b8490e94d1ca72938fe2b5",
+            "snippet": "…action of the agency or unit that minimize the risk of re-identification of individuals, organizations, or establishments to proposed statistical d…"
+          },
+          {
+            "source_doc": "wp_22",
+            "node_id": "39be83a2e7634744b0bb4b3eb644ad2d",
+            "snippet": "…it can be used in conjunction with other variables to re-identify a record even though it may not exactly identify a linkage between two rec…"
+          },
+          {
+            "source_doc": "acdeb_final_report_2022",
+            "node_id": "acdeb_final_report_2022#s530",
+            "snippet": "…y. If data users could share the responsibility not to re-identify data, that could further buffer against the need for zero risk. Mandating…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "high-impact AI",
+      "surface_forms": [
+        "high-impact AI",
+        "high-impact AI use case"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "AI with an output that serves as a principal basis for decisions or actions that have a legal, material, binding, or significant effect on rights or safety.",
+        "source": "OMB M-25-21 (Apr. 3, 2025)",
+        "source_url": "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The federal government's label for the AI uses that can actually hurt people or violate rights, which therefore get the strictest oversight. Under the current memo (M-25-21) this single 'high-impact' category replaced the older split of 'safety-impacting' vs 'rights-impacting' (M-24-10).",
+      "fss_note": "Determines which agency AI tools trigger minimum risk-management practices (pre-deployment testing, impact assessment, ongoing monitoring). Most core statistical-production AI is not high-impact, but tools informing individual determinations can be.",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "high-impact system (FIPS 199)",
+        "relation": "false_friend",
+        "note": "FALSE FRIEND: NIST's cybersecurity 'high-impact system' (FIPS 199) is about confidentiality/integrity/availability impact, NOT the OMB AI rights/safety sense. Don't conflate them."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Determines which agency AI tools trigger minimum risk-management practices (pre-deployment testing, impact assessment, ongoing monitoring). Most core statistical-production AI is not high-impact, but tools informing individual determinations can be.",
+        "citations": [
+          {
+            "source_doc": "m_25_22",
+            "node_id": "m_25_22#s168",
+            "snippet": "high-impact AI :: 23 The term \"high-impact AI\" has the meaning provided in 0MB Memorandu…"
+          },
+          {
+            "source_doc": "m_25_21",
+            "node_id": "bc5f5a8602a943a290d1b246b5c43d54",
+            "snippet": "…Section 4(b) of this memorandum, to manage risks from high-impact AI use cases. implement minimum risk management practices, detailed in Sectio…"
+          },
+          {
+            "source_doc": "eo_14110",
+            "node_id": "eo_14110#s654",
+            "snippet": "…31 U.S.C. 901(b) develop AI strategies and pursue high-impact AI use cases;"
+          }
+        ]
+      }
+    },
+    {
+      "term": "AI use case inventory",
+      "surface_forms": [
+        "AI use case inventory",
+        "use case inventory"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "An annual, public inventory of an agency's AI use cases, identifying high-impact use cases and describing associated risks and mitigations, required of federal agencies.",
+        "source": "OMB M-25-21 (Apr. 3, 2025)",
+        "source_url": "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "A yearly, public list every federal agency must publish of where it uses AI, flagging the high-impact uses and how it manages their risks. It is the main transparency mechanism for federal AI.",
+      "fss_note": "Statistical agencies must inventory production AI tools — imputation models, automated coding, disclosure-avoidance systems — beginning with the 2024 cycle.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Statistical agencies must inventory production AI tools — imputation models, automated coding, disclosure-avoidance systems — beginning with the 2024 cycle.",
+        "citations": [
+          {
+            "source_doc": "americas_ai_action_plan_2025",
+            "node_id": "982d5a78ccf9460d9c54d253d1c364ae",
+            "snippet": "…g of other agency AI uses (based on OMB's pre-existing AI Use Case Inventory). have ample flexibility to customize models to their own ends, as well as…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "2a3a159ee467473abb44dc9f256def8d",
+            "snippet": "…eport them to OMB, either as a component of the annual AI use case inventory, periodic accountability reviews, or upon request as determined by OMB. do…"
+          },
+          {
+            "source_doc": "m_24_18",
+            "node_id": "49fa64692a2349f79b72c9dbee67f5bb",
+            "snippet": "…e AI system for, relying as appropriate on the Federal AI Use Case Inventory and any additional resources provided by OMB, GSA, or NIST. estimate the m…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "Chief AI Officer",
+      "surface_forms": [
+        "Chief AI Officer",
+        "CAIO"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "A senior agency official designated under OMB AI guidance to coordinate and oversee the agency's use of AI, including its risk management and the AI use case inventory.",
+        "source": "OMB M-25-21 (Apr. 3, 2025); originally OMB M-24-10",
+        "source_url": "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The senior official each agency must name to own its AI strategy, governance, and risk. In statistical agencies this role overlaps with the Chief Data Officer and Statistical Official.",
+      "fss_note": "The CAIO's remit intersects the CDO and Statistical Official; in an FSS agency, AI-assisted collection and dissemination create shared responsibility across these roles.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The CAIO's remit intersects the CDO and Statistical Official; in an FSS agency, AI-assisted collection and dissemination create shared responsibility across these roles.",
+        "citations": [
+          {
+            "source_doc": "m_24_10",
+            "node_id": "5b1ad8a5f7fd43df9f65e27941e6024c",
+            "snippet": "each agency must designate a Chief AI Officer (CAIO) within 60 days of the date of the issuance of this memorandum"
+          },
+          {
+            "source_doc": "m_25_21",
+            "node_id": "ceaeeaa2bce94aedb7d825c20a13e448",
+            "snippet": "Agencies must identify a Chief AI Officer to champion their agency's AI goals by advising on how to make these impro…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "AI impact assessment",
+      "surface_forms": [
+        "AI impact assessment",
+        "AI impact analysis"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "A structured, pre-deployment and ongoing evaluation of an AI use case's intended purpose, expected benefit, and potential risks, required as a minimum practice for high-impact (formerly safety-/rights-impacting) AI.",
+        "source": "OMB M-25-21 (Apr. 3, 2025); cf. OMB M-24-10 §5",
+        "source_url": "https://www.whitehouse.gov/wp-content/uploads/2025/02/M-25-21-Accelerating-Federal-Use-of-AI-through-Innovation-Governance-and-Public-Trust.pdf",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "A required write-up, before you turn an AI tool on (and repeated periodically), of what it's for, who it could harm, and how you'll manage that. The AI equivalent of a methods-and-limitations review.",
+      "fss_note": "Principal statistical agencies must complete these for qualifying tools.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "SPD No. 2 quality review / methodology review",
+        "relation": "analog_of",
+        "note": "Both are structured pre-release reviews of accuracy, fitness, and risk. Disanalogy: an AI impact assessment centers rights/safety harms and bias, which a classical quality review does not foreground."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Principal statistical agencies must complete these for qualifying tools.",
+        "citations": [
+          {
+            "source_doc": "m_25_21",
+            "node_id": "b150f9c03d794a7aab798a21249d54a6",
+            "snippet": "Agencies must complete an AI impact assessment before deploying any high-impact AI use case. complete an AI impact assess…"
+          },
+          {
+            "source_doc": "m_25_22",
+            "node_id": "f75ca2c695af4bb8ad87fa34c04d0e17",
+            "snippet": "…tive information from vendors to complete the required AI Impact Assessment for high-impact use cases require sufficient descriptive information from…"
+          },
+          {
+            "source_doc": "nist_ai_rmf_100_1",
+            "node_id": "nist_ai_rmf_100_1#s982",
+            "snippet": "…rpret outputs in support of work performed by TEVV and AI impact assessment teams."
+          }
+        ]
+      }
+    },
+    {
+      "term": "algorithmic bias",
+      "surface_forms": [
+        "algorithmic bias",
+        "AI bias"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "Systematic and repeatable errors in an AI system that create unfair outcomes, such as privileging one group over another; arising from data, modeling choices, or human/societal factors (NIST distinguishes systemic, statistical/computational, and human-cognitive bias).",
+        "source": "NIST SP 1270 (Towards a Standard for Identifying and Managing Bias in AI)",
+        "source_url": "https://doi.org/10.6028/NIST.SP.1270",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "When an AI system is systematically wrong in a way that disadvantages a particular group — often because the training data or design baked in an existing skew. It is not random error; it is patterned and tends to track demographic lines.",
+      "fss_note": "Central risk when AI is used for demographic estimation, record linkage, or automated classification; can deepen undercoverage of underrepresented groups.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "nonresponse bias / differential measurement error",
+        "relation": "analog_of",
+        "note": "Both are systematic (not random) distortions that hit specific subgroups. Disanalogy: nonresponse bias has an established estimation/adjustment theory; algorithmic bias often lacks a measurable true value to adjust toward."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Central risk when AI is used for demographic estimation, record linkage, or automated classification; can deepen undercoverage of underrepresented groups.",
+        "citations": [
+          {
+            "source_doc": "nist_ai_rmf_100_1",
+            "node_id": "nist_ai_rmf_100_1#s241",
+            "snippet": "…iveness. NIST has identified three major categories of AI bias to be considered and managed: systemic, computational and statistical, and…"
+          },
+          {
+            "source_doc": "nist_ai_rmf_playbook",
+            "node_id": "nist_ai_rmf_playbook#s358",
+            "snippet": "…dhury and Jutta Williams, \"Introducing Twitter's first algorithmic bias bounty challenge,\" Leonard Haas and Sebastian Gießler, 'In the realm of pa…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "AI red-teaming",
+      "surface_forms": [
+        "AI red-teaming",
+        "red-teaming",
+        "red team"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "A group of people authorized and organized to emulate a potential adversary’s attack or exploitation capabilities against an enterprise’s security posture. The Red Team’s objective is to improve enterprise cybersecurity by demonstrating the impacts of successful attacks and by demonstrating what works for the defenders (i.e., the Blue Team) in an operational environment. Also known as Cyber Red Team.",
+        "source": "CNSSI 4009-2015 (cybersecurity sense)",
+        "source_url": "https://www.cnss.gov/CNSS/issuances/Instructions.cfm",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "Deliberately attacking your own AI system — feeding it adversarial or edge-case inputs — to find where it fails, produces biased or harmful output, or can be manipulated, before real-world use. AI red-teaming adapts the cybersecurity practice to model behavior, not just security.",
+      "fss_note": "Can stress-test FSS AI tools for demographic bias in classification, failure on edge-case data, or manipulation of public-facing NLP systems.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "cognitive testing / respondent debriefing / reinterview",
+        "relation": "analog_of",
+        "note": "Both adversarially probe an instrument for failure modes before production. Disanalogy: cognitive testing studies human comprehension of questions; AI red-teaming studies model behavior under adversarial inputs."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Can stress-test FSS AI tools for demographic bias in classification, failure on edge-case data, or manipulation of public-facing NLP systems.",
+        "citations": [
+          {
+            "source_doc": "eo_14110",
+            "node_id": "eo_14110#s866",
+            "snippet": "AI red-teaming' :: (d) The term ''AI red-teaming'' means a structured testing ef…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "m_24_10#s522",
+            "snippet": "AI red-teaming :: AI Red-Teaming: The term 'AI red-teaming' has the meaning provided for…"
+          },
+          {
+            "source_doc": "m_24_18",
+            "node_id": "m_24_18#s602",
+            "snippet": "red-teaming :: Red-teaming: The term 'red-teaming' has the meaning provided in Section…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "explainability",
+      "surface_forms": [
+        "explainability",
+        "interpretability",
+        "explainable AI"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "A property of AI systems concerning the degree to which the reasons for an output can be represented in terms meaningful to a given audience; one of the trustworthy-AI characteristics (explainable and interpretable).",
+        "source": "NIST AI 100-1 (AI Risk Management Framework 1.0)",
+        "source_url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "Whether you can say, in terms a human can follow, WHY the AI produced a given output. A model can be accurate but unexplainable (a 'black box'), which is a problem when you must defend a methodology publicly.",
+      "fss_note": "FSS uses of AI for record linkage, imputation, or small-area estimation must be explainable to data users and oversight bodies, consistent with SPD No. 2 transparency expectations.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "methodology documentation / transparency (SPD No. 2)",
+        "relation": "analog_of",
+        "note": "Both make a result auditable and reproducible to outsiders. Disanalogy: methodology docs describe a designed procedure; explainability must reconstruct the behavior of a learned model that has no hand-written procedure."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "FSS uses of AI for record linkage, imputation, or small-area estimation must be explainable to data users and oversight bodies, consistent with SPD No. 2 transparency expectations.",
+        "citations": [
+          {
+            "source_doc": "americas_ai_action_plan_2025",
+            "node_id": "americas_ai_action_plan_2025#s15",
+            "snippet": "Invest in AI Interpretability, Control, and Robustness Breakthroughs ..................................…"
+          },
+          {
+            "source_doc": "m_25_22",
+            "node_id": "m_25_22#s75",
+            "snippet": "…aining documentation that facilitates transparency and explainability, 19 and that ensures an adequate means oftracking performance and effect…"
+          },
+          {
+            "source_doc": "nist_ai_rmf_100_1",
+            "node_id": "nist_ai_rmf_100_1#s155",
+            "snippet": "…e a result of the opaque nature of AI systems (limited explainability or interpretability), lack of transparency or documentation in AI system d…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "trustworthy AI",
+      "surface_forms": [
+        "trustworthy AI",
+        "responsible AI"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "AI that is valid and reliable, safe, secure and resilient, accountable and transparent, explainable and interpretable, privacy-enhanced, and fair with harmful bias managed.",
+        "source": "NIST AI 100-1 (AI Risk Management Framework 1.0)",
+        "source_url": "https://www.nist.gov/itl/ai-risk-management-framework",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "NIST's checklist of the seven properties an AI system needs to be worthy of trust. It is the evaluative baseline federal agencies use to judge whether an AI tool is acceptable.",
+      "fss_note": "The seven NIST characteristics form the assessment baseline for AI tools deployed by principal statistical agencies.",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "trustworthiness (FIPS/NIST cybersecurity)",
+        "relation": "false_friend",
+        "note": "FALSE FRIEND: NIST's cybersecurity 'trustworthiness' is about security/reliability of an information system; 'trustworthy AI' is the seven-characteristic AI-RMF construct. Different frameworks."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The seven NIST characteristics form the assessment baseline for AI tools deployed by principal statistical agencies.",
+        "citations": [
+          {
+            "source_doc": "eo_14110",
+            "node_id": "fc92cad3d7344f82a94939ef08dc28d1",
+            "snippet": "…r, to help ensure the development of safe, secure, and trustworthy AI systems, the Secretary of Commerce, acting through the Director of the Nat…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "191083381bd94c9e8838c4e349dd538f",
+            "snippet": "…upon existing internal enterprise capacity to support responsible AI innovation, take actions to strengthen their AI and AI-enabling talent, 18…"
+          },
+          {
+            "source_doc": "m_25_21",
+            "node_id": "30f209ac7e654ab782157ecc6b586f7f",
+            "snippet": "…by building upon their existing capabilities to drive responsible AI innovation, strengthen their AI and AI-enabling talent, and improve their…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "confabulation",
+      "surface_forms": [
+        "confabulation",
+        "fabrication"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "The production of confidently stated but erroneous or false content (also called 'hallucination' or 'fabrication') by a generative-AI system; identified by NIST as a pervasive generative-AI risk.",
+        "source": "NIST AI 600-1 (Generative AI Profile)",
+        "source_url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "When a generative model states something false as if it were true — invented citations, wrong numbers, made-up facts — fluently and without warning. NIST prefers 'confabulation' over 'hallucination' because the model isn't perceiving anything; it is filling a gap with a plausible-sounding guess.",
+      "fss_note": "Critical risk when LLMs draft statistical reports, generate metadata, or summarize findings; mandates human verification before any figure or claim is relied on. FALSE FRIEND: an FSS reader may hear 'confabulation/hallucination' as harmless creativity; it is a specific risk of confident fabrication, and it is NOT measurement error (it can invent referents).",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "measurement error",
+        "relation": "analog_of",
+        "note": "Both are content errors — a reported value departs from the truth. Disanalogy: measurement error is bounded around a true value and modeled as a distribution; confabulation invents referents that do not exist, so it has no true value to be bounded around."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Critical risk when LLMs draft statistical reports, generate metadata, or summarize findings; mandates human verification before any figure or claim is relied on. FALSE FRIEND: an FSS reader may hear 'confabulation/hallucination' as harmless creativity; it is a specific risk of confident fabrication, and it is NOT measurement error (it can invent referents).",
+        "citations": [
+          {
+            "source_doc": "m_24_18",
+            "node_id": "m_24_18#s596",
+            "snippet": "…menters have noted that the terms 'hallucination' and 'fabrication' anthropomorphize generative AI, which itself is a risk related to generat…"
+          },
+          {
+            "source_doc": "webb_nist_fcsm_crosswalk",
+            "node_id": "webb_nist_fcsm_crosswalk#s1487",
+            "snippet": "…AI 600-1 (Generative AI Profile) explicitly identifies confabulation (\"confidently stated but false content\") as an AI risk requiring continuou…"
+          },
+          {
+            "source_doc": "m_19_23",
+            "node_id": "m_19_23#s523",
+            "snippet": "…larity, and reproducibility and to insulate from bias, fabrication, falsification, censorship, or other threats to integrity;"
+          }
+        ]
+      }
+    },
+    {
+      "term": "information integrity",
+      "surface_forms": [
+        "information integrity"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "The risk that AI-generated content undermines accurate, truthful, and reliable information — including disinformation, propaganda, or manipulative content; generative-AI risk category in NIST AI 600-1.",
+        "source": "NIST AI 600-1 (Generative AI Profile)",
+        "source_url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The danger that AI-made content pollutes the information environment with convincing but false or manipulative material. For a statistical agency, the worry is AI-drafted public text that misstates the data.",
+      "fss_note": "Applies when agencies use generative AI for press releases, data-product narratives, or public-facing summaries — official statistics carry an authority that misinformation can borrow.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Applies when agencies use generative AI for press releases, data-product narratives, or public-facing summaries — official statistics carry an authority that misinformation can borrow.",
+        "citations": [
+          {
+            "source_doc": "nist_genai_profile_600_1",
+            "node_id": "nist_genai_profile_600_1#s49",
+            "snippet": "…iguration; Obscene, Degrading, and/or Abusive Content; Information Integrity; Information Security; 3) Ecosystem / societal risks (or systemic risks) :…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "automated decision system",
+      "surface_forms": [
+        "automated decision system",
+        "ADS",
+        "automated decision-making"
+      ],
+      "tier": "ai_governance",
+      "definition": {
+        "text": "a machine-based system that can, for a given set of human-defined objectives, make predictions, recommendations, or decisions influencing real or virtual environments.",
+        "source": "15 U.S.C. § 9401(3) (National AI Initiative Act of 2020)",
+        "source_url": "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title15-section9401",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [
+        {
+          "text": "OMB M-24-10 uses 'automated decision-making systems' as an operative term — e.g. in its definition of automation bias: 'the propensity for humans to inordinately favor suggestions from automated decision-making systems and to ignore or fail to seek out contradictory information.'",
+          "source": "OMB M-24-10 (federal AI-governance usage)",
+          "source_url": "https://www.whitehouse.gov/wp-content/uploads/2024/03/M-24-10-Advancing-Governance-Innovation-and-Risk-Management-for-Agency-Use-of-Artificial-Intelligence.pdf",
+          "source_quality": "federal_primary",
+          "status": "active"
+        },
+        {
+          "text": "any technology that either assists or replaces the judgement of human decision-makers.",
+          "source": "Treasury Board of Canada Secretariat, Directive on Automated Decision-Making (2021)",
+          "source_url": "https://www.tbs-sct.canada.ca/pol/doc-eng.aspx?id=32592",
+          "source_quality": "international_government",
+          "status": "active"
+        }
+      ],
+      "plain_language": "A computer process that makes a consequential decision about a person — or substantially drives a human's decision — with little or no meaningful human judgment (e.g. auto-approving or flagging a case). The concern is consequential decisions handed to software without meaningful human review.",
+      "fss_note": "No single U.S.-federal statutory definition of 'automated decision system' exists. The U.S.-federal anchors are the AI statutory definition (15 U.S.C. § 9401(3) — cited directly, NOT via the revoked EO 14110 that quotes it) and OMB AI-governance usage (M-24-10); the Canadian Treasury Board directive is the cleanest concise operational definition. Relevant in the FSS where data products feed individual-level determinations; pair with human-in-the-loop requirements.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "No single U.S.-federal statutory definition of 'automated decision system' exists. The U.S.-federal anchors are the AI statutory definition (15 U.S.C. § 9401(3) — cited directly, NOT via the revoked EO 14110 that quotes it) and OMB AI-governance usage (M-24-10); the Canadian Treasury Board directive is the cleanest concise operational definition. Relevant in the FSS where data products feed individual-level determinations; pair with human-in-the-loop requirements.",
+        "citations": [
+          {
+            "source_doc": "m_24_10",
+            "node_id": "3eeeabb24c2f43e98f33b7e4a6f6a8db",
+            "snippet": "…sity for humans to inordinately favor suggestions from automated decision-making systems and to ignore or fail to seek out contradictory information made w…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "disclosure avoidance",
+      "surface_forms": [
+        "disclosure avoidance",
+        "disclosure limitation"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "The set of methods to reduce the risk of disclosing information on individuals, businesses or other organizations. Such methods are only related to the dissemination step and are usually based on restricting the amount of or modifying the data released.",
+        "source": "NIST SP 800-188 (statistical disclosure control)",
+        "source_url": "https://doi.org/10.6028/NIST.SP.800-188",
+        "source_quality": "federal_primary",
+        "status": "contested"
+      },
+      "alt_definitions": [],
+      "plain_language": "The whole set of methods agencies apply before releasing statistics so that no individual respondent can be identified — suppression, rounding, swapping, noise injection, differential privacy. Required by the confidentiality statutes.",
+      "fss_note": "Required by Title 13, CIPSEA, and agency statutes. The Census Bureau's Disclosure Avoidance System (DAS) implemented differential privacy at scale for the 2020 Census. The choice of method is politically contested inside Commerce (see DAO-216-26).",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "differential privacy / cell suppression / swapping",
+        "relation": "umbrella_of",
+        "note": "Disclosure avoidance is the goal; DP, suppression, swapping, and noise injection are alternative methods that achieve it with different utility/privacy trade-offs."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Required by Title 13, CIPSEA, and agency statutes. The Census Bureau's Disclosure Avoidance System (DAS) implemented differential privacy at scale for the 2020 Census. The choice of method is politically contested inside Commerce (see DAO-216-26).",
+        "citations": [
+          {
+            "source_doc": "acdeb_final_report_2022",
+            "node_id": "fa314909982341158957af608e7e8de2",
+            "snippet": "…ilitate the development and application of statistical disclosure limitation facilitate the development and application of statistical disclosure limit…"
+          },
+          {
+            "source_doc": "cipsea_2002_implementation_guidance",
+            "node_id": "6768c5d55f3c46cb98b21d980333bbee",
+            "snippet": "The agency shall determine how the disclosure limitation methods used on the data affect the users and thus what information about…"
+          },
+          {
+            "source_doc": "fcsm_20_04",
+            "node_id": "d2352b984b5f4f5cb7f5c038256753cd",
+            "snippet": "agencies may choose to use disclosure avoidance techniques or establish special user access provisions as highlighted unde…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "statistical disclosure limitation",
+      "surface_forms": [
+        "statistical disclosure limitation",
+        "SDL",
+        "statistical disclosure control"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "The set of methods to reduce the risk of disclosing information on individuals, businesses or other organizations. Such methods are only related to the dissemination step and are usually based on restricting the amount of or modifying the data released.",
+        "source": "NIST SP 800-188",
+        "source_url": "https://doi.org/10.6028/NIST.SP.800-188",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The technical name for the family of methods that reduce the risk that a published statistic reveals information about a specific individual or business. In the FSS this is the methodological core of disclosure avoidance.",
+      "fss_note": "The canonical FSS reference is FCSM Statistical Policy Working Paper 22, 'Report on Statistical Disclosure Limitation Methodology' (in this corpus as wp_22). Differential privacy is a formal member of this family.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "disclosure avoidance",
+        "relation": "synonym_near",
+        "note": "Used nearly interchangeably; 'disclosure avoidance' is the Census Bureau's operational term, 'statistical disclosure limitation/control' the methodological literature's term."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The canonical FSS reference is FCSM Statistical Policy Working Paper 22, 'Report on Statistical Disclosure Limitation Methodology' (in this corpus as wp_22). Differential privacy is a formal member of this family.",
+        "citations": [
+          {
+            "source_doc": "acdeb_final_report_2022",
+            "node_id": "fa314909982341158957af608e7e8de2",
+            "snippet": "…S should facilitate the development and application of statistical disclosure limitation facilitate the development and application of statistical disclosure limit…"
+          },
+          {
+            "source_doc": "m_25_05",
+            "node_id": "7ee70c71e5aa4a57a79b314c053f26de",
+            "snippet": "agencies may employ data analysis and statistical disclosure limitation and privacy enhancing techniques 88 to help manage and reduce the risk of…"
+          },
+          {
+            "source_doc": "wp_22",
+            "node_id": "5e9b1f2962b64104a603086863c6b138",
+            "snippet": "…aders who are already familiar with the methodology of statistical disclosure limitation may prefer to skip directly to Chapter III, which describes agency practic…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "measurement error",
+      "surface_forms": [
+        "measurement error"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "Measurement error is the difference between the true value of the measurement and the value obtained during the measurement process.",
+        "source": "U.S. Census Bureau Statistical Quality Standards — Glossary",
+        "source_url": "https://www2.census.gov/about/policies/quality/quality-standards.pdf",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The gap between the answer recorded and the true value, caused by the respondent, interviewer, question wording, mode, or records. One of the components of nonsampling error.",
+      "fss_note": "A core FSS quality concept (U.S. Census Bureau Statistical Quality Standards; the D3 standard in this corpus is about producing measures of it). Its AI relevance: NLP tools parsing open-ended responses can introduce systematic measurement error that varies by respondent group, which is the bridge to AI confabulation/bias.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "confabulation (generative AI)",
+        "relation": "analog_of",
+        "note": "Both are content errors relative to a true value. Disanalogy: measurement error is bounded by a true value; confabulation can invent non-existent referents."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "A core FSS quality concept (U.S. Census Bureau Statistical Quality Standards; the D3 standard in this corpus is about producing measures of it). Its AI relevance: NLP tools parsing open-ended responses can introduce systematic measurement error that varies by respondent group, which is the bridge to AI confabulation/bias.",
+        "citations": [
+          {
+            "source_doc": "fcsm_20_04",
+            "node_id": "f9bdb8ca85e546108ceac5db7625cc52",
+            "snippet": "Alternatively, the term 'measurement error' may refer to the variance (or standard deviation) of that difference."
+          },
+          {
+            "source_doc": "wp_31",
+            "node_id": "c075cef2d26b4f19813d6152a830eb81",
+            "snippet": "…ve, sampling error, nonresponse error, coverage error, measurement error, and processing error, should be described and accounted for when reportin…"
+          },
+          {
+            "source_doc": "wp_47",
+            "node_id": "fbc4d1046c5944e4b98cae9a3a75e463",
+            "snippet": "they may also be aimed at reducing measurement error be aimed at reducing measurement error"
+          }
+        ]
+      }
+    },
+    {
+      "term": "nonsampling error",
+      "surface_forms": [
+        "nonsampling error"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "Nonsampling errors are survey errors caused by factors other than sampling (e.g., nonsampling errors include errors in coverage, response errors, nonresponse errors, faulty questionnaires, interviewer recording errors, and processing errors).",
+        "source": "U.S. Census Bureau Statistical Quality Standards — Glossary",
+        "source_url": "https://www2.census.gov/about/policies/quality/quality-standards.pdf",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "Every source of error in a statistic that is NOT from random sampling — coverage gaps, nonresponse, measurement error, processing mistakes. Often the dominant error in large surveys, and harder to quantify than sampling error.",
+      "fss_note": "The FSS error framework (Census Statistical Quality Standards; the D3 standard in this corpus) that AI systems must be evaluated against — AI can both introduce and mitigate nonsampling error, so it must be judged on all these dimensions, not just predictive accuracy.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "model error / bias + drift (AI)",
+        "relation": "analog_of",
+        "note": "Nonsampling error is the FSS's mature taxonomy of non-random error; AI bias, drift, and confabulation map onto its branches (coverage, temporal, measurement)."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The FSS error framework (Census Statistical Quality Standards; the D3 standard in this corpus) that AI systems must be evaluated against — AI can both introduce and mitigate nonsampling error, so it must be judged on all these dimensions, not just predictive accuracy.",
+        "citations": [
+          {
+            "source_doc": "wp_31",
+            "node_id": "56335aef8ef54c5abdf0a120fcf44fed",
+            "snippet": "…are subject to sampling error (if a sample survey) and nonsampling error. state that the data reported are subject to sampling error (if a sample s…"
+          },
+          {
+            "source_doc": "census_sqs_d3",
+            "node_id": "d4bc6588d7b94efb9de4077d27838425",
+            "snippet": "Measures or indicators of nonsampling error associated with data from administrative records must be computed to infor…"
+          },
+          {
+            "source_doc": "census_sqs_f1",
+            "node_id": "a1e6e9913a014e19adbe41bc4bbe0558",
+            "snippet": "The information product must summarize any nonsampling error issues related to Requirement F1-6, item 2a (1 through 3). summarize any n…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "data asset",
+      "surface_forms": [
+        "data asset"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "the term 'data asset' means a collection of data elements or data sets that may be grouped together.",
+        "source": "CIPSEA 2018 / Evidence Act §3502 (44 U.S.C. § 3502)",
+        "source_url": "https://www.govinfo.gov/app/details/PLAW-115publ435",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "In FSS law, simply a defined collection of data that can be grouped and managed as a unit. It is a governance/inventory term, not a technical or security term.",
+      "fss_note": "Carried by CIPSEA/Evidence Act §3502 and referenced across OMB memos (M-24-10, M-25-21, M-23-04); 80+ obligations in this corpus attach to 'data asset' (open-data, inventory, and Standard Application Process access duties).",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "data asset (NIST/CNSSI cybersecurity)",
+        "relation": "false_friend",
+        "note": "FALSE FRIEND: NIST/CNSSI 4009 treats a 'data asset' as something to be secured (a cyber asset). The FSS statutory sense is a governed collection of data for inventory/access purposes. The obligations differ entirely."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Carried by CIPSEA/Evidence Act §3502 and referenced across OMB memos (M-24-10, M-25-21, M-23-04); 80+ obligations in this corpus attach to 'data asset' (open-data, inventory, and Standard Application Process access duties).",
+        "citations": [
+          {
+            "source_doc": "cipsea_2018",
+            "node_id": "cipsea_2018#s684",
+            "snippet": "…r section 3511(a), but does not include any underlying data asset listed on the inventory;"
+          },
+          {
+            "source_doc": "cipsea_2018_uslm",
+            "node_id": "cipsea_2018_uslm#s7",
+            "snippet": "data asset :: In this subchapter: The term “data asset” has the meaning given that te…"
+          },
+          {
+            "source_doc": "evidence_act_2018",
+            "node_id": "evidence_act_2018#s684",
+            "snippet": "…r section 3511(a), but does not include any underlying data asset listed on the inventory;"
+          }
+        ]
+      }
+    },
+    {
+      "term": "confidentiality",
+      "surface_forms": [
+        "confidentiality"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "The term 'confidentiality' means a quality or condition accorded to information as an obligation not to disclose that information to an unauthorized party.",
+        "source": "CIPSEA 2018 §3561(2) (44 U.S.C. § 3561)",
+        "source_url": "https://www.govinfo.gov/app/details/PLAW-115publ435",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "In FSS law, a binding duty NOT to disclose protected information to anyone unauthorized — a legal obligation, not just a security setting. CIPSEA makes willful unauthorized disclosure a federal crime.",
+      "fss_note": "The foundational FSS duty. Any AI use of statistical data inherits it: a model trained on confidential data cannot be deployed in a way that permits re-identification.",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "confidentiality (CIA triad, cybersecurity)",
+        "relation": "false_friend",
+        "note": "FALSE FRIEND: in cybersecurity 'confidentiality' is one leg of the CIA triad (a technical access-control property). In FSS law it is a statutory non-disclosure obligation with criminal penalties. Related spirit, very different force."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The foundational FSS duty. Any AI use of statistical data inherits it: a model trained on confidential data cannot be deployed in a way that permits re-identification.",
+        "citations": [
+          {
+            "source_doc": "cipsea_2018",
+            "node_id": "cipsea_2018#s725",
+            "snippet": "confidentiality :: ''(2) CONFIDENTIALITY.—The term 'confidentiality' means a quality or co…"
+          },
+          {
+            "source_doc": "cipsea_2018_uslm",
+            "node_id": "cipsea_2018_uslm#s158",
+            "snippet": "confidentiality :: In this section: The term “confidentiality” means a quality or conditio…"
+          },
+          {
+            "source_doc": "eo_14110",
+            "node_id": "eo_14110#s880",
+            "snippet": "…anageability, disassociability, storage, security, and confidentiality. These technological means may include secure multiparty computation, hom…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "statistical product",
+      "surface_forms": [
+        "statistical product",
+        "statistical products"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "Statistical products are the data and information (tables, estimates, microdata, analyses) disseminated by a statistical agency; the Trust Regulation frames duties of equitable access to and transparency about statistical products.",
+        "source": "Fundamental Responsibilities of RSAUs — 'Trust Regulation' (5 CFR Part 1321)",
+        "source_url": "https://www.federalregister.gov/documents/2024/10/11/2024-23536",
+        "source_quality": "federal_primary",
+        "status": "contested"
+      },
+      "alt_definitions": [],
+      "plain_language": "The published outputs of a statistical agency — the tables, estimates, and microdata it releases. FSS rules require they be produced with quality, released equitably, and documented transparently.",
+      "fss_note": "Governed by SPD No. 1/No. 4 and the 2024 Trust Regulation (5 CFR 1321); the disclosure-avoidance method applied to a statistical product is the live policy question in DAO-216-26.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Governed by SPD No. 1/No. 4 and the 2024 Trust Regulation (5 CFR 1321); the disclosure-avoidance method applied to a statistical product is the live policy question in DAO-216-26.",
+        "citations": [
+          {
+            "source_doc": "trust_regulation_nprm",
+            "node_id": "trust_regulation_nprm#s1684",
+            "snippet": "…ble access :: (g) The term equitable access means that statistical products are disseminated in a manner that does not privilege any one person or gro…"
+          },
+          {
+            "source_doc": "spd_1",
+            "node_id": "1bb4a1711aa24127a6c15c73a6e7a6a9",
+            "snippet": "…analysis, when and how to store and disseminate their statistical products, and which staff to select to join their agencies. be able to conduct stat…"
+          },
+          {
+            "source_doc": "spd_4",
+            "node_id": "0cfdbae75f7d4bb58f2cd7a4e49aff5f",
+            "snippet": "statistical products must gain and preserve the trust of the respondent and user communities ga…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "noise injection",
+      "surface_forms": [
+        "noise injection",
+        "noise infusion"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "A de-identification technique that modifies a dataset by adding random values to the values of a selected attribute.",
+        "source": "NIST SP 800-188",
+        "source_url": "https://doi.org/10.6028/NIST.SP.800-188",
+        "source_quality": "federal_primary",
+        "status": "contested"
+      },
+      "alt_definitions": [],
+      "plain_language": "A disclosure-avoidance technique that protects respondents by adding small random values to data before release, so no single published number pins down one person. Differential privacy is a formal, calibrated way of doing this.",
+      "fss_note": "NIST defines it as a de-identification technique (SP 800-188). In the FSS it is one method of disclosure avoidance, closely tied to differential privacy. CONTESTED: DAO-216-26 (DOC, June 2026) bans 'noise injection' while OMB M-25-05 permits the technique with documentation — the conflict the KG surfaced (see docs/2026-06-22_lab_notes_m25_05_s317_closed.md). Stated neutrally; not adjudicated here.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "differential privacy",
+        "relation": "method_family",
+        "note": "Differential privacy is a formal, provably-calibrated form of noise injection; 'noise injection' also covers informal/heuristic noise addition without a formal privacy guarantee. M-25-05 footnote 89 names the two together."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "NIST defines it as a de-identification technique (SP 800-188). In the FSS it is one method of disclosure avoidance, closely tied to differential privacy. CONTESTED: DAO-216-26 (DOC, June 2026) bans 'noise injection' while OMB M-25-05 permits the technique with documentation — the conflict the KG surfaced (see docs/2026-06-22_lab_notes_m25_05_s317_closed.md). Stated neutrally; not adjudicated here.",
+        "citations": [
+          {
+            "source_doc": "m_25_05",
+            "node_id": "aad92847d06f477e8af6582a9260ccb9",
+            "snippet": "…que that results in knowingly inaccurate data, such as noise injection or differential privacy, must be accompanied with: be accompanied with:"
+          },
+          {
+            "source_doc": "webb_nist_fcsm_crosswalk",
+            "node_id": "webb_nist_fcsm_crosswalk#s399",
+            "snippet": "…ing disclosure avoidance codebases (suppression rules, noise injection, rounding), semantic smearing could compromise the systems that protect re…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "hallucination",
+      "surface_forms": [
+        "hallucination"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "Colloquial term for confidently stated but false content generated by a model; NIST uses 'confabulation' (and 'fabrication') in preference to 'hallucination.'",
+        "source": "NIST AI 600-1 (Generative AI Profile)",
+        "source_url": "https://doi.org/10.6028/NIST.AI.600-1",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The popular word for an AI confidently making something up. Prefer 'confabulation' in official writing — NIST does, because the model isn't perceiving anything, it's guessing.",
+      "fss_note": "Same risk as confabulation; the term you'll hear from vendors and the press. FALSE FRIEND: not a perceptual glitch and not measurement error — a confident fabrication. See [confabulation].",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "measurement error",
+        "relation": "analog_of",
+        "note": "See confabulation: error vs. a true value, except confabulation/hallucination can invent referents with no true value."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Same risk as confabulation; the term you'll hear from vendors and the press. FALSE FRIEND: not a perceptual glitch and not measurement error — a confident fabrication. See [confabulation].",
+        "citations": [
+          {
+            "source_doc": "m_24_18",
+            "node_id": "m_24_18#s596",
+            "snippet": "…r deceived. Some commenters have noted that the terms 'hallucination' and 'fabrication' anthropomorphize generative AI, which itself is a risk…"
+          },
+          {
+            "source_doc": "nist_genai_profile_600_1",
+            "node_id": "nist_genai_profile_600_1#s59",
+            "snippet": "6 Some commenters have noted that the terms 'hallucination' and 'fabrication' anthropomorphize GAI, which itself is a risk related to…"
+          },
+          {
+            "source_doc": "webb_nist_fcsm_crosswalk",
+            "node_id": "webb_nist_fcsm_crosswalk#s202",
+            "snippet": "…t with NIST AI 600-1's own usage. The colloquial term \"hallucination\" has become widespread in AI discourse but is imprecise; hallucination imp…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "bias",
+      "surface_forms": [
+        "bias"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "Bias is the difference between the expected value of an estimator and the actual population value.",
+        "source": "U.S. Census Bureau Statistical Quality Standards — Glossary (statistical sense)",
+        "source_url": "https://www2.census.gov/about/policies/quality/quality-standards.pdf",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "A loaded word that means different things to different audiences. To a statistician, bias is a precise, often quantifiable concept: the expected difference between an estimator and the true parameter (and can be desirable, e.g., a bias-variance trade-off). In AI/ethics discourse, 'bias' usually means unfair, discriminatory outcomes.",
+      "fss_note": "A hard FALSE FRIEND — clarify which sense is meant. Statistical bias (estimator vs. parameter) is not the same as algorithmic/social bias (unfair group outcomes). NIST SP 1270 catalogs the AI senses; pull its wording for the AI definition.",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "statistical bias (estimator)",
+        "relation": "false_friend",
+        "note": "Statistical bias is E[estimator] - true value, a neutral quantifiable quantity. AI/algorithmic bias is normative — patterned unfair outcomes for groups. Same word, different field, different valence."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "A hard FALSE FRIEND — clarify which sense is meant. Statistical bias (estimator vs. parameter) is not the same as algorithmic/social bias (unfair group outcomes). NIST SP 1270 catalogs the AI senses; pull its wording for the AI definition.",
+        "citations": [
+          {
+            "source_doc": "webb_nist_fcsm_crosswalk",
+            "node_id": "webb_nist_fcsm_crosswalk#s1488",
+            "snippet": "…2000; OPEN Government Data Act, 2019). And the primary bias concern is often epistemic rather than demographic: whether the AI systema…"
+          },
+          {
+            "source_doc": "americas_ai_action_plan_2025",
+            "node_id": "ef0410733f064e03a5b66753ab5162bb",
+            "snippet": "our AI systems must be free from ideological bias and be designed to pursue objective truth rather than social engineering a…"
+          },
+          {
+            "source_doc": "eo_14179",
+            "node_id": "d346b2a134ed4587bd479cbd603ad4a2",
+            "snippet": "…must develop AI systems that are free from ideological bias or engineered social agendas. develop AI systems that are free from ideolo…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "validity",
+      "surface_forms": [
+        "validity"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "Validity (with reliability) is a trustworthy-AI property: the degree to which an AI system measures or produces what it is intended to, confirmed by objective evidence.",
+        "source": "NIST AI 100-3 (The Language of Trustworthy AI)",
+        "source_url": "https://doi.org/10.6028/NIST.AI.100-3",
+        "source_quality": "federal_beta",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "Whether the system actually measures the thing you think it measures (not just consistently — that's reliability). A model can be reliably wrong.",
+      "fss_note": "Maps closely to FSS notions of accuracy/unbiasedness under SPD No. 2. NIST AI 100-3 is provisional (beta) — verify exact wording before formal reliance.",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "validity (measurement/construct validity)",
+        "relation": "analog_of",
+        "note": "Both ask 'are we measuring the intended construct.' Largely compatible across the survey-methodology and AI senses; the survey literature splits it further (content/construct/criterion validity)."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Maps closely to FSS notions of accuracy/unbiasedness under SPD No. 2. NIST AI 100-3 is provisional (beta) — verify exact wording before formal reliance.",
+        "citations": [
+          {
+            "source_doc": "webb_nist_fcsm_crosswalk",
+            "node_id": "webb_nist_fcsm_crosswalk#s1488",
+            "snippet": "Validity :: AI risk management practitioners working with federal data need to reco…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "c84106a0981a4a0b9089c209650057ad",
+            "snippet": "each agency must certify the ongoing validity of the determinations made under subsection (b) and the waivers granted un…"
+          },
+          {
+            "source_doc": "m_25_21",
+            "node_id": "19421855024a4552a03e568474fafcfd",
+            "snippet": "…ith other relevant officials, must certify the ongoing validity of each waiver on an annual basis certify the ongoing validity of each wai…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "reliability",
+      "surface_forms": [
+        "reliability"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "The probability of performing a specified function without failure under given conditions for a specified period of time.",
+        "source": "NIST IR 8401",
+        "source_url": "https://doi.org/10.6028/NIST.IR.8401",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "Whether the system gives the same answer under the same conditions — consistency. Reliable but invalid means consistently measuring the wrong thing.",
+      "fss_note": "In FSS quality terms, reliability maps to reproducibility across processing cycles. Note NIST uses 'reliability' in both a systems-engineering sense and a trustworthy-AI sense.",
+      "false_friend": true,
+      "crosswalk": {
+        "fss_concept": "reliability (test-retest / reproducibility)",
+        "relation": "analog_of",
+        "note": "Compatible: both mean consistency of results under repetition."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "In FSS quality terms, reliability maps to reproducibility across processing cycles. Note NIST uses 'reliability' in both a systems-engineering sense and a trustworthy-AI sense.",
+        "citations": [
+          {
+            "source_doc": "americas_ai_action_plan_2025",
+            "node_id": "c96cf87eaf4c4d9f981fc1d49a7ef524",
+            "snippet": "…leveraging extant backup power sources to bolster grid reliability during peak demand. prevent the premature decommissioning of critical powe…"
+          },
+          {
+            "source_doc": "fcsm_20_04",
+            "node_id": "590d289152064076ab22102109943491",
+            "snippet": "…nt trade-offs between potential losses in accuracy and reliability against potential gains in other quality dimensions such as relevance. wei…"
+          },
+          {
+            "source_doc": "privacy_act_1974_uslm",
+            "node_id": "e067a5b9329d447dab8a8d3b693c9a75",
+            "snippet": "…oviding information on the accuracy, completeness, and reliability of records used in matching programs; serve as a clearinghouse for receivi…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "model card",
+      "surface_forms": [
+        "model card",
+        "system card"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "A short documentation artifact accompanying a trained model that reports its intended use, performance across conditions, evaluation data, limitations, and ethical considerations.",
+        "source": "Mitchell et al., 'Model Cards for Model Reporting' (FAT* 2019)",
+        "source_url": "https://doi.org/10.1145/3287560.3287596",
+        "source_quality": "academic",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "A standardized 'nutrition label' for an AI model: what it's for, how well it works, on whom it was tested, and where it fails. Agencies should demand one before adopting a model.",
+      "fss_note": "The AI analog of survey methodology/technical documentation; statistical agencies should require model cards (and 'system cards' for deployed systems) as an acquisition condition.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "survey methodology documentation / technical documentation (SPD No. 2)",
+        "relation": "analog_of",
+        "note": "Both document methodology, performance, and appropriate-use conditions. Disanalogy: methodology docs describe a designed procedure; a model card reports empirical behavior of a learned model."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "author_framing",
+        "text": "Practitioner framing (NOT graph-grounded): the FSS should require a model card (and system card) as acquisition documentation for any adopted AI model — the AI analog of survey methodology documentation. The corpus references 'system cards' only in passing (M-24-10) and a 'GPT-4 System Card' citation; it neither defines nor mandates model cards, so this is a recommended practice, not a corpus obligation.",
+        "citations": []
+      }
+    },
+    {
+      "term": "provenance",
+      "surface_forms": [
+        "provenance",
+        "data lineage",
+        "data provenance"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "In the context of computers and law enforcement use, it is an equivalent term to chain of custody. It involves the method of generation, transmission and storage of information that may be used to trace the origin of a piece of information processed by community resources.",
+        "source": "CNSSI 4009-2015",
+        "source_url": "https://www.cnss.gov/CNSS/issuances/Instructions.cfm",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The documented history of where data (or a model's training data) came from and how it was transformed — the chain of custody. Without it, you can't audit or reproduce a result.",
+      "fss_note": "In the FSS, provenance/metadata is required for data products (CIPSEA defines 'metadata' to include provenance, 44 U.S.C. § 3561(19)); for AI it extends to model and training-data lineage under data-governance requirements.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "metadata / data documentation",
+        "relation": "component_of",
+        "note": "Provenance is the origin-and-transformation portion of the broader metadata an FSS product must carry."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "In the FSS, provenance/metadata is required for data products (CIPSEA defines 'metadata' to include provenance, 44 U.S.C. § 3561(19)); for AI it extends to model and training-data lineage under data-governance requirements.",
+        "citations": [
+          {
+            "source_doc": "cipsea_2018",
+            "node_id": "cipsea_2018#s687",
+            "snippet": "…ata such as content, format, source, rights, accuracy, provenance, frequency, periodicity, granularity, publisher or responsible party, cont…"
+          },
+          {
+            "source_doc": "eo_14110",
+            "node_id": "eo_14110#s885",
+            "snippet": "…output or the identity or characteristics of its provenance, modifications, or conveyance."
+          },
+          {
+            "source_doc": "evidence_act_2018",
+            "node_id": "evidence_act_2018#s687",
+            "snippet": "…ata such as content, format, source, rights, accuracy, provenance, frequency, periodicity, granularity, publisher or responsible party, cont…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "human-in-the-loop",
+      "surface_forms": [
+        "human-in-the-loop",
+        "human oversight",
+        "human-on-the-loop"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "An AI system that requires human interaction.",
+        "source": "DoD Modeling & Simulation Glossary, via NIST AI 100-3 (AIRC glossary)",
+        "source_url": "https://airc.nist.gov/glossary/",
+        "source_quality": "federal_primary",
+        "status": "beta"
+      },
+      "alt_definitions": [],
+      "plain_language": "A design where a person reviews, approves, or can override the AI before its output takes effect — as opposed to fully automated action. 'On-the-loop' is lighter (monitoring) than 'in-the-loop' (approval). The point is meaningful human judgment, not a rubber stamp.",
+      "fss_note": "The control that keeps AI-assisted coding, imputation, or edit-flagging from acting unreviewed; the risk is automation bias — humans rubber-stamping AI when review volume exceeds what they can meaningfully audit. OMB M-25-21 and NIST AI 600-1 (Human-AI Configuration) are the references — pull exact wording.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "analyst review / adjudication in survey processing",
+        "relation": "analog_of",
+        "note": "Both insert human judgment before an automated output is accepted. Disanalogy: automation bias makes the human review weaker than it looks as volume scales."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The control that keeps AI-assisted coding, imputation, or edit-flagging from acting unreviewed; the risk is automation bias — humans rubber-stamping AI when review volume exceeds what they can meaningfully audit. OMB M-25-21 and NIST AI 600-1 (Human-AI Configuration) are the references — pull exact wording.",
+        "citations": [
+          {
+            "source_doc": "webb_nist_fcsm_crosswalk",
+            "node_id": "webb_nist_fcsm_crosswalk#s1487",
+            "snippet": "…quiring continuous monitoring, runtime guardrails, and human-in-the-loop controls (National Institute of Standards and Technology, 2024). Neither f…"
+          },
+          {
+            "source_doc": "m_24_10",
+            "node_id": "2f9ed64d7a264502b32eae8c63f4f2c3",
+            "snippet": "…hich the AI is not permitted to act without additional human oversight, intervention, and accountability. assess their rights-impacting and safet…"
+          },
+          {
+            "source_doc": "m_25_21",
+            "node_id": "a854f0cf50e84fa1a4bae881d4d90d7c",
+            "snippet": "Agencies must ensure human oversight, intervention, and accountability suitable for high-impact use cases. ensu…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "fitness for use",
+      "surface_forms": [
+        "fitness for use",
+        "fitness for purpose"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "Quality is defined as fitness for use: the degree to which data are suitable for the intended use(s), assessed across multiple quality dimensions (relevance, accuracy, timeliness, accessibility, interpretability, coherence).",
+        "source": "FCSM, A Framework for Data Quality (FCSM 20-04)",
+        "source_url": "https://statspolicy.gov/FCSM/resources/statistical-policy-working-papers/",
+        "source_quality": "federal_primary",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The principle that 'quality' isn't absolute — data are good enough only relative to a specific purpose. The same dataset can be fit for one use and unfit for another. This is the lens for judging whether an AI tool or its data is 'good enough' for a given task.",
+      "fss_note": "The FSS's governing definition of data quality (FCSM Data Quality Framework; this corpus holds FCSM 20-04 and 23-02). It is also the right frame for evaluating AI outputs: fit for which decision?",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "fitness for use (KG quality framing)",
+        "relation": "same_concept",
+        "note": "Identical principle the KG quality battery uses — quality is purpose-relative, so the user selects the dimensions that matter."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "The FSS's governing definition of data quality (FCSM Data Quality Framework; this corpus holds FCSM 20-04 and 23-02). It is also the right frame for evaluating AI outputs: fit for which decision?",
+        "citations": [
+          {
+            "source_doc": "fcsm_20_04",
+            "node_id": "f35a92995a07432b893e6c416cafdef5",
+            "snippet": "…d as resources permit as they are likely to affect the fitness for use across a wide range of objectives. be identified and minimized as resource…"
+          },
+          {
+            "source_doc": "acdeb_final_report_2022",
+            "node_id": "d075c7df0c2944beb2d09f91cb59c9d7",
+            "snippet": "…r experts to identify potential sources of data, their fitness for purpose, and relevant access procedures have connections with subject matter exper…"
+          },
+          {
+            "source_doc": "m_14_06",
+            "node_id": "db3cff834f2e4aafafdd4e9b50de8c84",
+            "snippet": "…e, frequently referreGLYPH(cmap:df00) to as assessing 'fitness for use.' specifically consider the purpose of the planned use, frequently referre…"
+          }
+        ]
+      }
+    },
+    {
+      "term": "prompt",
+      "surface_forms": [
+        "prompt",
+        "prompting",
+        "prompt engineering"
+      ],
+      "tier": "mop_up",
+      "definition": {
+        "text": "[prompts are] natural language requests that elicit accurate, high quality responses from a language model.",
+        "source": "Google Gemini API documentation, 'Prompt design strategies'",
+        "source_url": "https://ai.google.dev/gemini-api/docs/prompting-strategies",
+        "source_quality": "industry",
+        "status": "active"
+      },
+      "alt_definitions": [],
+      "plain_language": "The text you type to an AI tool to tell it what you want; 'prompting' is the process of writing and providing such inputs to guide a generative model toward specific outputs. The same model gives very different answers to differently worded prompts — useful, and a reproducibility hazard.",
+      "fss_note": "No U.S.-federal definition of 'prompt' exists — federal docs describe prompts conceptually as natural-language user inputs to AI systems; this is a basic operational term, not policy vocabulary. FSS relevance: a prompt can inadvertently leak confidential text into a third-party model, and undocumented prompts make an AI-assisted result irreproducible — treat prompts as documented methodology.",
+      "false_friend": false,
+      "crosswalk": null,
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "author_framing",
+        "text": "Practitioner framing (NOT graph-grounded): a prompt is the actual interface to a generative tool, so for an FSS AI-readiness review the concern is operational — an undocumented prompt makes an AI-assisted result irreproducible, and a prompt bearing confidential text can leak it to a third-party model. Not an FSS policy term; the corpus word-matches for 'prompt' are the English adjective, not this concept.",
+        "citations": []
+      }
+    }
+  ]
+}
