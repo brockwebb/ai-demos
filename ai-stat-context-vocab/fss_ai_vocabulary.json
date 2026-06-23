@@ -26,7 +26,7 @@
     "superseded",
     "contested"
   ],
-  "term_count": 42,
+  "term_count": 43,
   "terms": [
     {
       "term": "artificial intelligence",
@@ -1927,6 +1927,89 @@
         "type": "author_framing",
         "text": "Practitioner framing (NOT graph-grounded): a prompt is the actual interface to a generative tool, so for an FSS AI-readiness review the concern is operational — an undocumented prompt makes an AI-assisted result irreproducible, and a prompt bearing confidential text can leak it to a third-party model. Not an FSS policy term; the corpus word-matches for 'prompt' are the English adjective, not this concept.",
         "citations": []
+      }
+    },
+    {
+      "term": "AI-ready data",
+      "surface_forms": [
+        "AI-ready data",
+        "AI-readiness",
+        "AI-ready"
+      ],
+      "tier": "fss_bridge",
+      "definition": {
+        "text": "Data is AI-ready when it is machine-understandable — not merely machine-readable: its context, provenance, methodology, and quality signals are preserved and programmatically queryable, sufficient for an AI system (particularly a large language model) to analyze and answer questions about the asset without loss of statistical integrity. Per the federal project definition, AI-readiness is “the extent to which a data asset is prepared for effective analysis and querying by AI systems, particularly LLMs,” spanning data quality, access, formatting, and metadata. Scope boundary: this definition assumes access to the data asset is already established — it addresses the readiness of data that a consuming system can already reach. (The discoverability/retrievability axis is treated separately in the forward-interpretation addendum, deliberately outside the grounded definition.)",
+        "source": "America’s DataHub RFS — Topic MLMU-25, “Measuring Large Language Model Understanding of Federal Statistical Data” (footnote 2); framed as an extension of FCSM 25-03 (AI-Ready Federal Statistical Data) and FCSM 20-04 (A Framework for Data Quality).",
+        "source_url": "https://www.americasdatahub.org/wp-content/uploads/2025/06/ATT-1_Topic_MLMU-25.pdf",
+        "source_quality": "federal_primary",
+        "status": "beta"
+      },
+      "alt_definitions": [
+        {
+          "text": "For the purposes of this project, “AI-readiness” refers to the extent to which a data asset is prepared for effective analysis and querying by AI systems, particularly LLMs. This includes data quality, access, formatting, and metadata. AI-ready data enable LLMs to generate meaningful insights from both structured (e.g., tabular) and unstructured (e.g., reports) formats by facilitating accurate interpretation and contextual understanding.",
+          "source": "America’s DataHub RFS, Topic MLMU-25, footnote 2 (verbatim, verified against source 2026-06-23)",
+          "source_url": "https://www.americasdatahub.org/wp-content/uploads/2025/06/ATT-1_Topic_MLMU-25.pdf",
+          "source_quality": "federal_primary",
+          "status": "active"
+        }
+      ],
+      "plain_language": "Data is “AI-ready” when a machine — typically an LLM — can not just open it but actually understand it: the numbers arrive with enough context, documentation, provenance, and quality information that the model interprets them correctly and answers questions without mangling the statistics. Machine-readable (a clean CSV) is necessary but not sufficient; machine-understandable is the bar. Note this assumes a system can already get to the data — whether it can find and retrieve it in the first place is a separate question (see the addendum).",
+      "fss_note": "The project’s flagship evaluation target: you cannot evaluate AI-data readiness without a definition, and none is ratified FSS-wide. It extends the FCSM data-quality framework (20-04) into the AI-consumption setting (25-03) — the same dimensions (accuracy, accessibility, timeliness) now judged by whether an LLM can consume the asset without losing statistical integrity. It builds on FAIR (Findable, Accessible, Interoperable, Reusable) rather than superseding it: FAIR’s Accessible and Interoperable are ancestors of the access and machine-understandability concerns here.",
+      "false_friend": false,
+      "crosswalk": {
+        "fss_concept": "Lawrence Data Readiness Levels (2017), Bands C/B/A — academic conceptual ancestor (arXiv:1705.02245)",
+        "relation": "descends_from",
+        "note": "Lawrence’s Data Readiness Levels are the conceptual ancestor: Band C = accessibility (can the data be accessed), Band B = faithfulness/validity (is it what it claims to be), Band A = data-in-context (ready for a specific, defined task). AI-readiness inherits the use-case-conditional logic — Lawrence shows readiness is relative to the intended use (this use-case-conditionality point is Lawrence’s, 2017; it is NOT attributed to Gartner). Disanalogy: DRL is a general-purpose data-maturity scale; this definition is scoped to federal statistical data and adds the “without loss of statistical integrity” constraint a general maturity scale does not carry. Cited as an external ancestor only — academic, not federal policy, so not ingested into the corpus."
+      },
+      "superseded_by": null,
+      "needs_source": false,
+      "fss_context": {
+        "type": "grounded",
+        "text": "Grounded in the corpus: the federal definition (America’s DataHub / NSDS RFS) plus the FCSM 25-03 AI-ready extension and the FCSM 20-04 data-quality framework. The corpus establishes that creating AI-ready data “builds on established open-data principles” and machine-readability (FCSM 25-03 §s34), that federal statistics used in AI interactions must meet the Framework’s data-quality dimensions — accessibility, timeliness, accuracy (§s30) — and that metadata enrichment exposed through AI-friendly APIs improves how LLMs discover and interpret data (§s31). FCSM 20-04 §s184 anchors the data-quality dimensions that must be balanced and preserved.",
+        "citations": [
+          {
+            "source_doc": "bea_rfs_mlmu25",
+            "node_id": "bea_rfs_mlmu25#s4",
+            "snippet": "2 For the purposes of this project, 'AI-readiness' refers to the extent to which a data asset is prepared for effective analysis and querying by AI sy…"
+          },
+          {
+            "source_doc": "fcsm_25_03",
+            "node_id": "fcsm_25_03#s34",
+            "snippet": "Creating AI-ready data builds on established open-data principles. Title II of Public Law No: 115-435 (the OPEN Government Data Act) already requires …"
+          },
+          {
+            "source_doc": "fcsm_25_03",
+            "node_id": "fcsm_25_03#s30",
+            "snippet": "FCSM is working to ensure that federal statistics used in these AI-driven interactions meet the data quality dimensions of the Framework including, bu…"
+          },
+          {
+            "source_doc": "fcsm_25_03",
+            "node_id": "fcsm_25_03#s31",
+            "snippet": "By enriching data access points with high-quality metadata and exposing them through standardized, AI-friendly APIs, agencies can significantly improv…"
+          },
+          {
+            "source_doc": "fcsm_20_04",
+            "node_id": "fcsm_20_04#s184",
+            "snippet": "Data quality has many dimensions, such as accuracy and timeliness, that must be balanced to deliver answers to decision makers when the information is…"
+          }
+        ]
+      },
+      "forward_interpretation": {
+        "type": "author_framing",
+        "label": "Forward interpretation — ahead of documented policy (NOT an established standard)",
+        "dated": "2026-06",
+        "text": "Practitioner framing (NOT graph-grounded; ahead of the documented standard): the federal and Commerce/FCSM definitions above assume access to the data asset is already established. In practice, access and machine-retrievability must be deliberately configured — via emerging mechanisms such as llms.txt, the Model Context Protocol (MCP), and WebMCP, the last standardized only around 2026, i.e. AFTER the FCSM/Commerce literature was authored. Written policy lags the technology in this fast-moving field. A complete AI-data-readiness picture therefore treats discoverability and retrievability as a PRIOR axis the current standards do not yet cover: data a model cannot find or reach is not AI-ready in any operational sense, however machine-understandable it is once reached. This is the machine-as-first-class-user position, offered as a forward-looking, bounded thought-leadership seed — not a mandate, and deliberately separated from the grounded definition so the definition’s authority is not diluted by interpretation.",
+        "citations": []
+      },
+      "flags": {
+        "flagship": true,
+        "scope_boundary": "Definition (Part A) covers the readiness of data a consuming system can already REACH; it assumes access is established. The discoverability/retrievability (access) axis is addressed only in the forward-interpretation addendum (Part B), explicitly ahead of policy.",
+        "builds_on": [
+          "FAIR (Findable, Accessible, Interoperable, Reusable)",
+          "FCSM 20-04 (A Framework for Data Quality)",
+          "FCSM 25-03 (AI-Ready Federal Statistical Data)"
+        ],
+        "not_superseding": "FAIR — AI-readiness builds on / extends FAIR; it does not supersede it."
       }
     }
   ]

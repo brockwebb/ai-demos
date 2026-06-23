@@ -1,0 +1,773 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page { size: Letter; margin: 20mm 18mm 18mm 18mm;
+  @bottom-center { content: counter(page); font: 9px Georgia; color:#8a8f98; } }
+* { box-sizing: border-box; }
+body { font-family: -apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:#1f2430;
+  font-size:10.5pt; line-height:1.5; margin:0; }
+h1,h2,h3 { font-family: Georgia,"Times New Roman",serif; color:#15314b; }
+a { color:#1b5e8c; text-decoration:none; }
+.cover { height: 233mm; display:flex; flex-direction:column; justify-content:center; page-break-after:always; }
+.cover .kicker { letter-spacing:.18em; text-transform:uppercase; font-size:9pt; color:#1b5e8c; font-weight:700; }
+.cover h1 { font-size:34pt; margin:.2em 0 .1em; line-height:1.05; }
+.cover .sub { font-size:13pt; color:#48505e; margin-bottom:1.6em; }
+.cover .meta { font-size:9.5pt; color:#6b7280; border-top:2px solid #e6e9ef; padding-top:10px; }
+.intro { page-break-after:always; }
+.intro h2 { font-size:16pt; border-bottom:2px solid #e6e9ef; padding-bottom:4px; margin-top:1.4em; }
+.legend { display:grid; grid-template-columns:1fr 1fr; gap:8px 18px; margin:10px 0; }
+.legend .item { font-size:9.5pt; }
+.policy { background:#f4f7fb; border-left:4px solid #1b5e8c; padding:10px 14px; font-size:9.5pt; border-radius:0 4px 4px 0; }
+.toc { columns:2; font-size:9pt; column-gap:24px; }
+.toc .t { font-weight:700; color:#15314b; display:block; margin:8px 0 3px; }
+.toc a { display:block; color:#39414f; }
+.section-head { font-size:15pt; color:#15314b; border-bottom:3px solid #1b5e8c; padding-bottom:4px;
+  margin:0 0 4px; page-break-before:always; }
+.section-sub { color:#6b7280; font-size:9pt; margin:0 0 14px; }
+.card { border:1px solid #e2e6ec; border-radius:7px; padding:13px 16px 14px; margin:0 0 12px;
+  page-break-inside:avoid; background:#fff; }
+.card.ff { border-color:#e0b400; box-shadow:inset 4px 0 0 #f2c200; }
+.card.flagship { border-color:#1b5e8c; box-shadow:inset 4px 0 0 #1b5e8c; }
+.term-head { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:2px; }
+.term-head h3 { font-size:14pt; margin:0; }
+.badge { font-size:7.5pt; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
+  padding:2px 7px; border-radius:10px; white-space:nowrap; }
+.badge.tier { background:#eef2f7; color:#445; }
+.badge.ff { background:#fbe9b0; color:#7a5b00; }
+.badge.contested { background:#fde2dd; color:#9c2b18; }
+.badge.flagship { background:#dcebf7; color:#15314b; }
+.syn { color:#8a8f98; font-size:9pt; font-style:italic; }
+.plain { font-size:11pt; color:#222; background:#f7f9fc; border-left:4px solid #1b5e8c;
+  padding:7px 12px; border-radius:0 4px 4px 0; margin:8px 0; }
+.lbl { font-size:7.5pt; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:#1b5e8c; }
+.def { margin:7px 0 4px; }
+.src { font-size:8.5pt; color:#6b7280; margin-top:2px; }
+.scope { font-size:9pt; color:#445; background:#f1f5f9; border:1px dashed #b9c6d4;
+  border-radius:5px; padding:6px 11px; margin:6px 0 0; }
+.scope .tag { font-weight:700; color:#1b5e8c; }
+.pill { font-size:7.5pt; font-weight:700; padding:1px 6px; border-radius:8px; background:#e7eef6; color:#1b5e8c; }
+.alt { font-size:9pt; color:#54606e; margin:4px 0 0 10px; padding-left:8px; border-left:2px solid #e2e6ec; }
+.fss { margin-top:9px; padding:8px 12px; border-radius:5px; font-size:9.5pt; }
+.fss.grounded { background:#eef7f0; border:1px solid #cfe6d6; }
+.fss.author { background:#fdf6e9; border:1px solid #efdfbf; }
+.fss .tag { font-size:7.5pt; font-weight:700; letter-spacing:.05em; text-transform:uppercase; }
+.fss.grounded .tag { color:#1e7a44; }
+.fss.author .tag { color:#9a6b00; }
+.cites { font-size:8.5pt; color:#5a6b5f; margin-top:3px; }
+.cites code { background:#e6f0e9; padding:1px 5px; border-radius:3px; color:#1e6b3c; }
+.ffbox { margin-top:9px; background:#fff8e6; border:1px solid #f0d77a; border-radius:5px; padding:8px 12px; }
+.ffbox .tag { color:#8a6500; font-weight:700; font-size:8pt; text-transform:uppercase; letter-spacing:.05em; }
+.xwalk { font-size:9pt; color:#54606e; margin-top:7px; }
+/* Part B — forward interpretation: visibly bounded, dated, ahead-of-policy. */
+.fwd { margin-top:11px; background:#fbf1de; border:1px solid #e7c98c; border-left:5px solid #d98e2b;
+  border-radius:5px; padding:9px 13px; font-size:9.5pt; }
+.fwd .tag { display:block; color:#9a5b00; font-weight:700; font-size:8pt; text-transform:uppercase;
+  letter-spacing:.05em; margin-bottom:3px; }
+.fwd .dated { color:#9a5b00; font-weight:400; font-style:italic; text-transform:none; letter-spacing:0; }
+.divider { border:0; border-top:1px dashed #d3a86a; margin:9px 0 0; }
+.builds { font-size:8.5pt; color:#5a6470; margin-top:8px; border-top:1px solid #eceff3; padding-top:5px; }
+.builds .tag { font-weight:700; color:#1b5e8c; }
+</style></head><body>
+<div class="cover"><div class="kicker">Federal Statistical System · AI Readiness</div>
+<h1>The FSS AI Vocabulary</h1>
+<div class="sub">Authoritative, plain-language definitions of AI terms for the Federal Statistical System — for experts in federal statistics who are new to AI.</div>
+<div class="meta">43 terms across four tiers · generated 2026-06-22 · every definition from a public, free-access source · grounded against the fss-policy-kg knowledge graph.</div></div>
+<div class="intro"><h2>How to read this</h2>
+<p>Each term has two layers. <strong>Layer 1 — the official definition</strong> tells you what the term means in the world, with its source shown. <strong>Layer 2 — the FSS context</strong> tells you what it means <em>inside</em> the federal statistical system. The two are always kept distinct, and every claim is labeled so you know what kind of claim it is.</p>
+<h2>Legend</h2><div class="legend"><div class="item"><span class="badge flagship">★ Flagship</span> — the project's headline term; its definition (grounded) and forward interpretation (ahead-of-policy) are shown separately.</div><div class="item"><span class="badge ff">⚠ False friend</span> — means something different in AI than in FSS practice. Read these.</div><div class="item"><span class="badge contested">⚖ Contested</span> — politically live policy context.</div><div class="item"><span class="fss grounded" style="padding:2px 8px"><span class="tag">✓ Grounded in the FSS corpus</span></span> — backed by cited corpus documents.</div><div class="item"><span class="fss author" style="padding:2px 8px"><span class="tag">✎ Practitioner note</span></span> — a best-read interpretation, NOT corpus authority.</div><div class="item"><span class="fwd" style="padding:2px 8px"><span class="tag" style="display:inline">⏩ Forward interpretation</span></span> — dated, ahead of the documented standard; bounded from the definition.</div></div>
+<h2>Sourcing</h2><div class="policy">Public, freely-accessible authority only. No paywalled sources (e.g. ISO/IEC standards behind a paywall are NOT used). Priority: US federal (NIST/OMB/statute) &gt; open standards &gt; open foreign-government or open industry/academic references &gt; needs_source. A free, open definition always beats a gatekept one. source_quality is tagged honestly: where no US-federal definition exists, the record says so rather than dressing a foreign/industry source as federal.</div>
+<h2>Contents</h2><div class="toc">
+<span class="t">AI Core</span>
+<a href="#artificial_intelligence">artificial intelligence</a>
+<a href="#AI_system">AI system</a>
+<a href="#AI_model">AI model</a>
+<a href="#machine_learning">machine learning</a>
+<a href="#generative_AI">generative AI</a>
+<a href="#large_language_model">large language model</a>
+<a href="#foundation_model">foundation model</a>
+<a href="#training_data">training data</a>
+<a href="#inference">inference ⚠</a>
+<a href="#model_drift">model drift</a>
+<a href="#synthetic_data">synthetic data</a>
+<a href="#differential_privacy">differential privacy ⚖</a>
+<a href="#de-identification">de-identification</a>
+<a href="#re-identification">re-identification</a>
+<span class="t">AI Governance &amp; Risk</span>
+<a href="#high-impact_AI">high-impact AI ⚠</a>
+<a href="#AI_use_case_inventory">AI use case inventory</a>
+<a href="#Chief_AI_Officer">Chief AI Officer</a>
+<a href="#AI_impact_assessment">AI impact assessment</a>
+<a href="#algorithmic_bias">algorithmic bias</a>
+<a href="#AI_red-teaming">AI red-teaming</a>
+<a href="#explainability">explainability</a>
+<a href="#trustworthy_AI">trustworthy AI ⚠</a>
+<a href="#confabulation">confabulation ⚠</a>
+<a href="#information_integrity">information integrity</a>
+<a href="#automated_decision_system">automated decision system</a>
+<span class="t">FSS Bridge</span>
+<a href="#disclosure_avoidance">disclosure avoidance ⚖</a>
+<a href="#statistical_disclosure_limitation">statistical disclosure limitation</a>
+<a href="#measurement_error">measurement error</a>
+<a href="#nonsampling_error">nonsampling error</a>
+<a href="#data_asset">data asset ⚠</a>
+<a href="#confidentiality">confidentiality ⚠</a>
+<a href="#statistical_product">statistical product ⚖</a>
+<a href="#noise_injection">noise injection ⚖</a>
+<a href="#AI-ready_data">AI-ready data ★</a>
+<span class="t">High Translation-Load</span>
+<a href="#hallucination">hallucination ⚠</a>
+<a href="#bias">bias ⚠</a>
+<a href="#validity">validity ⚠</a>
+<a href="#reliability">reliability ⚠</a>
+<a href="#model_card">model card</a>
+<a href="#provenance">provenance</a>
+<a href="#human-in-the-loop">human-in-the-loop</a>
+<a href="#fitness_for_use">fitness for use</a>
+<a href="#prompt">prompt</a>
+</div></div>
+<h2 class="section-head">AI Core</h2><div class="section-sub">14 terms</div>
+<div class="card" id="artificial_intelligence">
+<div class="term-head">
+<h3>artificial intelligence</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: AI</div>
+<div class="plain">An umbrella term for software that does tasks we used to think needed a human — predicting, classifying, recommending, generating text — by finding patterns in data rather than following hand-written rules. There is no single legal definition; the statutory one (15 U.S.C. § 9401) is the federal anchor.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A machine-based system that can, for a given set of human-defined objectives, make predictions, recommendations, or decisions influencing real or virtual environments.</div>
+<div class="src">— NIST SP 800-218A (per 15 U.S.C. § 9401(3)) <span class="pill">U.S. federal</span></div>
+<div class="alt"><em>Also defined:</em> Any artificial system that performs tasks under varying and unpredictable circumstances without significant human oversight, or that can learn from experience and improve performance when exposed to data sets; ... designed to think or act like a human ... or that is designed to act rationally. — Sec. 238(g), John S. McCain NDAA for FY2019 (10 U.S.C. § 2358 note) <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Covers any automated analytical system a statistical agency runs — imputation models, record linkage, automated coding, disclosure-avoidance engines. The label matters because OMB AI guidance (M-25-21) attaches obligations to &#x27;AI&#x27; use.
+<div class="cites">Cited in: <code>eo_13859</code>, <code>eo_14110</code>, <code>m_24_10</code></div>
+</div>
+</div>
+<div class="card" id="AI_system">
+<div class="term-head">
+<h3>AI system</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: artificial intelligence system</div>
+<div class="plain">The whole working setup — the data pipeline, the model, and the output logic — not just the model file. When you evaluate AI risk, you evaluate the system, because harms come from how the pieces fit together, not the model alone.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+An engineered or machine-based system that can, for a given set of objectives, generate outputs such as predictions, recommendations, or decisions influencing real or virtual environments. AI systems are designed to operate with varying levels of autonomy.</div>
+<div class="src">— NIST AI 100-1 (AI Risk Management Framework 1.0) <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Distinguishes the full deployed tool (e.g., a record-linkage system: input data + model + match-decision logic + output) from the model component. OMB risk-management practices apply to the system in use.
+<div class="cites">Cited in: <code>eo_14110</code>, <code>nist_ai_rmf_100_1</code>, <code>m_24_18</code></div>
+</div>
+</div>
+<div class="card" id="AI_model">
+<div class="term-head">
+<h3>AI model</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: model</div>
+<div class="plain">The trained mathematical object inside an AI system — the thing that turns inputs into outputs. Think of it like a fitted statistical model, but usually far larger and learned from data rather than specified by a methodologist.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A component of an AI system that implements AI technology and uses computational, statistical, or machine-learning techniques to produce outputs from a given set of inputs.</div>
+<div class="src">— OMB M-24-10 / NTIA AI Accountability Policy Report glossary <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>fitted statistical model / estimator</strong> (analog_of): Both map inputs to outputs from data. Disanalogy: a statistical estimator has an explicit, documented functional form and known sampling properties; an AI model&#x27;s form is learned and often opaque, so its error properties are empirical, not derived.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>In the FSS, &#x27;AI models&#x27; include imputation models, disclosure-avoidance noise mechanisms, and predictive coding tools used in survey processing.
+<div class="cites">Cited in: <code>eo_14319</code>, <code>m_24_10</code>, <code>m_24_18</code></div>
+</div>
+</div>
+<div class="card" id="machine_learning">
+<div class="term-head">
+<h3>machine learning</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: ML</div>
+<div class="plain">A way of building models by letting an algorithm find patterns in data and improve with more examples, instead of a person writing the rules. Most of what people call &#x27;AI&#x27; today is machine learning.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The development and use of computer systems that adapt and learn from data with the goal of improving accuracy.</div>
+<div class="src">— NIST SP 800-55v1 <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Increasingly used in federal surveys for donor selection in imputation, nonresponse adjustment, and automated industry/occupation coding.
+<div class="cites">Cited in: <code>m_24_18</code>, <code>eo_14110</code>, <code>m_24_10</code></div>
+</div>
+</div>
+<div class="card" id="generative_AI">
+<div class="term-head">
+<h3>generative AI</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: GenAI, generative artificial intelligence</div>
+<div class="plain">AI that produces new content — text, images, code, synthetic data — that looks like its training data but is newly generated, not retrieved from a database. Large language models are the most familiar kind.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The class of AI models that emulate the structure and characteristics of input data in order to generate derived synthetic content such as images, videos, audio, text, and other digital content.</div>
+<div class="src">— EO 14110 §3(p) <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Introduces confabulation risk when drafting statistical narratives or metadata, and is an emerging tool for synthetic-data generation for privacy-protective dissemination.
+<div class="cites">Cited in: <code>eo_14319</code>, <code>m_24_10</code>, <code>m_24_18</code></div>
+</div>
+</div>
+<div class="card" id="large_language_model">
+<div class="term-head">
+<h3>large language model</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: LLM</div>
+<div class="plain">A generative-AI model trained on very large amounts of text that predicts likely next words, letting it answer questions, summarize, translate, and draft. It is a fluent pattern-matcher over language, not a database of verified facts — which is why it can state wrong things confidently (see confabulation).</div>
+<div class="def"><span class="lbl">Definition</span><br>
+a class of language models that use deep-learning algorithms and are trained on extremely large textual datasets that can be multiple terabytes in size. LLMs can be classed into two types: generative or discriminatory.</div>
+<div class="src">— AI Assurance (2022), via NIST AI 100-3 (AIRC glossary) <span class="pill">academic</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The tool most FSS staff will actually touch. Useful for drafting and summarizing; unsafe for producing statistics or facts without verification. NIST AI 600-1 (Generative AI Profile) is the governing risk reference — pull its exact definition before formal use.
+<div class="cites">Cited in: <code>eo_14319</code>, <code>eo_14110</code>, <code>americas_ai_action_plan_2025</code></div>
+</div>
+</div>
+<div class="card" id="foundation_model">
+<div class="term-head">
+<h3>foundation model</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: frontier model</div>
+<div class="plain">A very large model pre-trained on broad data that serves as a reusable base others adapt (fine-tune) for specific tasks. Most commercial LLMs are foundation models.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+In generative AI, models trained on broad data using self-supervised learning that can be adapted such as through fine-tuning for a variety of down­stream tasks.</div>
+<div class="src">— NIST AI 100-2e2025 <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>When an agency adopts a vendor foundation model, it inherits that model&#x27;s training data, biases, and limitations — a value-chain risk that can collide with CIPSEA or SPD No. 15 category definitions.
+<div class="cites">Cited in: <code>m_24_10</code>, <code>eo_14110</code>, <code>m_24_18</code></div>
+</div>
+</div>
+<div class="card" id="training_data">
+<div class="term-head">
+<h3>training data</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="plain">The examples a model learns from. The model&#x27;s behavior, blind spots, and biases are inherited from this data — if a group is underrepresented in training data, the model tends to perform worse for that group.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A dataset from which a model is learned.</div>
+<div class="src">— AI Fairness 360, via NIST AI 100-3 (AIRC glossary) <span class="pill">academic</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>sampling frame / sample coverage</strong> (analog_of): Both determine who is represented in what the system &#x27;knows.&#x27; Disanalogy: a frame&#x27;s coverage is measurable against a known target population; training-data coverage often has no enumerable target, so its gaps are harder to quantify.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Directly analogous to a sample frame&#x27;s coverage: gaps in training data produce systematic errors the same way frame undercoverage does. FSS training data may come from administrative records or prior survey waves, each with CIPSEA and quality implications.
+<div class="cites">Cited in: <code>nist_ai_rmf_100_1</code>, <code>advancing_american_ai_act_2022</code>, <code>americas_ai_action_plan_2025</code></div>
+</div>
+</div>
+<div class="card ff" id="inference">
+<div class="term-head">
+<h3>inference</h3>
+<span class="badge tier">AI Core</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="syn">also: model inference</div>
+<div class="plain">In AI, &#x27;inference&#x27; means running a trained model to get an output for a new input — the production step, after training. It does NOT mean drawing conclusions about a population.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The stage of ML in which a model is applied to a task. For example, a classifier model produces the classification of a test sample.</div>
+<div class="src">— NISTIR 8269 (draft), via NIST AI 100-3 (AIRC glossary) <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>Statistical inference quantifies uncertainty about a population parameter from a sample. ML inference is the forward pass of a fitted model on new inputs and carries no population-level uncertainty claim by itself.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>A hard FALSE FRIEND. To a statistician, &#x27;inference&#x27; means reasoning from a sample to a population (confidence intervals, hypothesis tests). To an ML engineer, &#x27;inference&#x27; is just &#x27;the model made a prediction.&#x27; Same word, different concept — confirm which sense is meant in any AI procurement or methods discussion.
+<div class="cites">Cited in: <code>fcsm_20_04</code>, <code>m_24_10</code>, <code>m_25_21</code></div>
+</div>
+</div>
+<div class="card" id="model_drift">
+<div class="term-head">
+<h3>model drift</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: drift, concept drift</div>
+<div class="plain">When a deployed model&#x27;s accuracy decays over time because the world it sees no longer matches the world it was trained on (populations shift, definitions change, behavior changes). It degrades silently unless you monitor for it.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+[concept drift] an online supervised learning scenario when the relation between the input data and the target variable changes over time.</div>
+<div class="src">— Gama et al. (concept drift), via NIST AI 100-3 (AIRC glossary) <span class="pill">academic</span></div>
+<div class="alt"><em>Also defined:</em> Systems that classify or predict a concept (e.g., credit ratings or computer intrusion monitors) over time can suffer performance loss when the concept they are tracking changes. — Raynor, via NIST AI 100-3 (AIRC glossary) <span class="pill">academic</span></div>
+<div class="alt"><em>Also defined:</em> Use of a system outside the planned domain of application, and a common cause of performance gaps between laboratory settings and the real world. — NIST SP 1270, via NIST AI 100-3 (AIRC glossary) <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>temporal nonsampling error / frame obsolescence</strong> (analog_of): Both are degradation of a fixed instrument as the target population moves. Disanalogy: frame obsolescence is auditable against updated frames; model drift needs explicit performance monitoring to detect.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Closely analogous to a sampling frame going stale or mode effects shifting across survey cycles — the instrument slowly stops measuring what it used to.
+<div class="cites">Cited in: <code>m_24_18</code>, <code>nist_ai_rmf_100_1</code>, <code>nist_ai_rmf_playbook</code></div>
+</div>
+</div>
+<div class="card" id="synthetic_data">
+<div class="term-head">
+<h3>synthetic data</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: synthetic microdata</div>
+<div class="plain">Artificially generated records that mimic the statistical properties of real data without being any real person&#x27;s actual record. Used for privacy-protective sharing, testing, and model training.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A process in which seed data are used to create artificial data that have some of the statistical characteristics of the seed data.</div>
+<div class="src">— NIST SP 800-188 <span class="pill">U.S. federal</span></div>
+<div class="alt"><em>Also defined:</em> a process in which seed data is used to create artificial data that has some of the statistical characteristics as the seed data — NISTIR 8053 <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>An emerging disclosure-avoidance tool: synthetic microdata products let researchers work with statistically representative data while protecting Title 13 / CIPSEA confidentiality. Utility and disclosure risk must both be assessed.
+<div class="cites">Cited in: <code>acdeb_final_report_2022</code>, <code>icsp_private_datasets_2023</code>, <code>nist_genai_profile_600_1</code></div>
+</div>
+</div>
+<div class="card" id="differential_privacy">
+<div class="term-head">
+<h3>differential privacy</h3>
+<span class="badge tier">AI Core</span>
+<span class="badge contested">⚖ Contested</span>
+</div>
+<div class="syn">also: DP, formal privacy</div>
+<div class="plain">A mathematical guarantee that adding or removing any one person&#x27;s data barely changes what is published, so an attacker cannot reliably tell whether you were in the dataset. The protection is tunable by a &#x27;privacy-loss budget&#x27; (epsilon): more privacy means more noise and less accuracy.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A rigorous mathematical definition of disclosure that considers the risk that an individual&#x27;s confidential data may be learned as a result of a mathematical analysis based on that data being made publicly available.</div>
+<div class="src">— NIST SP 800-188 <span class="pill">U.S. federal</span> · <span class="badge contested" style="font-size:7pt">contested</span></div>
+<div class="alt"><em>Also defined:</em> A mathematical framework that quantifies privacy risk to individuals as a consequence of data collection and subsequent data release. — NIST SP 800-226 <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>statistical disclosure limitation (formal)</strong> (instance_of): DP is a formal, provable form of SDL with a quantified privacy-accuracy trade-off. Disanalogy: traditional SDL (cell suppression, swapping) gives heuristic protection with no formal bound; DP gives a provable bound at an explicit, debated accuracy cost.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The Census Bureau&#x27;s Disclosure Avoidance System applied formal differential privacy to 2020 Census products — the first nationwide federal use. NIST publishes two official definitions (SP 800-188 and SP 800-226); both are kept here. Politically contested inside Commerce (see DAO-216-26).
+<div class="cites">Cited in: <code>eo_14110</code>, <code>acdeb_final_report_2022</code>, <code>m_25_05</code></div>
+</div>
+</div>
+<div class="card" id="de-identification">
+<div class="term-head">
+<h3>de-identification</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: de-identify</div>
+<div class="plain">Stripping or masking the parts of a record that point to a specific person, so the data can be used without exposing identities. Note: de-identified is not the same as re-identification-proof — combinations of remaining fields can still single someone out.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+General term for any process of removing the association between a set of identifying data and the data subject.</div>
+<div class="src">— NIST SP 800-188 (De-Identifying Government Datasets) <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The umbrella practice under which suppression, swapping, noise injection, and differential privacy all sit. CIPSEA&#x27;s &#x27;identifiable form&#x27; standard (44 U.S.C. § 3561) is the legal target de-identification must defeat.
+<div class="cites">Cited in: <code>cipsea_2018</code>, <code>m_19_23</code>, <code>pra_1995_uslm</code></div>
+</div>
+</div>
+<div class="card" id="re-identification">
+<div class="term-head">
+<h3>re-identification</h3>
+<span class="badge tier">AI Core</span>
+</div>
+<div class="syn">also: re-identify</div>
+<div class="plain">The reverse of de-identification: using leftover fields, outside data, or clever attacks to figure out who a &#x27;de-identified&#x27; record actually is. FSS law defines the line in terms of whether identity can be &#x27;reasonably inferred&#x27; by direct OR indirect means.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+&#x27;&#x27;identifiable form&#x27;&#x27; means any representation of information that permits the identity of the respondent to whom the information applies to be reasonably inferred by either direct or indirect means.</div>
+<div class="src">— CIPSEA 2018 §3561(7) — &#x27;identifiable form&#x27; (the re-identification standard) <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The legal harm CIPSEA confidentiality protections exist to prevent; the &#x27;reasonably inferred by direct or indirect means&#x27; test is what disclosure-avoidance methods are measured against.
+<div class="cites">Cited in: <code>sap_policy_m_23_04</code>, <code>wp_22</code>, <code>acdeb_final_report_2022</code></div>
+</div>
+</div>
+<h2 class="section-head">AI Governance &amp; Risk</h2><div class="section-sub">11 terms</div>
+<div class="card ff" id="high-impact_AI">
+<div class="term-head">
+<h3>high-impact AI</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="syn">also: high-impact AI use case</div>
+<div class="plain">The federal government&#x27;s label for the AI uses that can actually hurt people or violate rights, which therefore get the strictest oversight. Under the current memo (M-25-21) this single &#x27;high-impact&#x27; category replaced the older split of &#x27;safety-impacting&#x27; vs &#x27;rights-impacting&#x27; (M-24-10).</div>
+<div class="def"><span class="lbl">Definition</span><br>
+AI with an output that serves as a principal basis for decisions or actions that have a legal, material, binding, or significant effect on rights or safety.</div>
+<div class="src">— OMB M-25-21 (Apr. 3, 2025) <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>FALSE FRIEND: NIST&#x27;s cybersecurity &#x27;high-impact system&#x27; (FIPS 199) is about confidentiality/integrity/availability impact, NOT the OMB AI rights/safety sense. Don&#x27;t conflate them.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Determines which agency AI tools trigger minimum risk-management practices (pre-deployment testing, impact assessment, ongoing monitoring). Most core statistical-production AI is not high-impact, but tools informing individual determinations can be.
+<div class="cites">Cited in: <code>m_25_22</code>, <code>m_25_21</code>, <code>eo_14110</code></div>
+</div>
+</div>
+<div class="card" id="AI_use_case_inventory">
+<div class="term-head">
+<h3>AI use case inventory</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+</div>
+<div class="syn">also: use case inventory</div>
+<div class="plain">A yearly, public list every federal agency must publish of where it uses AI, flagging the high-impact uses and how it manages their risks. It is the main transparency mechanism for federal AI.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+An annual, public inventory of an agency&#x27;s AI use cases, identifying high-impact use cases and describing associated risks and mitigations, required of federal agencies.</div>
+<div class="src">— OMB M-25-21 (Apr. 3, 2025) <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Statistical agencies must inventory production AI tools — imputation models, automated coding, disclosure-avoidance systems — beginning with the 2024 cycle.
+<div class="cites">Cited in: <code>americas_ai_action_plan_2025</code>, <code>m_24_10</code>, <code>m_24_18</code></div>
+</div>
+</div>
+<div class="card" id="Chief_AI_Officer">
+<div class="term-head">
+<h3>Chief AI Officer</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+</div>
+<div class="syn">also: CAIO</div>
+<div class="plain">The senior official each agency must name to own its AI strategy, governance, and risk. In statistical agencies this role overlaps with the Chief Data Officer and Statistical Official.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A senior agency official designated under OMB AI guidance to coordinate and oversee the agency&#x27;s use of AI, including its risk management and the AI use case inventory.</div>
+<div class="src">— OMB M-25-21 (Apr. 3, 2025); originally OMB M-24-10 <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The CAIO&#x27;s remit intersects the CDO and Statistical Official; in an FSS agency, AI-assisted collection and dissemination create shared responsibility across these roles.
+<div class="cites">Cited in: <code>m_24_10</code>, <code>m_25_21</code></div>
+</div>
+</div>
+<div class="card" id="AI_impact_assessment">
+<div class="term-head">
+<h3>AI impact assessment</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+</div>
+<div class="syn">also: AI impact analysis</div>
+<div class="plain">A required write-up, before you turn an AI tool on (and repeated periodically), of what it&#x27;s for, who it could harm, and how you&#x27;ll manage that. The AI equivalent of a methods-and-limitations review.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A structured, pre-deployment and ongoing evaluation of an AI use case&#x27;s intended purpose, expected benefit, and potential risks, required as a minimum practice for high-impact (formerly safety-/rights-impacting) AI.</div>
+<div class="src">— OMB M-25-21 (Apr. 3, 2025); cf. OMB M-24-10 §5 <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>SPD No. 2 quality review / methodology review</strong> (analog_of): Both are structured pre-release reviews of accuracy, fitness, and risk. Disanalogy: an AI impact assessment centers rights/safety harms and bias, which a classical quality review does not foreground.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Principal statistical agencies must complete these for qualifying tools.
+<div class="cites">Cited in: <code>m_25_21</code>, <code>m_25_22</code>, <code>nist_ai_rmf_100_1</code></div>
+</div>
+</div>
+<div class="card" id="algorithmic_bias">
+<div class="term-head">
+<h3>algorithmic bias</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+</div>
+<div class="syn">also: AI bias</div>
+<div class="plain">When an AI system is systematically wrong in a way that disadvantages a particular group — often because the training data or design baked in an existing skew. It is not random error; it is patterned and tends to track demographic lines.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Systematic and repeatable errors in an AI system that create unfair outcomes, such as privileging one group over another; arising from data, modeling choices, or human/societal factors (NIST distinguishes systemic, statistical/computational, and human-cognitive bias).</div>
+<div class="src">— NIST SP 1270 (Towards a Standard for Identifying and Managing Bias in AI) <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>nonresponse bias / differential measurement error</strong> (analog_of): Both are systematic (not random) distortions that hit specific subgroups. Disanalogy: nonresponse bias has an established estimation/adjustment theory; algorithmic bias often lacks a measurable true value to adjust toward.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Central risk when AI is used for demographic estimation, record linkage, or automated classification; can deepen undercoverage of underrepresented groups.
+<div class="cites">Cited in: <code>nist_ai_rmf_100_1</code>, <code>nist_ai_rmf_playbook</code></div>
+</div>
+</div>
+<div class="card" id="AI_red-teaming">
+<div class="term-head">
+<h3>AI red-teaming</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+</div>
+<div class="syn">also: red-teaming, red team</div>
+<div class="plain">Deliberately attacking your own AI system — feeding it adversarial or edge-case inputs — to find where it fails, produces biased or harmful output, or can be manipulated, before real-world use. AI red-teaming adapts the cybersecurity practice to model behavior, not just security.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A group of people authorized and organized to emulate a potential adversary’s attack or exploitation capabilities against an enterprise’s security posture. The Red Team’s objective is to improve enterprise cybersecurity by demonstrating the impacts of successful attacks and by demonstrating what works for the defenders (i.e., the Blue Team) in an operational environment. Also known as Cyber Red Team.</div>
+<div class="src">— CNSSI 4009-2015 (cybersecurity sense) <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>cognitive testing / respondent debriefing / reinterview</strong> (analog_of): Both adversarially probe an instrument for failure modes before production. Disanalogy: cognitive testing studies human comprehension of questions; AI red-teaming studies model behavior under adversarial inputs.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Can stress-test FSS AI tools for demographic bias in classification, failure on edge-case data, or manipulation of public-facing NLP systems.
+<div class="cites">Cited in: <code>eo_14110</code>, <code>m_24_10</code>, <code>m_24_18</code></div>
+</div>
+</div>
+<div class="card" id="explainability">
+<div class="term-head">
+<h3>explainability</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+</div>
+<div class="syn">also: interpretability, explainable AI</div>
+<div class="plain">Whether you can say, in terms a human can follow, WHY the AI produced a given output. A model can be accurate but unexplainable (a &#x27;black box&#x27;), which is a problem when you must defend a methodology publicly.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A property of AI systems concerning the degree to which the reasons for an output can be represented in terms meaningful to a given audience; one of the trustworthy-AI characteristics (explainable and interpretable).</div>
+<div class="src">— NIST AI 100-1 (AI Risk Management Framework 1.0) <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>methodology documentation / transparency (SPD No. 2)</strong> (analog_of): Both make a result auditable and reproducible to outsiders. Disanalogy: methodology docs describe a designed procedure; explainability must reconstruct the behavior of a learned model that has no hand-written procedure.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>FSS uses of AI for record linkage, imputation, or small-area estimation must be explainable to data users and oversight bodies, consistent with SPD No. 2 transparency expectations.
+<div class="cites">Cited in: <code>americas_ai_action_plan_2025</code>, <code>m_25_22</code>, <code>nist_ai_rmf_100_1</code></div>
+</div>
+</div>
+<div class="card ff" id="trustworthy_AI">
+<div class="term-head">
+<h3>trustworthy AI</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="syn">also: responsible AI</div>
+<div class="plain">NIST&#x27;s checklist of the seven properties an AI system needs to be worthy of trust. It is the evaluative baseline federal agencies use to judge whether an AI tool is acceptable.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+AI that is valid and reliable, safe, secure and resilient, accountable and transparent, explainable and interpretable, privacy-enhanced, and fair with harmful bias managed.</div>
+<div class="src">— NIST AI 100-1 (AI Risk Management Framework 1.0) <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>FALSE FRIEND: NIST&#x27;s cybersecurity &#x27;trustworthiness&#x27; is about security/reliability of an information system; &#x27;trustworthy AI&#x27; is the seven-characteristic AI-RMF construct. Different frameworks.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The seven NIST characteristics form the assessment baseline for AI tools deployed by principal statistical agencies.
+<div class="cites">Cited in: <code>eo_14110</code>, <code>m_24_10</code>, <code>m_25_21</code></div>
+</div>
+</div>
+<div class="card ff" id="confabulation">
+<div class="term-head">
+<h3>confabulation</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="syn">also: fabrication</div>
+<div class="plain">When a generative model states something false as if it were true — invented citations, wrong numbers, made-up facts — fluently and without warning. NIST prefers &#x27;confabulation&#x27; over &#x27;hallucination&#x27; because the model isn&#x27;t perceiving anything; it is filling a gap with a plausible-sounding guess.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The production of confidently stated but erroneous or false content (also called &#x27;hallucination&#x27; or &#x27;fabrication&#x27;) by a generative-AI system; identified by NIST as a pervasive generative-AI risk.</div>
+<div class="src">— NIST AI 600-1 (Generative AI Profile) <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>Both are content errors — a reported value departs from the truth. Disanalogy: measurement error is bounded around a true value and modeled as a distribution; confabulation invents referents that do not exist, so it has no true value to be bounded around.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Critical risk when LLMs draft statistical reports, generate metadata, or summarize findings; mandates human verification before any figure or claim is relied on. FALSE FRIEND: an FSS reader may hear &#x27;confabulation/hallucination&#x27; as harmless creativity; it is a specific risk of confident fabrication, and it is NOT measurement error (it can invent referents).
+<div class="cites">Cited in: <code>m_24_18</code>, <code>webb_nist_fcsm_crosswalk</code>, <code>m_19_23</code></div>
+</div>
+</div>
+<div class="card" id="information_integrity">
+<div class="term-head">
+<h3>information integrity</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+</div>
+<div class="plain">The danger that AI-made content pollutes the information environment with convincing but false or manipulative material. For a statistical agency, the worry is AI-drafted public text that misstates the data.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The risk that AI-generated content undermines accurate, truthful, and reliable information — including disinformation, propaganda, or manipulative content; generative-AI risk category in NIST AI 600-1.</div>
+<div class="src">— NIST AI 600-1 (Generative AI Profile) <span class="pill">U.S. federal</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Applies when agencies use generative AI for press releases, data-product narratives, or public-facing summaries — official statistics carry an authority that misinformation can borrow.
+<div class="cites">Cited in: <code>nist_genai_profile_600_1</code></div>
+</div>
+</div>
+<div class="card" id="automated_decision_system">
+<div class="term-head">
+<h3>automated decision system</h3>
+<span class="badge tier">AI Governance &amp; Risk</span>
+</div>
+<div class="syn">also: ADS, automated decision-making</div>
+<div class="plain">A computer process that makes a consequential decision about a person — or substantially drives a human&#x27;s decision — with little or no meaningful human judgment (e.g. auto-approving or flagging a case). The concern is consequential decisions handed to software without meaningful human review.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+a machine-based system that can, for a given set of human-defined objectives, make predictions, recommendations, or decisions influencing real or virtual environments.</div>
+<div class="src">— 15 U.S.C. § 9401(3) (National AI Initiative Act of 2020) <span class="pill">U.S. federal</span></div>
+<div class="alt"><em>Also defined:</em> OMB M-24-10 uses &#x27;automated decision-making systems&#x27; as an operative term — e.g. in its definition of automation bias: &#x27;the propensity for humans to inordinately favor suggestions from automated decision-making systems and to ignore or fail to seek out contradictory information.&#x27; — OMB M-24-10 (federal AI-governance usage) <span class="pill">U.S. federal</span></div>
+<div class="alt"><em>Also defined:</em> any technology that either assists or replaces the judgement of human decision-makers. — Treasury Board of Canada Secretariat, Directive on Automated Decision-Making (2021) <span class="pill">intl. government</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>No single U.S.-federal statutory definition of &#x27;automated decision system&#x27; exists. The U.S.-federal anchors are the AI statutory definition (15 U.S.C. § 9401(3) — cited directly, NOT via the revoked EO 14110 that quotes it) and OMB AI-governance usage (M-24-10); the Canadian Treasury Board directive is the cleanest concise operational definition. Relevant in the FSS where data products feed individual-level determinations; pair with human-in-the-loop requirements.
+<div class="cites">Cited in: <code>m_24_10</code></div>
+</div>
+</div>
+<h2 class="section-head">FSS Bridge</h2><div class="section-sub">9 terms</div>
+<div class="card" id="disclosure_avoidance">
+<div class="term-head">
+<h3>disclosure avoidance</h3>
+<span class="badge tier">FSS Bridge</span>
+<span class="badge contested">⚖ Contested</span>
+</div>
+<div class="syn">also: disclosure limitation</div>
+<div class="plain">The whole set of methods agencies apply before releasing statistics so that no individual respondent can be identified — suppression, rounding, swapping, noise injection, differential privacy. Required by the confidentiality statutes.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The set of methods to reduce the risk of disclosing information on individuals, businesses or other organizations. Such methods are only related to the dissemination step and are usually based on restricting the amount of or modifying the data released.</div>
+<div class="src">— NIST SP 800-188 (statistical disclosure control) <span class="pill">U.S. federal</span> · <span class="badge contested" style="font-size:7pt">contested</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>differential privacy / cell suppression / swapping</strong> (umbrella_of): Disclosure avoidance is the goal; DP, suppression, swapping, and noise injection are alternative methods that achieve it with different utility/privacy trade-offs.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Required by Title 13, CIPSEA, and agency statutes. The Census Bureau&#x27;s Disclosure Avoidance System (DAS) implemented differential privacy at scale for the 2020 Census. The choice of method is politically contested inside Commerce (see DAO-216-26).
+<div class="cites">Cited in: <code>acdeb_final_report_2022</code>, <code>cipsea_2002_implementation_guidance</code>, <code>fcsm_20_04</code></div>
+</div>
+</div>
+<div class="card" id="statistical_disclosure_limitation">
+<div class="term-head">
+<h3>statistical disclosure limitation</h3>
+<span class="badge tier">FSS Bridge</span>
+</div>
+<div class="syn">also: SDL, statistical disclosure control</div>
+<div class="plain">The technical name for the family of methods that reduce the risk that a published statistic reveals information about a specific individual or business. In the FSS this is the methodological core of disclosure avoidance.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The set of methods to reduce the risk of disclosing information on individuals, businesses or other organizations. Such methods are only related to the dissemination step and are usually based on restricting the amount of or modifying the data released.</div>
+<div class="src">— NIST SP 800-188 <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>disclosure avoidance</strong> (synonym_near): Used nearly interchangeably; &#x27;disclosure avoidance&#x27; is the Census Bureau&#x27;s operational term, &#x27;statistical disclosure limitation/control&#x27; the methodological literature&#x27;s term.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The canonical FSS reference is FCSM Statistical Policy Working Paper 22, &#x27;Report on Statistical Disclosure Limitation Methodology&#x27; (in this corpus as wp_22). Differential privacy is a formal member of this family.
+<div class="cites">Cited in: <code>acdeb_final_report_2022</code>, <code>m_25_05</code>, <code>wp_22</code></div>
+</div>
+</div>
+<div class="card" id="measurement_error">
+<div class="term-head">
+<h3>measurement error</h3>
+<span class="badge tier">FSS Bridge</span>
+</div>
+<div class="plain">The gap between the answer recorded and the true value, caused by the respondent, interviewer, question wording, mode, or records. One of the components of nonsampling error.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Measurement error is the difference between the true value of the measurement and the value obtained during the measurement process.</div>
+<div class="src">— U.S. Census Bureau Statistical Quality Standards — Glossary <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>confabulation (generative AI)</strong> (analog_of): Both are content errors relative to a true value. Disanalogy: measurement error is bounded by a true value; confabulation can invent non-existent referents.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>A core FSS quality concept (U.S. Census Bureau Statistical Quality Standards; the D3 standard in this corpus is about producing measures of it). Its AI relevance: NLP tools parsing open-ended responses can introduce systematic measurement error that varies by respondent group, which is the bridge to AI confabulation/bias.
+<div class="cites">Cited in: <code>fcsm_20_04</code>, <code>wp_31</code>, <code>wp_47</code></div>
+</div>
+</div>
+<div class="card" id="nonsampling_error">
+<div class="term-head">
+<h3>nonsampling error</h3>
+<span class="badge tier">FSS Bridge</span>
+</div>
+<div class="plain">Every source of error in a statistic that is NOT from random sampling — coverage gaps, nonresponse, measurement error, processing mistakes. Often the dominant error in large surveys, and harder to quantify than sampling error.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Nonsampling errors are survey errors caused by factors other than sampling (e.g., nonsampling errors include errors in coverage, response errors, nonresponse errors, faulty questionnaires, interviewer recording errors, and processing errors).</div>
+<div class="src">— U.S. Census Bureau Statistical Quality Standards — Glossary <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>model error / bias + drift (AI)</strong> (analog_of): Nonsampling error is the FSS&#x27;s mature taxonomy of non-random error; AI bias, drift, and confabulation map onto its branches (coverage, temporal, measurement).</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The FSS error framework (Census Statistical Quality Standards; the D3 standard in this corpus) that AI systems must be evaluated against — AI can both introduce and mitigate nonsampling error, so it must be judged on all these dimensions, not just predictive accuracy.
+<div class="cites">Cited in: <code>wp_31</code>, <code>census_sqs_d3</code>, <code>census_sqs_f1</code></div>
+</div>
+</div>
+<div class="card ff" id="data_asset">
+<div class="term-head">
+<h3>data asset</h3>
+<span class="badge tier">FSS Bridge</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="plain">In FSS law, simply a defined collection of data that can be grouped and managed as a unit. It is a governance/inventory term, not a technical or security term.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+the term &#x27;data asset&#x27; means a collection of data elements or data sets that may be grouped together.</div>
+<div class="src">— CIPSEA 2018 / Evidence Act §3502 (44 U.S.C. § 3502) <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>FALSE FRIEND: NIST/CNSSI 4009 treats a &#x27;data asset&#x27; as something to be secured (a cyber asset). The FSS statutory sense is a governed collection of data for inventory/access purposes. The obligations differ entirely.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Carried by CIPSEA/Evidence Act §3502 and referenced across OMB memos (M-24-10, M-25-21, M-23-04); 80+ obligations in this corpus attach to &#x27;data asset&#x27; (open-data, inventory, and Standard Application Process access duties).
+<div class="cites">Cited in: <code>cipsea_2018</code>, <code>cipsea_2018_uslm</code>, <code>evidence_act_2018</code></div>
+</div>
+</div>
+<div class="card ff" id="confidentiality">
+<div class="term-head">
+<h3>confidentiality</h3>
+<span class="badge tier">FSS Bridge</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="plain">In FSS law, a binding duty NOT to disclose protected information to anyone unauthorized — a legal obligation, not just a security setting. CIPSEA makes willful unauthorized disclosure a federal crime.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The term &#x27;confidentiality&#x27; means a quality or condition accorded to information as an obligation not to disclose that information to an unauthorized party.</div>
+<div class="src">— CIPSEA 2018 §3561(2) (44 U.S.C. § 3561) <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>FALSE FRIEND: in cybersecurity &#x27;confidentiality&#x27; is one leg of the CIA triad (a technical access-control property). In FSS law it is a statutory non-disclosure obligation with criminal penalties. Related spirit, very different force.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The foundational FSS duty. Any AI use of statistical data inherits it: a model trained on confidential data cannot be deployed in a way that permits re-identification.
+<div class="cites">Cited in: <code>cipsea_2018</code>, <code>cipsea_2018_uslm</code>, <code>eo_14110</code></div>
+</div>
+</div>
+<div class="card" id="statistical_product">
+<div class="term-head">
+<h3>statistical product</h3>
+<span class="badge tier">FSS Bridge</span>
+<span class="badge contested">⚖ Contested</span>
+</div>
+<div class="syn">also: statistical products</div>
+<div class="plain">The published outputs of a statistical agency — the tables, estimates, and microdata it releases. FSS rules require they be produced with quality, released equitably, and documented transparently.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Statistical products are the data and information (tables, estimates, microdata, analyses) disseminated by a statistical agency; the Trust Regulation frames duties of equitable access to and transparency about statistical products.</div>
+<div class="src">— Fundamental Responsibilities of RSAUs — &#x27;Trust Regulation&#x27; (5 CFR Part 1321) <span class="pill">U.S. federal</span> · <span class="badge contested" style="font-size:7pt">contested</span></div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Governed by SPD No. 1/No. 4 and the 2024 Trust Regulation (5 CFR 1321); the disclosure-avoidance method applied to a statistical product is the live policy question in DAO-216-26.
+<div class="cites">Cited in: <code>trust_regulation_nprm</code>, <code>spd_1</code>, <code>spd_4</code></div>
+</div>
+</div>
+<div class="card" id="noise_injection">
+<div class="term-head">
+<h3>noise injection</h3>
+<span class="badge tier">FSS Bridge</span>
+<span class="badge contested">⚖ Contested</span>
+</div>
+<div class="syn">also: noise infusion</div>
+<div class="plain">A disclosure-avoidance technique that protects respondents by adding small random values to data before release, so no single published number pins down one person. Differential privacy is a formal, calibrated way of doing this.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A de-identification technique that modifies a dataset by adding random values to the values of a selected attribute.</div>
+<div class="src">— NIST SP 800-188 <span class="pill">U.S. federal</span> · <span class="badge contested" style="font-size:7pt">contested</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>differential privacy</strong> (method_family): Differential privacy is a formal, provably-calibrated form of noise injection; &#x27;noise injection&#x27; also covers informal/heuristic noise addition without a formal privacy guarantee. M-25-05 footnote 89 names the two together.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>NIST defines it as a de-identification technique (SP 800-188). In the FSS it is one method of disclosure avoidance, closely tied to differential privacy. CONTESTED: DAO-216-26 (DOC, June 2026) bans &#x27;noise injection&#x27; while OMB M-25-05 permits the technique with documentation — the conflict the KG surfaced (see docs/2026-06-22_lab_notes_m25_05_s317_closed.md). Stated neutrally; not adjudicated here.
+<div class="cites">Cited in: <code>m_25_05</code>, <code>webb_nist_fcsm_crosswalk</code></div>
+</div>
+</div>
+<div class="card flagship" id="AI-ready_data">
+<div class="term-head">
+<h3>AI-ready data</h3>
+<span class="badge tier">FSS Bridge</span>
+<span class="badge flagship">★ Flagship</span>
+</div>
+<div class="syn">also: AI-readiness, AI-ready</div>
+<div class="plain">Data is “AI-ready” when a machine — typically an LLM — can not just open it but actually understand it: the numbers arrive with enough context, documentation, provenance, and quality information that the model interprets them correctly and answers questions without mangling the statistics. Machine-readable (a clean CSV) is necessary but not sufficient; machine-understandable is the bar. Note this assumes a system can already get to the data — whether it can find and retrieve it in the first place is a separate question (see the addendum).</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Data is AI-ready when it is machine-understandable — not merely machine-readable: its context, provenance, methodology, and quality signals are preserved and programmatically queryable, sufficient for an AI system (particularly a large language model) to analyze and answer questions about the asset without loss of statistical integrity. Per the federal project definition, AI-readiness is “the extent to which a data asset is prepared for effective analysis and querying by AI systems, particularly LLMs,” spanning data quality, access, formatting, and metadata. Scope boundary: this definition assumes access to the data asset is already established — it addresses the readiness of data that a consuming system can already reach. (The discoverability/retrievability axis is treated separately in the forward-interpretation addendum, deliberately outside the grounded definition.)</div>
+<div class="src">— America’s DataHub RFS — Topic MLMU-25, “Measuring Large Language Model Understanding of Federal Statistical Data” (footnote 2); framed as an extension of FCSM 25-03 (AI-Ready Federal Statistical Data) and FCSM 20-04 (A Framework for Data Quality). <span class="pill">U.S. federal</span></div>
+<div class="scope"><span class="tag">Scope boundary:</span> Definition (Part A) covers the readiness of data a consuming system can already REACH; it assumes access is established. The discoverability/retrievability (access) axis is addressed only in the forward-interpretation addendum (Part B), explicitly ahead of policy.</div>
+<div class="alt"><em>Also defined:</em> For the purposes of this project, “AI-readiness” refers to the extent to which a data asset is prepared for effective analysis and querying by AI systems, particularly LLMs. This includes data quality, access, formatting, and metadata. AI-ready data enable LLMs to generate meaningful insights from both structured (e.g., tabular) and unstructured (e.g., reports) formats by facilitating accurate interpretation and contextual understanding. — America’s DataHub RFS, Topic MLMU-25, footnote 2 (verbatim, verified against source 2026-06-23) <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>Lawrence Data Readiness Levels (2017), Bands C/B/A — academic conceptual ancestor (arXiv:1705.02245)</strong> (descends_from): Lawrence’s Data Readiness Levels are the conceptual ancestor: Band C = accessibility (can the data be accessed), Band B = faithfulness/validity (is it what it claims to be), Band A = data-in-context (ready for a specific, defined task). AI-readiness inherits the use-case-conditional logic — Lawrence shows readiness is relative to the intended use (this use-case-conditionality point is Lawrence’s, 2017; it is NOT attributed to Gartner). Disanalogy: DRL is a general-purpose data-maturity scale; this definition is scoped to federal statistical data and adds the “without loss of statistical integrity” constraint a general maturity scale does not carry. Cited as an external ancestor only — academic, not federal policy, so not ingested into the corpus.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Grounded in the corpus: the federal definition (America’s DataHub / NSDS RFS) plus the FCSM 25-03 AI-ready extension and the FCSM 20-04 data-quality framework. The corpus establishes that creating AI-ready data “builds on established open-data principles” and machine-readability (FCSM 25-03 §s34), that federal statistics used in AI interactions must meet the Framework’s data-quality dimensions — accessibility, timeliness, accuracy (§s30) — and that metadata enrichment exposed through AI-friendly APIs improves how LLMs discover and interpret data (§s31). FCSM 20-04 §s184 anchors the data-quality dimensions that must be balanced and preserved.
+<div class="cites">Cited in: <code>bea_rfs_mlmu25</code>, <code>fcsm_25_03</code>, <code>fcsm_25_03</code>, <code>fcsm_25_03</code>, <code>fcsm_20_04</code></div>
+</div>
+<hr class="divider">
+<div class="fwd"><span class="tag">⏩ Forward interpretation — ahead of documented policy (NOT an established standard) <span class="dated">· dated 2026-06</span></span>Practitioner framing (NOT graph-grounded; ahead of the documented standard): the federal and Commerce/FCSM definitions above assume access to the data asset is already established. In practice, access and machine-retrievability must be deliberately configured — via emerging mechanisms such as llms.txt, the Model Context Protocol (MCP), and WebMCP, the last standardized only around 2026, i.e. AFTER the FCSM/Commerce literature was authored. Written policy lags the technology in this fast-moving field. A complete AI-data-readiness picture therefore treats discoverability and retrievability as a PRIOR axis the current standards do not yet cover: data a model cannot find or reach is not AI-ready in any operational sense, however machine-understandable it is once reached. This is the machine-as-first-class-user position, offered as a forward-looking, bounded thought-leadership seed — not a mandate, and deliberately separated from the grounded definition so the definition’s authority is not diluted by interpretation.</div>
+<div class="builds"><span class="tag">Builds on (does not supersede):</span> FAIR (Findable, Accessible, Interoperable, Reusable); FCSM 20-04 (A Framework for Data Quality); FCSM 25-03 (AI-Ready Federal Statistical Data). FAIR — AI-readiness builds on / extends FAIR; it does not supersede it.</div>
+</div>
+<h2 class="section-head">High Translation-Load</h2><div class="section-sub">9 terms</div>
+<div class="card ff" id="hallucination">
+<div class="term-head">
+<h3>hallucination</h3>
+<span class="badge tier">High Translation-Load</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="plain">The popular word for an AI confidently making something up. Prefer &#x27;confabulation&#x27; in official writing — NIST does, because the model isn&#x27;t perceiving anything, it&#x27;s guessing.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Colloquial term for confidently stated but false content generated by a model; NIST uses &#x27;confabulation&#x27; (and &#x27;fabrication&#x27;) in preference to &#x27;hallucination.&#x27;</div>
+<div class="src">— NIST AI 600-1 (Generative AI Profile) <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>See confabulation: error vs. a true value, except confabulation/hallucination can invent referents with no true value.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Same risk as confabulation; the term you&#x27;ll hear from vendors and the press. FALSE FRIEND: not a perceptual glitch and not measurement error — a confident fabrication. See [confabulation].
+<div class="cites">Cited in: <code>m_24_18</code>, <code>nist_genai_profile_600_1</code>, <code>webb_nist_fcsm_crosswalk</code></div>
+</div>
+</div>
+<div class="card ff" id="bias">
+<div class="term-head">
+<h3>bias</h3>
+<span class="badge tier">High Translation-Load</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="plain">A loaded word that means different things to different audiences. To a statistician, bias is a precise, often quantifiable concept: the expected difference between an estimator and the true parameter (and can be desirable, e.g., a bias-variance trade-off). In AI/ethics discourse, &#x27;bias&#x27; usually means unfair, discriminatory outcomes.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Bias is the difference between the expected value of an estimator and the actual population value.</div>
+<div class="src">— U.S. Census Bureau Statistical Quality Standards — Glossary (statistical sense) <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>Statistical bias is E[estimator] - true value, a neutral quantifiable quantity. AI/algorithmic bias is normative — patterned unfair outcomes for groups. Same word, different field, different valence.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>A hard FALSE FRIEND — clarify which sense is meant. Statistical bias (estimator vs. parameter) is not the same as algorithmic/social bias (unfair group outcomes). NIST SP 1270 catalogs the AI senses; pull its wording for the AI definition.
+<div class="cites">Cited in: <code>webb_nist_fcsm_crosswalk</code>, <code>americas_ai_action_plan_2025</code>, <code>eo_14179</code></div>
+</div>
+</div>
+<div class="card ff" id="validity">
+<div class="term-head">
+<h3>validity</h3>
+<span class="badge tier">High Translation-Load</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="plain">Whether the system actually measures the thing you think it measures (not just consistently — that&#x27;s reliability). A model can be reliably wrong.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Validity (with reliability) is a trustworthy-AI property: the degree to which an AI system measures or produces what it is intended to, confirmed by objective evidence.</div>
+<div class="src">— NIST AI 100-3 (The Language of Trustworthy AI) <span class="pill">U.S. federal (beta)</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>Both ask &#x27;are we measuring the intended construct.&#x27; Largely compatible across the survey-methodology and AI senses; the survey literature splits it further (content/construct/criterion validity).</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>Maps closely to FSS notions of accuracy/unbiasedness under SPD No. 2. NIST AI 100-3 is provisional (beta) — verify exact wording before formal reliance.
+<div class="cites">Cited in: <code>webb_nist_fcsm_crosswalk</code>, <code>m_24_10</code>, <code>m_25_21</code></div>
+</div>
+</div>
+<div class="card ff" id="reliability">
+<div class="term-head">
+<h3>reliability</h3>
+<span class="badge tier">High Translation-Load</span>
+<span class="badge ff">⚠ False friend</span>
+</div>
+<div class="plain">Whether the system gives the same answer under the same conditions — consistency. Reliable but invalid means consistently measuring the wrong thing.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+The probability of performing a specified function without failure under given conditions for a specified period of time.</div>
+<div class="src">— NIST IR 8401 <span class="pill">U.S. federal</span></div>
+<div class="ffbox"><span class="tag">⚠ False friend — different in AI vs. the FSS</span><br>Compatible: both mean consistency of results under repetition.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>In FSS quality terms, reliability maps to reproducibility across processing cycles. Note NIST uses &#x27;reliability&#x27; in both a systems-engineering sense and a trustworthy-AI sense.
+<div class="cites">Cited in: <code>americas_ai_action_plan_2025</code>, <code>fcsm_20_04</code>, <code>privacy_act_1974_uslm</code></div>
+</div>
+</div>
+<div class="card" id="model_card">
+<div class="term-head">
+<h3>model card</h3>
+<span class="badge tier">High Translation-Load</span>
+</div>
+<div class="syn">also: system card</div>
+<div class="plain">A standardized &#x27;nutrition label&#x27; for an AI model: what it&#x27;s for, how well it works, on whom it was tested, and where it fails. Agencies should demand one before adopting a model.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+A short documentation artifact accompanying a trained model that reports its intended use, performance across conditions, evaluation data, limitations, and ethical considerations.</div>
+<div class="src">— Mitchell et al., &#x27;Model Cards for Model Reporting&#x27; (FAT* 2019) <span class="pill">academic</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>survey methodology documentation / technical documentation (SPD No. 2)</strong> (analog_of): Both document methodology, performance, and appropriate-use conditions. Disanalogy: methodology docs describe a designed procedure; a model card reports empirical behavior of a learned model.</div>
+<div class="fss author"><span class="tag">✎ Practitioner note — NOT corpus-sourced</span><br>Practitioner framing (NOT graph-grounded): the FSS should require a model card (and system card) as acquisition documentation for any adopted AI model — the AI analog of survey methodology documentation. The corpus references &#x27;system cards&#x27; only in passing (M-24-10) and a &#x27;GPT-4 System Card&#x27; citation; it neither defines nor mandates model cards, so this is a recommended practice, not a corpus obligation.</div>
+</div>
+<div class="card" id="provenance">
+<div class="term-head">
+<h3>provenance</h3>
+<span class="badge tier">High Translation-Load</span>
+</div>
+<div class="syn">also: data lineage, data provenance</div>
+<div class="plain">The documented history of where data (or a model&#x27;s training data) came from and how it was transformed — the chain of custody. Without it, you can&#x27;t audit or reproduce a result.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+In the context of computers and law enforcement use, it is an equivalent term to chain of custody. It involves the method of generation, transmission and storage of information that may be used to trace the origin of a piece of information processed by community resources.</div>
+<div class="src">— CNSSI 4009-2015 <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>metadata / data documentation</strong> (component_of): Provenance is the origin-and-transformation portion of the broader metadata an FSS product must carry.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>In the FSS, provenance/metadata is required for data products (CIPSEA defines &#x27;metadata&#x27; to include provenance, 44 U.S.C. § 3561(19)); for AI it extends to model and training-data lineage under data-governance requirements.
+<div class="cites">Cited in: <code>cipsea_2018</code>, <code>eo_14110</code>, <code>evidence_act_2018</code></div>
+</div>
+</div>
+<div class="card" id="human-in-the-loop">
+<div class="term-head">
+<h3>human-in-the-loop</h3>
+<span class="badge tier">High Translation-Load</span>
+</div>
+<div class="syn">also: human oversight, human-on-the-loop</div>
+<div class="plain">A design where a person reviews, approves, or can override the AI before its output takes effect — as opposed to fully automated action. &#x27;On-the-loop&#x27; is lighter (monitoring) than &#x27;in-the-loop&#x27; (approval). The point is meaningful human judgment, not a rubber stamp.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+An AI system that requires human interaction.</div>
+<div class="src">— DoD Modeling &amp; Simulation Glossary, via NIST AI 100-3 (AIRC glossary) <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>analyst review / adjudication in survey processing</strong> (analog_of): Both insert human judgment before an automated output is accepted. Disanalogy: automation bias makes the human review weaker than it looks as volume scales.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The control that keeps AI-assisted coding, imputation, or edit-flagging from acting unreviewed; the risk is automation bias — humans rubber-stamping AI when review volume exceeds what they can meaningfully audit. OMB M-25-21 and NIST AI 600-1 (Human-AI Configuration) are the references — pull exact wording.
+<div class="cites">Cited in: <code>webb_nist_fcsm_crosswalk</code>, <code>m_24_10</code>, <code>m_25_21</code></div>
+</div>
+</div>
+<div class="card" id="fitness_for_use">
+<div class="term-head">
+<h3>fitness for use</h3>
+<span class="badge tier">High Translation-Load</span>
+</div>
+<div class="syn">also: fitness for purpose</div>
+<div class="plain">The principle that &#x27;quality&#x27; isn&#x27;t absolute — data are good enough only relative to a specific purpose. The same dataset can be fit for one use and unfit for another. This is the lens for judging whether an AI tool or its data is &#x27;good enough&#x27; for a given task.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+Quality is defined as fitness for use: the degree to which data are suitable for the intended use(s), assessed across multiple quality dimensions (relevance, accuracy, timeliness, accessibility, interpretability, coherence).</div>
+<div class="src">— FCSM, A Framework for Data Quality (FCSM 20-04) <span class="pill">U.S. federal</span></div>
+<div class="xwalk"><span class="lbl">Crosswalk</span> → <strong>fitness for use (KG quality framing)</strong> (same_concept): Identical principle the KG quality battery uses — quality is purpose-relative, so the user selects the dimensions that matter.</div>
+<div class="fss grounded"><span class="tag">✓ Grounded in the FSS corpus</span><br>The FSS&#x27;s governing definition of data quality (FCSM Data Quality Framework; this corpus holds FCSM 20-04 and 23-02). It is also the right frame for evaluating AI outputs: fit for which decision?
+<div class="cites">Cited in: <code>fcsm_20_04</code>, <code>acdeb_final_report_2022</code>, <code>m_14_06</code></div>
+</div>
+</div>
+<div class="card" id="prompt">
+<div class="term-head">
+<h3>prompt</h3>
+<span class="badge tier">High Translation-Load</span>
+</div>
+<div class="syn">also: prompting, prompt engineering</div>
+<div class="plain">The text you type to an AI tool to tell it what you want; &#x27;prompting&#x27; is the process of writing and providing such inputs to guide a generative model toward specific outputs. The same model gives very different answers to differently worded prompts — useful, and a reproducibility hazard.</div>
+<div class="def"><span class="lbl">Definition</span><br>
+[prompts are] natural language requests that elicit accurate, high quality responses from a language model.</div>
+<div class="src">— Google Gemini API documentation, &#x27;Prompt design strategies&#x27; <span class="pill">industry</span></div>
+<div class="fss author"><span class="tag">✎ Practitioner note — NOT corpus-sourced</span><br>Practitioner framing (NOT graph-grounded): a prompt is the actual interface to a generative tool, so for an FSS AI-readiness review the concern is operational — an undocumented prompt makes an AI-assisted result irreproducible, and a prompt bearing confidential text can leak it to a third-party model. Not an FSS policy term; the corpus word-matches for &#x27;prompt&#x27; are the English adjective, not this concept.</div>
+</div>
+</body></html>
